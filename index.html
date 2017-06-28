@@ -10,20 +10,32 @@
 		<meta name="author" content="Baozier">
 		<title>Rapid Slides</title>
 		<link rel="stylesheet" type="text/css" href="static/style.css" >
-		<!-- Welcome to Rapid Slides, 
-			you only need to put all your talking points inside the <script> below.
-			Check readme.md for more details.
+		<!-- 
+			Welcome to Rapid Slides, 
+			you only need to put all your talking points inside "script" below.
+			You can customize default appearance by modify "theme" below.
+			Check README.md for more details.
 		-->
 		<script type="application/json" id="data">
 			{
-				"script": {
+				"script": [
 
-				},
+				],
 				"theme": {
-
+					"footer": {
+						"template": "FooterDefaultCopyright",
+						"title": {
+							"content": "Thousanday.com 2017",
+							"position": "left",
+							"font": "h5"
+						}
+					},
+					"fontSize": [24, 21, 18, 15, 12],
+					"background": "white"
 				}
 			}
 		</script>
+		<!-- You don't need to touch anything below this line -->
 	</head>
 	<body>
 		<div id="root"></div>
