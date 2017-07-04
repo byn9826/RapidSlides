@@ -16,26 +16,48 @@
 			You can customize default appearance by modify "theme" below.
 			Check README.md for more details.
 		-->
-		<script type="application/json" id="data">
+		<script id="script">
+			@- Rapid Slides
+				@# CoverDefaultFull
+				@$ cover.jpg
+				@~ Automatically generate HTML slideshow from your talking points by React
+			@- Make slideshow easier
+				@# ContentDefaultHouse
+				@~ Easy
+				@~ Professional
+				@~ Customize
+			@- Easy
+				@# SingleDefaultPic
+				@$ easy.jpg
+				@~ Simply Write down your talking points, the slideshow will be generated for you.
+			@- Professional
+				@# SingleDefaultPic
+				@$ professional.jpg
+				@~ Built your slideshow with professional templates and design patterns.
+			@- Customize
+				@# SingleDefaultPic
+				@$ professional.jpg
+				@~ Easily modify slideshow settings to make them unique.
+			@- Thanks!
+				@# EndDefaultPic
+				@$ end.jpg
+				@~ Discuss on Github github.com/byn9826/RapidSlides
+		</script>
+		<script type="application/json" id="theme">
 			{
-				"script": [
-
-				],
-				"theme": {
-					"footer": {
-						"template": "FooterDefaultCopyright",
-						"title": {
-							"content": "@Thousanday.com 2017",
-							"position": "left",
-							"font": "h5",
-							"background": "black",
-							"color": "white"
-						}
-					},
-					"fonts": [24, 21, 18, 15, 12],
-					"background": "white",
-					"color": "black"
-				}
+				"footer": {
+					"template": "FooterDefaultCopyright",
+					"title": {
+						"content": "@RapidSlides 2017",
+						"position": "left",
+						"font": "h5",
+						"background": "black",
+						"color": "white"
+					}
+				},
+				"fonts": [24, 21, 18, 15, 12],
+				"background": "white",
+				"color": "black"
 			}
 		</script>
 		<!-- You don't need to touch anything below this line -->

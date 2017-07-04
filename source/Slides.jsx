@@ -16,7 +16,7 @@ class Slides extends Component {
 	}
     render () {
         //build footer
-        let footer = Build.buildFooter(this.props.data.theme);
+        let footer = Build.buildFooter(this.props.theme);
         return (
             <div id="react-root">
                 <main id="main">
@@ -30,6 +30,28 @@ class Slides extends Component {
 
 
 //load content
-const data = JSON.parse( document.getElementById( "data" ).innerHTML );
-console.log( data );
-ReactDOM.render( <Slides data={data} />, document.getElementById( "root" ) );
+const theme = JSON.parse( document.getElementById( "theme" ).innerHTML );
+let script = document.getElementById( "script" ).innerHTML.trim();
+//seperate content into pages
+script = script.split( "@-" );
+script = removeEmpty( script );
+//seperate pages into points
+script = script.map( ( a ) => {
+    a = a.split( /\@\#|\@\$|\@\~/ );
+    a = removeEmpty( a );
+    a = a.map( ( b ) => {
+        return b.trim();
+    });
+    return a;
+});
+console.log( script );
+
+
+ReactDOM.render( <Slides script={script} theme={theme} />, document.getElementById( "root" ) );
+
+
+function removeEmpty( arr ) {
+    return arr.filter( ( a ) => {
+        return a.trim() !== "";
+    });
+}
