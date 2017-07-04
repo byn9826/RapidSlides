@@ -1,7 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 body{
     margin: 0;
     padding: 0;
     overflow: hidden;
+}
+
+div{
+    font-family: 'Open Sans', sans-serif;
 }
 
 #main{
@@ -12,6 +18,8 @@ body{
 
 #footer{
     display: block;
-    width: 100%;
+    width: 96%;
+    padding: 0 2%;
     height: 6vh;
+    line-height: 6vh;
 }
