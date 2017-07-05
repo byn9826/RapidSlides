@@ -1,6 +1,7 @@
+import CoverDefaultFull from "./temp/CoverDefaultFull";
 import FooterDefaultCopyright from "./temp/FooterDefaultCopyright";
 
-
 module.exports = {
-	FooterDefaultCopyright: FooterDefaultCopyright,
+	CoverDefaultFull: CoverDefaultFull,
+	FooterDefaultCopyright: FooterDefaultCopyright
 };

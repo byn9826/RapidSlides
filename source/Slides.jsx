@@ -15,13 +15,13 @@ class Slides extends Component {
 		};
 	}
     render () {
+        //build main
+        let main = Build.buildMain( this.props.script[ this.state.page ], this.props.theme );
         //build footer
-        let footer = Build.buildFooter(this.props.theme);
+        let footer = Build.buildFooter( this.props.theme, this.props.script, this.state.page );
         return (
             <div id="react-root">
-                <main id="main">
-                    
-                </main>
+                {main}
                 {footer}
             </div>
         );

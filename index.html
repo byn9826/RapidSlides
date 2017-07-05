@@ -11,11 +11,13 @@
 		<title>Rapid Slides</title>
 		<link rel="stylesheet" type="text/css" href="static/style.css" >
 		<!-- 
-			Welcome to Rapid Slides, 
-			you only need to put all your talking points inside "script" below.
-			You can customize default appearance by modify "theme" below.
+			Welcome to Rapid Slides. 
+			you should put all your talking points inside "script" below.
+			You can customize your slides template by modify "theme" below.
+			Open index.html in your browser, you'll see your slides works.
 			Check README.md for more details.
 		-->
+		<!-- You don't need to touch anything above this line -->
 		<script id="script">
 			@- Rapid Slides
 				@# CoverDefaultFull
@@ -45,6 +47,9 @@
 		</script>
 		<script type="application/json" id="theme">
 			{
+				"fonts": [36, 21, 18, 15, 12],
+				"background": "#f9f9f9",
+				"color": "black",
 				"footer": {
 					"template": "FooterDefaultCopyright",
 					"title": {
@@ -54,10 +59,7 @@
 						"background": "black",
 						"color": "white"
 					}
-				},
-				"fonts": [24, 21, 18, 15, 12],
-				"background": "white",
-				"color": "black"
+				}
 			}
 		</script>
 		<!-- You don't need to touch anything below this line -->
