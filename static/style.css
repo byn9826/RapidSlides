@@ -10,6 +10,10 @@ div{
     font-family: 'Open Sans', sans-serif;
 }
 
+p{
+    display: block;
+}
+
 #main{
     display: block;
     width: 100%;

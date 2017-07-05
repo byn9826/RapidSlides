@@ -4,14 +4,16 @@ import React, { Component } from 'react';
 class CoverDefaultFull extends Component {
     render() {
         let mainStyle = {
-            height: "100vh"
+            height: "100vh",
+            backgroundImage: "url(./img/" + this.props.script[2] + ")",
+            backgroundSize: "cover"
         };
         let sectionStyle = {
             backgroundColor: "black",
             color: "white",
             width: "60%",
             right: 0,
-            top: "50vh",
+            top: "45vh",
             minHeight: "18vh",
             borderRadius: "5px 0 0 5px",
             position: "absolute",
@@ -20,11 +22,17 @@ class CoverDefaultFull extends Component {
         };
         let titleStyle = {
             fontSize: this.props.theme.fonts[0],
-            fontWeight: "bold"
+            fontWeight: "bold",
+            margin: "8px 0"
         };
         let descStyle = {
-            fontSize: this.props.theme.fonts[1]
+            fontSize: this.props.theme.fonts[1],
+            marginBottom: "5px"
         };
+        let content = [];
+        for ( let i = 3; i < this.props.script.length; i++ ) {
+            content.push( <p>{this.props.script[i]}</p> );
+        }
 		return (
             <main id="main" style={mainStyle}>
                 <section style={sectionStyle}>
@@ -32,7 +40,7 @@ class CoverDefaultFull extends Component {
                         {this.props.script[0]}
                     </div>
                     <div style={descStyle}>
-                        {this.props.script[3]}
+                        {content}
                     </div>
                 </section>
             </main>
