@@ -6,6 +6,8 @@ function buildMain( script, theme ) {
     switch ( script[1] ) {
         case "CoverDefaultFull":
             return <Com.CoverDefaultFull script={script} theme={theme} />;
+        case "ContentDefaultHouse":
+            return <Com.ContentDefaultHouse script={script} theme={theme} />;
     }
 }
 

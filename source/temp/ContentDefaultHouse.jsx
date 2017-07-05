@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-class CoverDefaultFull extends Component {
+class ContentDefaultHouse extends Component {
     render() {
         let mainStyle = {
             height: "100vh",
@@ -49,4 +49,4 @@ class CoverDefaultFull extends Component {
 }
 
 
-export default CoverDefaultFull;
+export default ContentDefaultHouse;
