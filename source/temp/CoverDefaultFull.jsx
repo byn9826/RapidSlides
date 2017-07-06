@@ -31,16 +31,20 @@ class CoverDefaultFull extends Component {
         };
         let content = [];
         for ( let i = 3; i < this.props.script.length; i++ ) {
-            content.push( <p key={this.props.script[1] + i}>{this.props.script[i]}</p> );
+            content.push( 
+                <p key={ this.props.script[1] + i }>
+                    { this.props.script[i] }
+                </p> 
+            );
         }
 		return (
-            <main id="main" style={mainStyle}>
-                <section style={sectionStyle}>
-                    <div style={titleStyle}>
-                        {this.props.script[0]}
+            <main id="main" style={ mainStyle }>
+                <section style={ sectionStyle }>
+                    <div style={ titleStyle }>
+                        { this.props.script[0] }
                     </div>
-                    <div style={descStyle}>
-                        {content}
+                    <div style={ descStyle }>
+                        { content }
                     </div>
                 </section>
             </main>

@@ -18,7 +18,26 @@
 			Check README.md for more details.
 		-->
 		<!-- You don't need to touch anything above this line -->
-		<script id="script">
+		<script type="application/json" id="theme">
+			{
+				"fonts": [36, 21, 18, 15, 12],
+				"background": "#f9f9f9",
+				"color": "black",
+				"footer": {
+					"template": "FooterDefaultCopyright",
+					"title": {
+						"content": "@RapidSlides 2017",
+						"position": "left",
+						"font": "h5",
+						"background": "black",
+						"color": "white"
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<noscript id="script">
 			@- Rapid Slides
 				@# CoverDefaultFull
 				@$ cover.jpg
@@ -44,27 +63,8 @@
 				@# EndDefaultPic
 				@$ end.jpg
 				@~ Discuss on Github github.com/byn9826/RapidSlides
-		</script>
-		<script type="application/json" id="theme">
-			{
-				"fonts": [36, 21, 18, 15, 12],
-				"background": "#f9f9f9",
-				"color": "black",
-				"footer": {
-					"template": "FooterDefaultCopyright",
-					"title": {
-						"content": "@RapidSlides 2017",
-						"position": "left",
-						"font": "h5",
-						"background": "black",
-						"color": "white"
-					}
-				}
-			}
-		</script>
+		</noscript>
 		<!-- You don't need to touch anything below this line -->
-	</head>
-	<body>
 		<div id="root"></div>
 		<script type="text/javascript" src="static/slides.bundle.js"></script>
 	</body>

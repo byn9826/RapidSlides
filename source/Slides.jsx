@@ -14,7 +14,7 @@ class Slides extends Component {
 		};
 	}
     componentWillMount() {
-        document.addEventListener( "keydown", ( e ) => {
+        document.addEventListener( "keydown",  e => {
             let code = e.keyCode;
             if ( code === 37 ) {
                 if ( this.state.page !== 0 ) {
@@ -29,13 +29,13 @@ class Slides extends Component {
     }
     render () {
         //build main
-        let main = Build.buildMain( this.props.script[ this.state.page ], this.props.theme );
+        let main = Build.buildMain( this.props.script[ this.state.page ], this.props.theme, this.props.script );
         //build footer
         let footer = Build.buildFooter( this.props.theme, this.props.script, this.state.page );
         return (
-            <div id="react-root" className={this.state.trans} key={"trans" + this.state.page}>
-                {main}
-                {footer}
+            <div id="react-root" className={ this.state.trans } key={ "trans" + this.state.page }>
+                { main }
+                { footer }
             </div>
         );
     }
@@ -49,22 +49,19 @@ let script = document.getElementById( "script" ).innerHTML.trim();
 script = script.split( "@-" );
 script = removeEmpty( script );
 //seperate pages into points
-script = script.map( ( a ) => {
+script = script.map(  a  => {
     a = a.split( /\@\#|\@\$|\@\~/ );
     a = removeEmpty( a );
-    a = a.map( ( b ) => {
-        return b.trim();
-    });
+    a = a.map(  b  => b.trim() );
     return a;
 });
 console.log( script );
 
 
-ReactDOM.render( <Slides script={script} theme={theme} />, document.getElementById( "root" ) );
+ReactDOM.render( <Slides script={ script } theme={ theme } />, document.getElementById( "root" ) );
 
 
+//remove empty index in array
 function removeEmpty( arr ) {
-    return arr.filter( ( a ) => {
-        return a.trim() !== "";
-    });
+    return arr.filter(  a  => a.trim() !== "" );
 }

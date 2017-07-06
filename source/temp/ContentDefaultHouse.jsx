@@ -4,44 +4,129 @@ import React, { Component } from 'react';
 class ContentDefaultHouse extends Component {
     render() {
         let mainStyle = {
-            height: "100vh",
-            backgroundImage: "url(./img/" + this.props.script[2] + ")",
-            backgroundSize: "cover"
+            height: "94vh",
+            backgroundColor: this.props.theme.background,
         };
-        let sectionStyle = {
-            backgroundColor: "black",
-            color: "white",
-            width: "60%",
-            right: 0,
-            top: "45vh",
-            minHeight: "18vh",
-            borderRadius: "5px 0 0 5px",
+        let fullWidth = window.innerWidth;
+        let headerStyle = {
+            width: 0,
+            height: 0,
+            borderLeft: fullWidth * 0.45 + "px solid transparent",
+            borderRight: fullWidth * 0.45 + "px solid transparent",
+            borderBottom: "16vh solid #590808",
             position: "absolute",
-            padding: "10px 1%",
-            textAlign: "center"
+            top: "8vh",
+            left: "5%"
         };
         let titleStyle = {
-            fontSize: this.props.theme.fonts[0],
-            fontWeight: "bold",
-            margin: "8px 0"
+            width: "100%",
+            color: "white",
+            textAlign: "center",
+            fontSize: this.props.theme.fonts[1],
+            position: "absolute",
+            top: "15vh"
+        };
+        let sectionStyle = {
+            position: "absolute",
+            width: "90%",
+            left: "5%",
+            top: "24vh"
+        };
+        let singleWidth = 100 / ( this.props.script.length - 2 );
+        let holderStyle = {
+            display: "inline-block",
+            color: "white",
+            width: singleWidth - 0.5 + "%",
+            height: "55vh",
+            margin: "5vh 0.25%",
+            backgroundColor: "#ffe9bf",
+            borderRadius: "5px"
+        };
+        let emptyStyle = {
+            position: "relative",
+            top: "8vh",
+            left: "101%",
+            width: 0,
+            height: 0,
+            borderTop: "4vh solid transparent",
+            borderBottom: "4vh solid transparent",
+            borderLeft: "40px solid" + this.props.theme.background,
+            zIndex: "2"
+        };
+        let lineStyle = {
+            display: "block",
+            width: "100%",
+            height: "8vh",
+            zIndex: "1",
+            backgroundColor: "#003b42",
+            textAlign: "center",
+            lineHeight: "8vh",
+            fontSize: this.props.theme.fonts[2],
+            fontWeight: "bold"
+        };
+        let arrowStyle = {
+            position: "relative",
+            top: "-8vh",
+            left: "100%",
+            width: 0,
+            height: 0,
+            borderTop: "4vh solid transparent",
+            borderBottom: "4vh solid transparent",
+            borderLeft: "40px solid #003b42",
+            zIndex: "3"
+        };
+        let dictStyle = {
+            position: "absolute",
+            width: "90%",
+            left: "5%",
+            top: "53vh"
         };
         let descStyle = {
-            fontSize: this.props.theme.fonts[1],
-            marginBottom: "5px"
+            display: "inline-block",
+            verticalAlign: "middle",
+            backgroundColor: "#d9dbdd",
+            width: singleWidth - 8 + "%",
+            margin: "0 2%",
+            padding: "15px 2%",
+            color: "black",
+            textAlign: "center",
+            borderRadius: "5px"
         };
-        let content = [];
-        for ( let i = 3; i < this.props.script.length; i++ ) {
-            content.push( <p key={this.props.script[1] + i}>{this.props.script[i]}</p> );
+        let section = [], i, j, desc = [], info;
+        for ( i = 2; i < this.props.script.length; i++ ) {
+            section.push(
+                <div key={ "content" + i } style={ holderStyle }>
+                    <div style={ emptyStyle }></div>
+                    <div style={ lineStyle }>
+                        { this.props.script[i] }
+                    </div>
+                    <div style={ arrowStyle }></div>
+                </div>
+            );
+            findDesc:
+                for ( j = 0; j < this.props.data.length; j++ ) {
+                    if ( this.props.data[j][0] === this.props.script[i] ) {
+                        info = this.props.data[j][3];
+                        break findDesc;
+                    }
+                }
+            desc.push(
+                <div key={ "info" + i } style={ descStyle }>
+                    { info }
+                </div>
+            );
         }
 		return (
-            <main id="main" style={mainStyle}>
-                <section style={sectionStyle}>
-                    <div style={titleStyle}>
-                        {this.props.script[0]}
-                    </div>
-                    <div style={descStyle}>
-                        {content}
-                    </div>
+            <main id="main" style={ mainStyle }>
+                <div style={ headerStyle }></div>
+                <div style={ titleStyle }>
+                    { this.props.script[0] }
+                </div>
+                <section style={ sectionStyle }>
+                    { section }
+                </section>
+                <section style={ dictStyle }>
+                    {desc}
                 </section>
             </main>
 		);
