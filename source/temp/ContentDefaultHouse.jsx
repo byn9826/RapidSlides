@@ -98,15 +98,15 @@ class ContentDefaultHouse extends Component {
                 <div key={ "content" + i } style={ holderStyle }>
                     <div style={ emptyStyle }></div>
                     <div style={ lineStyle }>
-                        { this.props.script[i] }
+                        { this.props.script[ i ] }
                     </div>
                     <div style={ arrowStyle }></div>
                 </div>
             );
             findDesc:
                 for ( j = 0; j < this.props.data.length; j++ ) {
-                    if ( this.props.data[j][0] === this.props.script[i] ) {
-                        info = this.props.data[j][3];
+                    if ( this.props.data[ j ][ 0 ] === this.props.script[ i ] ) {
+                        info = this.props.data[ j ][ 3 ];
                         break findDesc;
                     }
                 }
@@ -120,13 +120,13 @@ class ContentDefaultHouse extends Component {
             <main id="main" style={ mainStyle }>
                 <div style={ headerStyle }></div>
                 <div style={ titleStyle }>
-                    { this.props.script[0] }
+                    { this.props.script[ 0 ] }
                 </div>
                 <section style={ sectionStyle }>
                     { section }
                 </section>
                 <section style={ dictStyle }>
-                    {desc}
+                    { desc }
                 </section>
             </main>
 		);

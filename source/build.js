@@ -3,20 +3,22 @@ import Com from "./components.js";
 
 
 function buildMain( script, theme, data ) {
-    switch ( script[1] ) {
+    switch ( script[ 1 ] ) {
         case "CoverDefaultFull":
-            return <Com.CoverDefaultFull script={script} theme={theme} />;
+            return <Com.CoverDefaultFull script={ script } theme={ theme } />;
         case "ContentDefaultHouse":
-            return <Com.ContentDefaultHouse script={script} theme={theme} data={data} />;
+            return <Com.ContentDefaultHouse script={ script } theme={ theme } data={ data } />;
+        case "SingleDefaultPic":
+            return <Com.SingleDefaultPic script={ script } theme={ theme } />;  
     }
 }
 
 
 function buildFooter( theme, script, page ) {
-    if ( script[page][1].search( "Cover" ) === -1 ) {
+    if ( script[ page ][ 1 ].search( "Cover" ) === -1 ) {
         switch ( theme.footer.template ) {
             case "FooterDefaultCopyright":
-                 return <Com.FooterDefaultCopyright theme={theme} />;
+                 return <Com.FooterDefaultCopyright theme={ theme } />;
         }
     }
 }

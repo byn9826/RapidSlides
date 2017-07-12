@@ -50,7 +50,7 @@ script = script.split( "@-" );
 script = removeEmpty( script );
 //seperate pages into points
 script = script.map(  a  => {
-    a = a.split( /\@\#|\@\$|\@\~/ );
+    a = a.split( /\@\#|\@\$|\@\~|\@\!/ );
     a = removeEmpty( a );
     a = a.map(  b  => b.trim() );
     return a;
