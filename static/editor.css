@@ -1,0 +1,40 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+h6{
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#header{
+    width: 99%;
+    padding: 0 0.5%;
+    height: 8vh;
+    border-bottom: 1px solid lightgray;
+    display: block;
+}
+
+#header-present{
+    display: inline-block;
+    vertical-align: middle;
+    background-color: lightblue;
+    height: 6vh;
+    margin: 1vh 0;
+    padding: 0 8px;
+    border-radius: 5px;
+}
+#header-present img{
+    height: 4vh;
+    margin: 1vh 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+#header-present h6{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+}

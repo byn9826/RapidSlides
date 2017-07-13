@@ -2,7 +2,8 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        slides: "./source/Slides.jsx",
+        //slides: "./source/Slides.jsx",
+        editor: "./source/Editor.jsx"
     },
     output: {
         path: __dirname + '/static/',
