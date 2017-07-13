@@ -6,7 +6,7 @@ module.exports = {
         editor: "./source/Editor.jsx"
     },
     output: {
-        path: __dirname + '/static/',
+        path: __dirname + '/static/js',
         filename: '[name].bundle.js'
     },
     module: {

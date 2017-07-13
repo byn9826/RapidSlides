@@ -7,17 +7,9 @@
 		<meta name="description" content="Rapid Slides is a tool to generate a html slideshow for you automatically">
 		<meta name="keywords" content="Slideshow, Presentation, PowerPoint">
 		<meta name="robots" content="all">
-		<meta name="author" content="Baozier">
+		<meta name="author" content="Rapid Slide">
 		<title>Rapid Slides</title>
-		<link rel="stylesheet" type="text/css" href="static/style.css" >
-		<!-- 
-			Welcome to Rapid Slides. 
-			you should put all your talking points inside "script" below.
-			You can customize your slides template by modify "theme" below.
-			Open index.html in your browser, you'll see your slides works.
-			Check README.md for more details.
-		-->
-		<!-- You don't need to touch anything above this line -->
+		<link rel="stylesheet" type="text/css" href="../static/css/slide.css" >
 		<script type="application/json" id="theme">
 			{
 				"fonts": [36, 21, 18, 15, 12],
@@ -35,7 +27,7 @@
 				}
 			}
 		</script>
-	</head>
+    </head>
 	<body>
 		<noscript id="script">
 			@- Rapid Slides
@@ -68,8 +60,7 @@
 				@$ end.jpg
 				@~ Discuss on Github github.com/byn9826/RapidSlides
 		</noscript>
-		<!-- You don't need to touch anything below this line -->
 		<div id="root"></div>
-		<script type="text/javascript" src="static/slides.bundle.js"></script>
+		<script type="text/javascript" src="../static/js/editor.bundle.js"></script>
 	</body>
 </html>

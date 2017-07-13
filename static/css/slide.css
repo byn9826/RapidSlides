@@ -1,44 +1,49 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
 body{
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
-div{
-    font-family: 'Open Sans', sans-serif;
-}
+/* App layout */
 
-p{
-    display: block;
-}
-
-#react-root{
+#header{
+    position: absolute;
+    left: 0;
     width: 100%;
+    height: 10vh;
+    top: 0;
+    background-color: lightblue;
+}
+
+#aside{
+    position: absolute;
+    left: 0;
+    width: 20%;
+    height: 90vh;
+    top: 10vh;
+    background-color: lightgoldenrodyellow;
+    border-top: 1px solid white;
+}
+
+#main{
     position: absolute;
 }
+
 .left{
     left: -100%;
-    -webkit-animation: slide 0.5s forwards;
     animation: slide 0.5s forwards;
 }
-
 .right{
     left: 100%;
-    -webkit-animation: slide 0.5s forwards;
     animation: slide 0.5s forwards;
 }
-
-@-webkit-keyframes slide {
-    100% { left: 0; }
-}
-
 @keyframes slide {
     100% { left: 0; }
 }
 
-#main{
+/* Slideshow layout */
+
+#content{
     display: block;
     width: 100%;
 }

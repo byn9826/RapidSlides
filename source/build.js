@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import Com from "./components.js";
 
 
-function buildMain( script, theme, data ) {
+function buildContent( script, theme, data ) {
     switch ( script[ 1 ] ) {
         case "CoverDefaultFull":
             return <Com.CoverDefaultFull script={ script } theme={ theme } />;
@@ -25,6 +25,6 @@ function buildFooter( theme, script, page ) {
 
 
 module.exports = {
-    buildMain: buildMain,
+    buildContent: buildContent,
 	buildFooter: buildFooter
 };

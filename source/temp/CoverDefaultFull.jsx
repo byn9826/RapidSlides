@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 
-
 class CoverDefaultFull extends Component {
     render() {
-        let mainStyle = {
+        const contentStyle = {
             height: "100vh",
             backgroundImage: "url(./img/" + this.props.script[2] + ")",
             backgroundSize: "cover"
         };
-        let sectionStyle = {
+        const sectionStyle = {
             backgroundColor: "black",
             color: "white",
             width: "60%",
@@ -20,12 +19,12 @@ class CoverDefaultFull extends Component {
             padding: "10px 1%",
             textAlign: "center"
         };
-        let titleStyle = {
+        const titleStyle = {
             fontSize: this.props.theme.fonts[0],
             fontWeight: "bold",
             margin: "8px 0"
         };
-        let descStyle = {
+        const descStyle = {
             fontSize: this.props.theme.fonts[1],
             marginBottom: "5px"
         };
@@ -38,7 +37,7 @@ class CoverDefaultFull extends Component {
             );
         }
 		return (
-            <main id="main" style={ mainStyle }>
+            <div id="content" style={ contentStyle }>
                 <section style={ sectionStyle }>
                     <div style={ titleStyle }>
                         { this.props.script[0] }
@@ -47,10 +46,9 @@ class CoverDefaultFull extends Component {
                         { content }
                     </div>
                 </section>
-            </main>
+            </div>
 		);
 	}
 }
-
 
 export default CoverDefaultFull;
