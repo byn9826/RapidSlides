@@ -6,6 +6,8 @@ class Editor extends Component {
     constructor( props ) {
         super( props );
 		this.state = {
+            script: this.props.script,
+            theme: this.props.theme,
             //store current page number
             page: 0,
             //transition animation
@@ -20,7 +22,7 @@ class Editor extends Component {
                     this.setState({ trans: "left", page: this.state.page - 1 });
                 }
             } else if ( code === 39 ) {
-                if ( this.state.page !== ( this.props.script.length - 1 ) ) {
+                if ( this.state.page !== ( this.state.script.length - 1 ) ) {
                     this.setState({ trans: "right", page: this.state.page + 1 });
                 }
             }
@@ -36,21 +38,52 @@ class Editor extends Component {
         };
         //build main for slides
         const content = Build.buildContent( 
-            this.props.script[ this.state.page ], 
-            this.props.theme, 
-            this.props.script 
+            this.state.theme,
+            this.state.script,
+            this.state.page
         );
         //build footer for slides
+        /*
         const footer = Build.buildFooter( 
-            this.props.theme, 
-            this.props.script, 
-            this.state.page 
+            this.state.theme,
+            this.state.script,
+            this.state.page
+        );*/
+        //editor area
+        let slides = this.state.script.map(( slide, index ) =>
+            <div key={ "editSlide" + index } className="aside-slide">
+                <div className="aside-slide-box">
+                    <span>Type:</span>
+                    <select>
+                        <option>Cover</option>
+                        <option>Index</option>
+                        <option>Single</option>
+                    </select>
+                </div>
+                <div className="aside-slide-box">
+                    <span>Template:</span>
+                    <select>
+                        <option>DefaultFull</option>
+                    </select>
+                </div>
+                <div className="aside-slide-box">
+                    <span>Title:</span>
+                    <input type="text" value={ slide.title } />
+                </div>
+                <div className="aside-slide-box">
+                    <span>Desc:</span>
+                    <textarea>{ slide.desc }</textarea>
+                </div>
+                <div className="aside-num">Slide Number: { index + 1 }</div>
+            </div>
         );
         return (
             <div>
                 <header id="header">
                 </header>
                 <aside id="aside">
+                    <div id="aside-add" className="layout-fonts">Add</div>
+                    { slides }
                 </aside>
                 <main 
                     id="main" 
@@ -59,7 +92,6 @@ class Editor extends Component {
                     key={ "trans" + this.state.page }
                 >
                     { content }
-                    { footer }
                 </main>
             </div>
         );
@@ -68,22 +100,6 @@ class Editor extends Component {
 
 //load content
 const theme = JSON.parse( document.getElementById( "theme" ).innerHTML );
-let script = document.getElementById( "script" ).innerHTML.trim();
-//seperate content into pages
-script = script.split( "@-" );
-script = removeEmpty( script );
-//seperate pages into points
-script = script.map(  a  => {
-    a = a.split( /\@\#|\@\$|\@\~|\@\!/ );
-    a = removeEmpty( a );
-    a = a.map(  b  => b.trim() );
-    return a;
-});
-console.log( script );
+const script = JSON.parse( document.getElementById( "script" ).innerHTML );
 
 ReactDOM.render( <Editor script={ script } theme={ theme } />, document.getElementById( "root" ) );
-
-//remove empty index in array
-function removeEmpty( arr ) {
-    return arr.filter(  a  => a.trim() !== "" );
-}

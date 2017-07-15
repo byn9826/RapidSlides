@@ -4,7 +4,7 @@ class CoverDefaultFull extends Component {
     render() {
         const contentStyle = {
             height: "100vh",
-            backgroundImage: "url(./img/" + this.props.script[2] + ")",
+            backgroundImage: "url(../static/img/" + this.props.script[ this.props.page ].image + ")",
             backgroundSize: "cover"
         };
         const sectionStyle = {
@@ -20,30 +20,25 @@ class CoverDefaultFull extends Component {
             textAlign: "center"
         };
         const titleStyle = {
-            fontSize: this.props.theme.fonts[0],
+            fontSize: this.props.theme.fontSize[0],
+            fontFamily: this.props.theme.fontFamily,
             fontWeight: "bold",
             margin: "8px 0"
         };
         const descStyle = {
-            fontSize: this.props.theme.fonts[1],
+            fontSize: this.props.theme.fontSize[1],
+            fontFamily: this.props.theme.fontFamily,
             marginBottom: "5px"
         };
         let content = [];
-        for ( let i = 3; i < this.props.script.length; i++ ) {
-            content.push( 
-                <p key={ this.props.script[1] + i }>
-                    { this.props.script[i] }
-                </p> 
-            );
-        }
 		return (
             <div id="content" style={ contentStyle }>
                 <section style={ sectionStyle }>
                     <div style={ titleStyle }>
-                        { this.props.script[0] }
+                        { this.props.script[ this.props.page ].title }
                     </div>
                     <div style={ descStyle }>
-                        { content }
+                        { this.props.script[ this.props.page ].desc }
                     </div>
                 </section>
             </div>

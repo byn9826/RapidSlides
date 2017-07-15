@@ -2,18 +2,16 @@ import React, { Component } from "react"
 import Com from "./components.js";
 
 
-function buildContent( script, theme, data ) {
-    switch ( script[ 1 ] ) {
-        case "CoverDefaultFull":
-            return <Com.CoverDefaultFull script={ script } theme={ theme } />;
-        case "ContentDefaultHouse":
-            return <Com.ContentDefaultHouse script={ script } theme={ theme } data={ data } />;
-        case "SingleDefaultPic":
-            return <Com.SingleDefaultPic script={ script } theme={ theme } />;  
+function buildContent( theme, script, page ) {
+    if ( script[ page ].type === "Cover" ) {
+        switch ( script[ page ].template ) {
+            case "DefaultFull":
+                return <Com.cover.DefaultFull theme={ theme } script={ script } page={ page } />;
+        }
     }
 }
 
-
+/*
 function buildFooter( theme, script, page ) {
     if ( script[ page ][ 1 ].search( "Cover" ) === -1 ) {
         switch ( theme.footer.template ) {
@@ -22,9 +20,9 @@ function buildFooter( theme, script, page ) {
         }
     }
 }
-
+*/
 
 module.exports = {
     buildContent: buildContent,
-	buildFooter: buildFooter
+	//buildFooter: buildFooter
 };

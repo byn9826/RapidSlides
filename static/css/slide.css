@@ -4,7 +4,13 @@ body{
     overflow: hidden;
 }
 
+
+
 /* App layout */
+
+.layout-fonts{
+    font-family: Arial, Helvetica, sans-serif;
+}
 
 #header{
     position: absolute;
@@ -12,17 +18,17 @@ body{
     width: 100%;
     height: 10vh;
     top: 0;
-    background-color: lightblue;
+    background-color: darkred;
 }
 
 #aside{
     position: absolute;
+    border-right: 1px solid black;
     left: 0;
     width: 20%;
     height: 90vh;
     top: 10vh;
     background-color: lightgoldenrodyellow;
-    border-top: 1px solid white;
 }
 
 #main{
@@ -39,6 +45,58 @@ body{
 }
 @keyframes slide {
     100% { left: 0; }
+}
+
+/* aside editor layout */
+#aside-add{
+    display: block;
+    width: 90%;
+    margin: 10px 5%;
+    background-color: darkred;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 12px;
+}
+
+.aside-slide{
+    margin: 10px 5%;
+    width: 80%;
+    box-shadow: 2px 2px 1px lightgrey;
+    padding: 5px 5%;
+}
+
+.aside-slide-box{
+    display: block;
+    margin-bottom: 10px;
+}
+.aside-slide-box span{
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 5%;
+    margin-bottom: 5px;
+}
+.aside-slide-box select{
+    display: block;
+    font-size: 12px;
+}
+.aside-slide-box input{
+    display: block;
+    font-size: 12px;
+    width: 95%;
+}
+.aside-slide-box textarea{
+    display: block;
+    font-size: 12px;
+    width: 95%;
+}
+
+.aside-num{
+    display: block;
+    font-size: 12px;
 }
 
 /* Slideshow layout */
