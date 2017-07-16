@@ -4,7 +4,7 @@ import ContentDefaultHouse from "./temp/ContentDefaultHouse";
 import SingleDefaultPic from "./temp/SingleDefaultPic";
 
 module.exports = {
-	cover: {
+	Cover: {
 		"DefaultFull": CoverDefaultFull
 	}
 };

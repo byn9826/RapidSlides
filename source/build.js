@@ -6,7 +6,7 @@ function buildContent( theme, script, page ) {
     if ( script[ page ].type === "Cover" ) {
         switch ( script[ page ].template ) {
             case "DefaultFull":
-                return <Com.cover.DefaultFull theme={ theme } script={ script } page={ page } />;
+                return <Com.Cover.DefaultFull theme={ theme } script={ script } page={ page } />;
         }
     }
 }

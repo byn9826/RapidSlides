@@ -59,6 +59,7 @@ body{
     text-align: center;
     padding: 5px 0;
     font-size: 12px;
+    cursor: pointer;
 }
 
 .aside-slide{
@@ -67,36 +68,69 @@ body{
     box-shadow: 2px 2px 1px lightgrey;
     padding: 5px 5%;
 }
-
 .aside-slide-box{
     display: block;
     margin-bottom: 10px;
 }
 .aside-slide-box span{
-    display: block;
+    display: inline-block;
     font-size: 12px;
     font-weight: bold;
+    vertical-align: middle;
     margin-right: 5%;
-    margin-bottom: 5px;
 }
-.aside-slide-box select{
-    display: block;
+.aside-slide-box div{
+    display: inline-block;
     font-size: 12px;
+    vertical-align: middle;
 }
-.aside-slide-box input{
+
+#aside-new{
+    margin: 10px 5%;
+    width: 80%;
+    padding: 15px 5%;
+    background-color: #edf2f9;
+}
+.aside-new-box{
+    display: block;
+    margin-bottom: 10px;
+}
+.aside-new-box span{
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    vertical-align: middle;
+    margin-right: 5%;
+}
+.aside-new-box div{
+    display: inline-block;
+    font-size: 12px;
+    vertical-align: middle;
+}
+.aside-new-box select{
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 2%;
+}
+.aside-new-box input{
     display: block;
     font-size: 12px;
     width: 95%;
+    padding: 3px 2%;
 }
-.aside-slide-box textarea{
+.aside-new-box textarea{
     display: block;
     font-size: 12px;
     width: 95%;
+    padding: 3px 2%;
 }
 
 .aside-num{
     display: block;
     font-size: 12px;
+    border-top-style: ridge;
+    padding-top: 5px;
+    text-align: center;
 }
 
 /* Slideshow layout */
