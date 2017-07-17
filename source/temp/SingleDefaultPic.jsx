@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 
-
 class SingleDefaultPic extends Component {
     render() {
         let mainStyle = {
-            height: "89vh",
-            paddingTop: "5vh",
+            height: "81vh",
+            paddingTop: "4vh",
             backgroundColor: this.props.theme.background,
             paddingLeft: "4%",
             paddingRight: "4%",
@@ -17,14 +16,16 @@ class SingleDefaultPic extends Component {
             paddingLeft: "1.5%"
         };
         let titleStyle = {
-            fontSize: this.props.theme.fonts[ 0 ],
+            fontSize: this.props.theme.fontSize[ 0 ],
+            fontFamily: this.props.theme.fontFamily,
             fontWeight: "bold",
             display: "inline-block",
             verticalAlign: "middle",
             color: "#600000"
         };
         let descStyle = {
-            fontSize: this.props.theme.fonts[ 1 ],
+            fontSize: this.props.theme.fontSize[ 1 ],
+            fontFamily: this.props.theme.fontFamily,
             display: "inline-block",
             verticalAlign: "middle",
             marginLeft: "6%"
@@ -45,7 +46,7 @@ class SingleDefaultPic extends Component {
             display: "inline-block",
             width: "35%",
             height: "50vh",
-            backgroundImage: "url(./img/" + this.props.script[2] + ")",
+            backgroundImage: "url(../static/img/" + this.props.script[ this.props.page ].image + ")",
             backgroundSize: "cover",
             verticalAlign: "middle"
         };
@@ -57,22 +58,24 @@ class SingleDefaultPic extends Component {
         };
         let liStyle = {
             margin: "20px 0",
-            fontSize: this.props.theme.fonts[2],
+            fontSize: this.props.theme.fontSize[ 2 ],
+            fontFamily: this.props.theme.fontFamily
         };
         let details = [];
+        /*
         for ( let i = 4; i < this.props.script.length; i++ ) {
             details.push(
                 <li key={ "details" + i } style={ liStyle }>{ this.props.script[i] }</li>
             );
-        }
+        }*/
 		return (
-            <main id="main" style={ mainStyle }>
+            <div id="content" style={ mainStyle }>
                 <header style={ headerStyle }>
                     <div style={ titleStyle }>
-                        { this.props.script[ 0 ] }
+                        { this.props.script[ this.props.page ].title }
                     </div>
                     <div style={ descStyle }>
-                        { this.props.script[ 3 ] }
+                        { this.props.script[ this.props.page ].desc }
                     </div>
                 </header>
                 <div style={ lineStyle }></div>
@@ -82,7 +85,7 @@ class SingleDefaultPic extends Component {
                         { details }
                     </ul>
                 </section>
-            </main>
+            </div>
 		);
 	}
 }

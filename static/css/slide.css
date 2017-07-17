@@ -23,7 +23,6 @@ body{
 
 #aside{
     position: absolute;
-    border-right: 1px solid black;
     left: 0;
     width: 20%;
     height: 90vh;
@@ -36,15 +35,18 @@ body{
 }
 
 .left{
-    left: -100%;
-    animation: slide 0.5s forwards;
+    animation: slide-left 0.5s forwards;
+}
+@keyframes slide-left {
+    from { left: -60%; }
+    to { left: 20%; }
 }
 .right{
-    left: 100%;
-    animation: slide 0.5s forwards;
+    animation: slide-right 0.5s forwards;
 }
-@keyframes slide {
-    100% { left: 0; }
+@keyframes slide-right {
+    from { left: 100%; }
+    to { left: 20%; }
 }
 
 /* aside editor layout */
@@ -154,6 +156,6 @@ body{
     display: block;
     width: 96%;
     padding: 0 2%;
-    height: 6vh;
-    line-height: 6vh;
+    height: 5vh;
+    line-height: 5vh;
 }

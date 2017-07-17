@@ -18,6 +18,7 @@ class Editor extends Component {
             trans: null,
             //status of add new slide
             add: false,
+            addNum: this.props.script.length,
             addType: "0",
             addTemplate: "0",
             addTitle: "",
@@ -41,12 +42,12 @@ class Editor extends Component {
     }
     //click add slide button
     clickAdd() {
-        this.setState({ add: true });
+        this.setState({ add: true, page: this.state.page + 1 });
     }
     //cancal add slide button
     cancelAdd() {
         this.setState({ 
-            add: false, addType: "0", addTemplate: "0", addTitle: "", addDesc: "", addDetail: "" 
+            add: false, addType: "0", addTemplate: "0", addTitle: "", addDesc: "", addDetail: "", page: 0 
         });
     }
     //confirm create new slide
@@ -61,6 +62,10 @@ class Editor extends Component {
         });
         this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( script );
         saveFile( this.props.loc, this.state.file );
+    }
+    //change page number of new added slide
+    addNum( e ) {
+        this.setState({ addNum: e.target.value });
     }
     //change type of new added slide
     addType( e ) {
@@ -87,18 +92,23 @@ class Editor extends Component {
             height: "90vh"
         };
         //build main for slides
-        const content = Build.buildContent( 
-            this.state.theme,
-            this.state.script,
-            this.state.page
-        );
+        let content;
+        if ( !this.state.add ) {
+            content = Build.buildContent( this.state.theme, this.state.script, this.state.page );
+        } else {
+            content = Build.buildContent( 
+                this.state.theme, 
+                [{
+                    "type": this.state.addType,
+                    "template": this.state.addTemplate,
+                    "title": this.state.addTitle,
+                    "desc": this.state.addDesc
+                }],
+                0
+            );
+        }
         //build footer for slides
-        /*
-        const footer = Build.buildFooter( 
-            this.state.theme,
-            this.state.script,
-            this.state.page
-        );*/
+        const footer = Build.buildFooter( this.state.theme, this.state.script, this.state.page );
         //generate editor for slides
         let slides = this.state.script.map(( slide, index ) =>
             <div key={ "editSlide" + index } className="aside-slide">
@@ -133,6 +143,15 @@ class Editor extends Component {
         if ( this.state.add ) {
             add = (
                 <div id="aside-new">
+                    <div className="aside-new-box">
+                        <span className="layout-fonts">Slide Num:</span>
+                        <input 
+                            className="layout-fonts" 
+                            type="text" 
+                            value={ this.state.addNum } 
+                            onChange={ this.addNum.bind( this ) } 
+                        />
+                    </div>
                     <div className="aside-new-box">
                         <span className="layout-fonts">Type:</span>
                         <select 
@@ -206,6 +225,7 @@ class Editor extends Component {
                     key={ "trans" + this.state.page }
                 >
                     { content }
+                    { footer }
                 </main>
             </div>
         );
@@ -228,7 +248,7 @@ try {
 file = new DOMParser().parseFromString( file, "text/html" );
 
 ReactDOM.render( 
-    <Editor script={ script } theme={ theme } file={ file } loc={ loc } />, 
+    <Editor script={ script } theme={ theme } file={ file } loc={ loc } />,
     document.getElementById( "root" ) 
 );
 

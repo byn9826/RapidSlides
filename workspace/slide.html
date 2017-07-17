@@ -18,56 +18,32 @@
 					"image": "cover.jpg",
 					"title": "Rapid Slides",
 					"desc": "Automatically generate HTML slideshow from your talking points by React"
+				},
+				{
+					"type": "Single",
+					"template": "DefaultPic",
+					"image": "professional.jpg",
+					"title": "Professional",
+					"desc": "Built your slideshow with professional templates and design patterns"
 				}
 			]
 		</script>
 		<script type="application/json" id="theme">
 			{
-				"fontSize": [36, 24, 20, 16, 12],
+				"fontSize": [ "36px", "24px", "20px", "16px", "12px" ],
 				"fontFamily": "Arial",
 				"background": "#f9f9f9",
 				"color": "black",
 				"footer": {
-					"template": "FooterDefaultCopyright",
-					"title": {
-						"content": "@RapidSlides 2017",
-						"position": "left",
-						"font": "h5",
-						"background": "black",
-						"color": "white"
-					}
+					"template": "DefaultCopyright",
+					"title": "@RapidSlides 2017",
+					"background": "black",
+					"color": "white"
 				}
 			}
 		</script>
     </head>
 	<body>
-		<noscript id="script1">
-			@- Make slideshow easier
-				@# ContentDefaultHouse
-				@~ Easy
-				@~ Professional
-				@~ Customize
-			@- Easy
-				@# SingleDefaultPic
-				@$ easy.jpg
-				@~ Simply Write down your talking points, the slideshow will be generated for you.
-				@! You only need to choose a template you like
-				@! Fill in your content in designated pattern
-				@! Put the image you want to display under /img folder
-				@! Then Everything is done.
-			@- Professional
-				@# SingleDefaultPic
-				@$ professional.jpg
-				@~ Built your slideshow with professional templates and design patterns.
-			@- Customize
-				@# SingleDefaultPic
-				@$ professional.jpg
-				@~ Easily modify slideshow settings to make them unique.
-			@- Thanks!
-				@# EndDefaultPic
-				@$ end.jpg
-				@~ Discuss on Github github.com/byn9826/RapidSlides
-		</noscript>
 		<div id="root"></div>
 		<script type="text/javascript" src="../static/js/editor.bundle.js"></script>
 	</body>
