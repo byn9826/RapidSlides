@@ -7,6 +7,8 @@ class Editor extends Component {
     constructor( props ) {
         super( props );
 		this.state = {
+            //file content
+            file: this.props.file,
             //default data for script and theme
             script: this.props.script,
             theme: this.props.theme,
@@ -19,7 +21,8 @@ class Editor extends Component {
             addType: "0",
             addTemplate: "0",
             addTitle: "",
-            addDesc: ""
+            addDesc: "",
+            addDetail: ""
 		};
 	}
     componentWillMount() {
@@ -39,6 +42,25 @@ class Editor extends Component {
     //click add slide button
     clickAdd() {
         this.setState({ add: true });
+    }
+    //cancal add slide button
+    cancelAdd() {
+        this.setState({ 
+            add: false, addType: "0", addTemplate: "0", addTitle: "", addDesc: "", addDetail: "" 
+        });
+    }
+    //confirm create new slide
+    saveAdd() {
+        let script = this.state.file.getElementById( "script" ).innerHTML;
+        script = JSON.parse( script );
+        script.push({
+            "type": this.state.addType,
+            "template": this.state.addTemplate,
+            "title": this.state.addTitle,
+            "desc": this.state.addDesc
+        });
+        this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( script );
+        saveFile( this.props.loc, this.state.file );
     }
     //change type of new added slide
     addType( e ) {
@@ -151,9 +173,20 @@ class Editor extends Component {
                             className="layout-fonts" 
                             value={ this.state.addDesc } 
                             onChange={ this.addDesc.bind( this ) }
-                        >
-                        </textarea>
+                        />
                     </div>
+                    <input 
+                        type="button" 
+                        className="aside-new-button layout-fonts" 
+                        value="Save"
+                        onClick={ this.saveAdd.bind( this ) }
+                    />
+                    <input 
+                        type="button"  
+                        className="aside-new-button layout-fonts" 
+                        value="Cancel" 
+                        onClick={ this.cancelAdd.bind( this ) } 
+                    />
                 </div>
             );
         }
@@ -182,5 +215,28 @@ class Editor extends Component {
 //load content
 const theme = JSON.parse( document.getElementById( "theme" ).innerHTML );
 const script = JSON.parse( document.getElementById( "script" ).innerHTML );
+//load html
+const fs = require( 'fs' );
+const path = require( 'path' );
+const loc = path.join( __dirname, '../workspace/slide.html' );
+let file;
+try {
+    file = fs.readFileSync( loc, { encoding:'utf-8' } );
+} catch( e ) { 
+    alert( 'Failed to open the file !' ); 
+}
+file = new DOMParser().parseFromString( file, "text/html" );
 
-ReactDOM.render( <Editor script={ script } theme={ theme } />, document.getElementById( "root" ) );
+ReactDOM.render( 
+    <Editor script={ script } theme={ theme } file={ file } loc={ loc } />, 
+    document.getElementById( "root" ) 
+);
+
+function saveFile( loc, content ) {
+    content = new XMLSerializer().serializeToString( content );
+    try { 
+        fs.writeFileSync( loc, content, 'utf-8' ); 
+    } catch( e ) { 
+        alert('Failed to save the file !'); 
+    }
+}

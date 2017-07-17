@@ -1,13 +1,22 @@
 var webpack = require('webpack');
 
+const options = {
+    target: () => "electron-main"
+};
+
 module.exports = {
     entry: {
         //slides: "./source/Slides.jsx",
         editor: "./source/Editor.jsx"
     },
+    target: "electron-main",
     output: {
         path: __dirname + '/static/js',
         filename: '[name].bundle.js'
+    },
+    node: {
+        __filename: true,
+        __dirname: true
     },
     module: {
         loaders: [

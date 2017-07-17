@@ -7,12 +7,24 @@
 		<meta name="description" content="Rapid Slides is a tool to generate a html slideshow for you automatically">
 		<meta name="keywords" content="Slideshow, Presentation, PowerPoint">
 		<meta name="robots" content="all">
-		<meta name="author" content="Baozier">
+		<meta name="author" content="Rapid Slide">
 		<title>Rapid Slides</title>
 		<link rel="stylesheet" type="text/css" href="../static/css/slide.css" >
+		<script type="application/json" id="script">
+			[
+				{
+					"type": "Cover",
+					"template": "DefaultFull",
+					"image": "cover.jpg",
+					"title": "Rapid Slides",
+					"desc": "Automatically generate HTML slideshow from your talking points by React"
+				}
+			]
+		</script>
 		<script type="application/json" id="theme">
 			{
-				"fonts": [36, 21, 18, 15, 12],
+				"fontSize": [36, 24, 20, 16, 12],
+				"fontFamily": "Arial",
 				"background": "#f9f9f9",
 				"color": "black",
 				"footer": {
@@ -29,11 +41,7 @@
 		</script>
     </head>
 	<body>
-		<noscript id="script">
-			@- Rapid Slides
-				@# CoverDefaultFull
-				@$ cover.jpg
-				@~ Automatically generate HTML slideshow from your talking points by React
+		<noscript id="script1">
 			@- Make slideshow easier
 				@# ContentDefaultHouse
 				@~ Easy
