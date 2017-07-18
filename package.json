@@ -16,6 +16,7 @@
     "electron": "^1.6.11",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "simplebar": "^2.4.3",
     "webpack": "^2.6.1"
   }
 }

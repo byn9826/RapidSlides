@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import ReactDOM from "react-dom";
 import Build from "./build.js";
 import Com from "./components.js";
+import simplebar from "simplebar";
 
 class Editor extends Component {
     constructor( props ) {
@@ -42,7 +43,7 @@ class Editor extends Component {
     }
     //click add slide button
     clickAdd() {
-        this.setState({ add: true, page: this.state.page + 1 });
+        this.setState({ add: true, page: this.state.script.length + 1 });
     }
     //cancal add slide button
     cancelAdd() {
@@ -127,6 +128,16 @@ class Editor extends Component {
                 <div className="aside-slide-box">
                     <span className="layout-fonts">Desc:</span>
                     <div className="layout-fonts">{ slide.desc }</div>
+                </div>
+                <div className="aside-slide-box">
+                    <span className="layout-fonts">Detail:</span>
+                    <ul className="layout-fonts">
+                        {
+                            slide.detail.map(( a, i ) =>
+                                <li key={ "sl" + index + "de" + i} className="layout-fonts">{ a }</li>
+                            )
+                        }
+                    </ul>
                 </div>
                 <div className="aside-num layout-fonts">Slide { index + 1 }</div>
             </div>
@@ -213,7 +224,7 @@ class Editor extends Component {
             <div>
                 <header id="header">
                 </header>
-                <aside id="aside">
+                <aside id="aside" data-simplebar>
                     <div id="aside-add" className="layout-fonts" onClick={ this.clickAdd.bind( this ) }>Add</div>
                     { add }
                     { slides }

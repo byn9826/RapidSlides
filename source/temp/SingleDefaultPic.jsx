@@ -16,7 +16,7 @@ class SingleDefaultPic extends Component {
             paddingLeft: "1.5%"
         };
         let titleStyle = {
-            fontSize: this.props.theme.fontSize[ 0 ],
+            fontSize: this.props.theme.fontSize[ 1 ],
             fontFamily: this.props.theme.fontFamily,
             fontWeight: "bold",
             display: "inline-block",
@@ -24,11 +24,11 @@ class SingleDefaultPic extends Component {
             color: "#600000"
         };
         let descStyle = {
-            fontSize: this.props.theme.fontSize[ 1 ],
+            fontSize: this.props.theme.fontSize[ 2 ],
             fontFamily: this.props.theme.fontFamily,
             display: "inline-block",
             verticalAlign: "middle",
-            marginLeft: "6%"
+            marginLeft: "3%"
         };
         let lineStyle = {
             display: "block",
@@ -53,7 +53,7 @@ class SingleDefaultPic extends Component {
         let detailStyle = {
             display: "inline-block",
             verticalAlign: "middle",
-            marginLeft: "5%",
+            marginLeft: "7%",
             width: "45%"
         };
         let liStyle = {
@@ -61,13 +61,9 @@ class SingleDefaultPic extends Component {
             fontSize: this.props.theme.fontSize[ 2 ],
             fontFamily: this.props.theme.fontFamily
         };
-        let details = [];
-        /*
-        for ( let i = 4; i < this.props.script.length; i++ ) {
-            details.push(
-                <li key={ "details" + i } style={ liStyle }>{ this.props.script[i] }</li>
-            );
-        }*/
+        let details = this.props.script[ this.props.page ].detail.map((detail, index) =>
+            <li key={ "details" + index } style={ liStyle }>{ detail }</li>
+        );
 		return (
             <div id="content" style={ mainStyle }>
                 <header style={ headerStyle }>

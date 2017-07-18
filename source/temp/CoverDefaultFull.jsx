@@ -23,12 +23,14 @@ class CoverDefaultFull extends Component {
             fontSize: this.props.theme.fontSize[ 0 ],
             fontFamily: this.props.theme.fontFamily,
             fontWeight: "bold",
-            margin: "8px 0"
+            margin: "8px 0",
+            display: "block"
         };
         const descStyle = {
-            fontSize: this.props.theme.fontSize[ 1 ],
+            fontSize: this.props.theme.fontSize[ 2 ],
             fontFamily: this.props.theme.fontFamily,
-            marginBottom: "5px"
+            marginBottom: "5px",
+            display: "block",
         };
         let content = [];
 		return (

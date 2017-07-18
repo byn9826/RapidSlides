@@ -18,7 +18,7 @@ function buildContent( theme, script, page ) {
 }
 
 function buildFooter( theme, script, page ) {
-    if ( script[ page ].type !== "Cover" ) {
+    if ( script[ page ] && script[ page ].type !== "Cover" ) {
         switch ( theme.footer.template ) {
             case "DefaultCopyright":
                  return <Com.Footer.DefaultCopyright theme={ theme } />;
