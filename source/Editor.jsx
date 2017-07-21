@@ -43,9 +43,13 @@ class Editor extends Component {
             }
         }, false );
     }
-    //slide slide on side bar
+    //click slide on side bar
     clickSlide( index ) {
-        this.setState({ trans: "down", page: index });
+        if ( this.state.add ) {
+            forceAdd();
+        } else {
+            this.setState({ trans: "down", page: index });
+        }
     }
     //click add slide button
     clickAdd() {
@@ -108,6 +112,8 @@ class Editor extends Component {
     slideDelete( k ) {
         if ( !this.state.add ) {
             this.setState({ confirmDelete: k, page: k });
+        } else {
+            forceAdd();
         }
     }
     //cancel delete a slide
@@ -149,7 +155,7 @@ class Editor extends Component {
         //build footer for slides
         const footer = Build.buildFooter( this.state.theme, this.state.script, this.state.page );
         //generate editor for slides
-        let slides = this.state.script.map(( slide, index ) =>
+        let slides = this.state.script.map( ( slide, index ) =>
             <div 
                 key={ "editSlide" + index } 
                 className={ 
@@ -178,7 +184,7 @@ class Editor extends Component {
                     <ul className="layout-fonts">
                         {
                             slide.detail.map(( a, i ) =>
-                                <li key={ "sl" + index + "de" + i} className="layout-fonts">{ a }</li>
+                                <li key={ "sl" + index + "de" + i } className="layout-fonts">{ a }</li>
                             )
                         }
                     </ul>
@@ -350,4 +356,8 @@ function saveFile( loc, content ) {
     } catch( e ) { 
         alert('Failed to save the file !'); 
     }
+}
+
+function forceAdd() {
+    alert( "Please finish edit new slide first" );
 }

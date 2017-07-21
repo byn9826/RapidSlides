@@ -9715,12 +9715,16 @@ var Editor = function (_Component) {
                 }
             }, false);
         }
-        //slide slide on side bar
+        //click slide on side bar
 
     }, {
         key: "clickSlide",
         value: function clickSlide(index) {
-            this.setState({ trans: "down", page: index });
+            if (this.state.add) {
+                forceAdd();
+            } else {
+                this.setState({ trans: "down", page: index });
+            }
         }
         //click add slide button
 
@@ -9810,6 +9814,8 @@ var Editor = function (_Component) {
         value: function slideDelete(k) {
             if (!this.state.add) {
                 this.setState({ confirmDelete: k, page: k });
+            } else {
+                forceAdd();
             }
         }
         //cancel delete a slide
@@ -10186,6 +10192,10 @@ function saveFile(loc, content) {
     } catch (e) {
         alert('Failed to save the file !');
     }
+}
+
+function forceAdd() {
+    alert("Please finish edit new slide first");
 }
 /* WEBPACK VAR INJECTION */}.call(exports, "source"))
 
