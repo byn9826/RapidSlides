@@ -9715,6 +9715,13 @@ var Editor = function (_Component) {
                 }
             }, false);
         }
+        //slide slide on side bar
+
+    }, {
+        key: "clickSlide",
+        value: function clickSlide(index) {
+            this.setState({ trans: "down", page: index });
+        }
         //click add slide button
 
     }, {
@@ -9853,7 +9860,11 @@ var Editor = function (_Component) {
             var slides = this.state.script.map(function (slide, index) {
                 return _react2.default.createElement(
                     "div",
-                    { key: "editSlide" + index, className: "aside-slide" },
+                    {
+                        key: "editSlide" + index,
+                        className: _this3.state.page === index ? "aside-slide aside-focus" : "aside-slide aside-display",
+                        onClick: _this3.clickSlide.bind(_this3, index)
+                    },
                     _react2.default.createElement(
                         "div",
                         { className: "aside-slide-box" },

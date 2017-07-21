@@ -43,6 +43,10 @@ class Editor extends Component {
             }
         }, false );
     }
+    //slide slide on side bar
+    clickSlide( index ) {
+        this.setState({ trans: "down", page: index });
+    }
     //click add slide button
     clickAdd() {
         this.setState({ add: true, page: this.state.script.length + 1 });
@@ -146,7 +150,13 @@ class Editor extends Component {
         const footer = Build.buildFooter( this.state.theme, this.state.script, this.state.page );
         //generate editor for slides
         let slides = this.state.script.map(( slide, index ) =>
-            <div key={ "editSlide" + index } className="aside-slide">
+            <div 
+                key={ "editSlide" + index } 
+                className={ 
+                    this.state.page === index ? "aside-slide aside-focus" : "aside-slide aside-display" 
+                }
+                onClick={ this.clickSlide.bind( this, index )}
+            >
                 <div className="aside-slide-box">
                     <span className="layout-fonts">Type:</span>
                     <div className="layout-fonts">{ slide.title }</div>

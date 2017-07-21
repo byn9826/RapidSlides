@@ -53,6 +53,13 @@ ul{
     from { left: 100%; }
     to { left: 20%; }
 }
+.down{
+    animation: slide-down 0.5s forwards;
+}
+@keyframes slide-down {
+    from { top: 100%; }
+    to { top: 10%; }
+}
 
 /* aside editor layout */
 #aside-add{
@@ -75,9 +82,16 @@ ul{
     margin-left: 5%;
     margin-right: 20%;
     width: 75%;
-    box-shadow: 2px 2px 1px lightgrey;
     padding: 5px 5%;
     padding-bottom: 20px !important;
+    cursor: pointer;
+}
+.aside-focus{
+    box-shadow: 2px 2px 1px lightgrey;
+}
+.aside-display{
+    background-color: lightgray;
+    border-radius: 5px;
 }
 .aside-slide-box{
     display: block;
