@@ -6383,7 +6383,7 @@ module.exports = {
 	Footer: {
 		"DefaultCopyright": _FooterDefaultCopyright2.default
 	}
-};
+}; //All template file should be imported here, build them in build.js
 
 /***/ }),
 /* 50 */
@@ -9577,6 +9577,8 @@ var _components2 = _interopRequireDefault(_components);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//all template file should be build here, import them in components.js
+
 function buildContent(theme, script, page) {
     if (script[page]) {
         if (script[page].type === "Cover") {
@@ -9688,7 +9690,9 @@ var Editor = function (_Component) {
             addTitle: "",
             addDesc: "",
             addDetail: [],
-            addWarn: null
+            addWarn: null,
+            //confirm delete slide
+            confirmDelete: null
         };
         return _this;
     }
@@ -9740,21 +9744,20 @@ var Editor = function (_Component) {
             } else if (this.state.addNum === "") {
                 this.setState({ addWarn: "Please input slide number" });
             } else {
-                var _script = this.state.file.getElementById("script").innerHTML;
-                _script = JSON.parse(_script);
-                _script.push({
+                //let script = this.state.file.getElementById( "script" ).innerHTML;
+                //script = JSON.parse( script );
+                this.state.script.push({
                     "type": this.state.addType,
                     "template": this.state.addTemplate,
                     "title": this.state.addTitle,
                     "desc": this.state.addDesc,
                     "detail": this.state.addDetail
                 });
-                this.state.file.getElementById("script").innerHTML = JSON.stringify(_script);
+                this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
                 saveFile(this.props.loc, this.state.file);
                 this.setState({
-                    add: false, addType: 0, addTemplate: 0, addTitle: "",
-                    page: this.state.addNum - 1, script: _script,
-                    addDesc: "", addDetail: "", addNum: _script.length + 1, addWarn: null
+                    add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: "",
+                    page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
                 });
             }
         }
@@ -9793,9 +9796,37 @@ var Editor = function (_Component) {
         value: function addDesc(e) {
             this.setState({ addDesc: e.target.value });
         }
+        //delete a slide
+
+    }, {
+        key: "slideDelete",
+        value: function slideDelete(k) {
+            if (!this.state.add) {
+                this.setState({ confirmDelete: k, page: k });
+            }
+        }
+        //cancel delete a slide
+
+    }, {
+        key: "stopDelete",
+        value: function stopDelete() {
+            this.setState({ confirmDelete: null });
+        }
+        //confirm delete a slide
+
+    }, {
+        key: "confirmDelete",
+        value: function confirmDelete() {
+            this.state.script.splice(this.state.confirmDelete, 1);
+            this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
+            saveFile(this.props.loc, this.state.file);
+            this.setState({ page: 0, confirmDelete: null });
+        }
     }, {
         key: "render",
         value: function render() {
+            var _this3 = this;
+
             var mainStyle = {
                 position: "absolute",
                 left: "20%",
@@ -9881,7 +9912,7 @@ var Editor = function (_Component) {
                     ),
                     _react2.default.createElement(
                         "div",
-                        { className: "aside-slide-box" },
+                        { className: "aside-slide-box aside-slide-line" },
                         _react2.default.createElement(
                             "span",
                             { className: "layout-fonts" },
@@ -9901,10 +9932,42 @@ var Editor = function (_Component) {
                     ),
                     _react2.default.createElement(
                         "div",
-                        { className: "aside-num layout-fonts" },
+                        { className: "aside-slide-num layout-fonts" },
                         "Slide ",
                         index + 1
-                    )
+                    ),
+                    _react2.default.createElement("input", {
+                        type: "button",
+                        className: "aside-slide-button layout-fonts",
+                        value: "Edit"
+                    }),
+                    _react2.default.createElement("input", {
+                        type: "button",
+                        className: "aside-slide-button layout-fonts",
+                        value: "Delete",
+                        onClick: _this3.slideDelete.bind(_this3, index)
+                    }),
+                    _this3.state.confirmDelete === index ? _react2.default.createElement(
+                        "div",
+                        { id: "aside-slide-delete" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Are you really want to delete this slide?"
+                        ),
+                        _react2.default.createElement("input", {
+                            type: "button",
+                            className: "layout-fonts",
+                            value: "Cancel",
+                            onClick: _this3.stopDelete.bind(_this3)
+                        }),
+                        _react2.default.createElement("input", {
+                            type: "button",
+                            className: "layout-fonts",
+                            value: "Confirm",
+                            onClick: _this3.confirmDelete.bind(_this3)
+                        })
+                    ) : null
                 );
             });
             //show new slide editor

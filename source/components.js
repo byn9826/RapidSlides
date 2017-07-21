@@ -1,3 +1,5 @@
+//All template file should be imported here, build them in build.js
+
 import CoverDefaultFull from "./temp/CoverDefaultFull";
 //import ContentDefaultHouse from "./temp/ContentDefaultHouse";
 import SingleDefaultPic from "./temp/SingleDefaultPic";

@@ -77,6 +77,7 @@ ul{
     width: 75%;
     box-shadow: 2px 2px 1px lightgrey;
     padding: 5px 5%;
+    padding-bottom: 20px !important;
 }
 .aside-slide-box{
     display: block;
@@ -96,6 +97,47 @@ ul{
 }
 .aside-slide-box li{
     font-size: 11px;
+}
+.aside-slide-line{
+    padding-bottom: 20px;
+    border-bottom-style: ridge;
+}
+.aside-slide-num{
+    display: inline-block;
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
+}
+.aside-slide-button{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5%;
+    border: 1px solid rebeccapurple;
+    border-radius: 3px;
+    background-color: white;
+    cursor: pointer;
+}
+
+#aside-slide-delete {
+    display: block;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed lightcoral;
+}
+#aside-slide-delete span{
+    font-size: 11px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+#aside-slide-delete input{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5%;
+    border: 1px solid lightsalmon;
+    border-radius: 3px;
+    background-color: white;
+    cursor: pointer;
 }
 
 #aside-new{
@@ -146,14 +188,6 @@ ul{
     border-radius: 3px;
     background-color: white;
     cursor: pointer;
-}
-
-.aside-num{
-    display: block;
-    font-size: 12px;
-    border-top-style: ridge;
-    padding-top: 5px;
-    text-align: center;
 }
 
 #aside-warn{

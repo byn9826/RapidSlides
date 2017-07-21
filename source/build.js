@@ -1,3 +1,5 @@
+//all template file should be build here, import them in components.js
+
 import React, { Component } from "react"
 import Com from "./components.js";
 

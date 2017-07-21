@@ -24,7 +24,9 @@ class Editor extends Component {
             addTitle: "",
             addDesc: "",
             addDetail: [],
-            addWarn: null
+            addWarn: null,
+            //confirm delete slide
+            confirmDelete: null
 		};
 	}
     componentWillMount() {
@@ -61,24 +63,22 @@ class Editor extends Component {
         } else if ( this.state.addNum === "" ) {
             this.setState({ addWarn: "Please input slide number" });
         } else {
-            let script = this.state.file.getElementById( "script" ).innerHTML;
-            script = JSON.parse( script );
-            script.push({
+            //let script = this.state.file.getElementById( "script" ).innerHTML;
+            //script = JSON.parse( script );
+            this.state.script.push({
                 "type": this.state.addType,
                 "template": this.state.addTemplate,
                 "title": this.state.addTitle,
                 "desc": this.state.addDesc,
                 "detail": this.state.addDetail
             });
-            this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( script );
+            this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
             saveFile( this.props.loc, this.state.file );
             this.setState({
-                add: false, addType: 0, addTemplate: 0, addTitle: "", 
-                page: this.state.addNum - 1, script: script,
-                addDesc: "", addDetail: "", addNum: script.length + 1, addWarn: null
+                add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: "", 
+                page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
             });
         }
-        
     }
     //change page number of new added slide
     addNum( e ) {
@@ -99,6 +99,23 @@ class Editor extends Component {
     //change content of new desc
     addDesc( e ) {
         this.setState({ addDesc: e.target.value });
+    }
+    //delete a slide
+    slideDelete( k ) {
+        if ( !this.state.add ) {
+            this.setState({ confirmDelete: k, page: k });
+        }
+    }
+    //cancel delete a slide
+    stopDelete() {
+        this.setState({ confirmDelete: null });
+    }
+    //confirm delete a slide
+    confirmDelete() {
+        this.state.script.splice( this.state.confirmDelete, 1 );
+        this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
+        saveFile( this.props.loc, this.state.file );
+        this.setState({ page: 0, confirmDelete: null });
     }
     render() {
         const mainStyle = {
@@ -146,7 +163,7 @@ class Editor extends Component {
                     <span className="layout-fonts">Desc:</span>
                     <div className="layout-fonts">{ slide.desc }</div>
                 </div>
-                <div className="aside-slide-box">
+                <div className="aside-slide-box aside-slide-line">
                     <span className="layout-fonts">Detail:</span>
                     <ul className="layout-fonts">
                         {
@@ -156,7 +173,40 @@ class Editor extends Component {
                         }
                     </ul>
                 </div>
-                <div className="aside-num layout-fonts">Slide { index + 1 }</div>
+                <div className="aside-slide-num layout-fonts">Slide { index + 1 }</div>
+                <input 
+                    type="button" 
+                    className="aside-slide-button layout-fonts" 
+                    value="Edit"
+                />
+                <input 
+                    type="button"  
+                    className="aside-slide-button layout-fonts" 
+                    value="Delete"
+                    onClick={ this.slideDelete.bind( this, index ) }
+                />
+                {
+                    this.state.confirmDelete === index ?
+                    (
+                        <div id="aside-slide-delete">
+                            <span className="layout-fonts">
+                                Are you really want to delete this slide?
+                            </span>
+                            <input 
+                                type="button"  
+                                className="layout-fonts" 
+                                value="Cancel"
+                                onClick={ this.stopDelete.bind( this ) }
+                            />
+                            <input 
+                                type="button"  
+                                className="layout-fonts" 
+                                value="Confirm"
+                                onClick={ this.confirmDelete.bind( this ) }
+                            />
+                        </div>
+                    ) : null
+                }
             </div>
         );
         //show new slide editor
