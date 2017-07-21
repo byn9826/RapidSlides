@@ -18,12 +18,13 @@ class Editor extends Component {
             trans: null,
             //status of add new slide
             add: false,
-            addNum: this.props.script.length,
-            addType: "0",
-            addTemplate: "0",
+            addNum: this.props.script.length + 1,
+            addType: 0,
+            addTemplate: 0,
             addTitle: "",
             addDesc: "",
-            addDetail: ""
+            addDetail: [],
+            addWarn: null
 		};
 	}
     componentWillMount() {
@@ -47,21 +48,37 @@ class Editor extends Component {
     //cancal add slide button
     cancelAdd() {
         this.setState({ 
-            add: false, addType: "0", addTemplate: "0", addTitle: "", addDesc: "", addDetail: "", page: 0 
+            add: false, addType: 0, addTemplate: 0, addTitle: "", 
+            addDesc: "", addDetail: "", page: 0, addWarn: null
         });
     }
     //confirm create new slide
     saveAdd() {
-        let script = this.state.file.getElementById( "script" ).innerHTML;
-        script = JSON.parse( script );
-        script.push({
-            "type": this.state.addType,
-            "template": this.state.addTemplate,
-            "title": this.state.addTitle,
-            "desc": this.state.addDesc
-        });
-        this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( script );
-        saveFile( this.props.loc, this.state.file );
+        if ( this.state.addType === 0 ) {
+            this.setState({ addWarn: "Please choose Slide Type" });
+        } else if ( this.state.addTemplate === 0 ) {
+            this.setState({ addWarn: "Please choose Slide Template" });
+        } else if ( this.state.addNum === "" ) {
+            this.setState({ addWarn: "Please input slide number" });
+        } else {
+            let script = this.state.file.getElementById( "script" ).innerHTML;
+            script = JSON.parse( script );
+            script.push({
+                "type": this.state.addType,
+                "template": this.state.addTemplate,
+                "title": this.state.addTitle,
+                "desc": this.state.addDesc,
+                "detail": this.state.addDetail
+            });
+            this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( script );
+            saveFile( this.props.loc, this.state.file );
+            this.setState({
+                add: false, addType: 0, addTemplate: 0, addTitle: "", 
+                page: this.state.addNum - 1, script: script,
+                addDesc: "", addDetail: "", addNum: script.length + 1, addWarn: null
+            });
+        }
+        
     }
     //change page number of new added slide
     addNum( e ) {
@@ -105,7 +122,7 @@ class Editor extends Component {
                     "desc": this.state.addDesc,
                     "detail": this.state.addDetail
                 }],
-                this.state.page
+                0
             );
         }
         //build footer for slides
@@ -158,7 +175,7 @@ class Editor extends Component {
                         <span className="layout-fonts">Slide Num:</span>
                         <input 
                             className="layout-fonts" 
-                            type="text" 
+                            type="number" 
                             value={ this.state.addNum } 
                             onChange={ this.addNum.bind( this ) } 
                         />
@@ -170,7 +187,7 @@ class Editor extends Component {
                             value={ this.state.addType } 
                             onChange={ this.addType.bind( this ) }
                         >
-                            <option disabled value="0">- Choose -</option>
+                            <option disabled value={ 0 }>- Choose -</option>
                             <option value="Cover">Cover</option>
                             <option value="Index">Index</option>
                             <option value="Single">Single</option>
@@ -184,7 +201,7 @@ class Editor extends Component {
                             value={ this.state.addTemplate } 
                             onChange={ this.addTemplate.bind( this ) }
                         >
-                            <option disabled value="0">- Choose -</option>
+                            <option disabled value={ 0 }>- Choose -</option>
                             {temps}
                         </select>
                     </div>
@@ -205,6 +222,7 @@ class Editor extends Component {
                             onChange={ this.addDesc.bind( this ) }
                         />
                     </div>
+                    <div id="aside-warn" className="layout-fonts">{ this.state.addWarn }</div>
                     <input 
                         type="button" 
                         className="aside-new-button layout-fonts" 

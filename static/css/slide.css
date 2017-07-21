@@ -156,6 +156,13 @@ ul{
     text-align: center;
 }
 
+#aside-warn{
+    display: block;
+    color: red;
+    font-size: 11px;
+    padding: 3px 0;
+}
+
 /* Slideshow layout */
 
 #content{
