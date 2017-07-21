@@ -32,6 +32,7 @@ ul{
     height: 90vh;
     top: 10vh;
     background-color: lightgoldenrodyellow;
+    overflow-y: scroll;
 }
 
 #main{

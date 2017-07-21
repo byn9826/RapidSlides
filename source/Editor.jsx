@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import ReactDOM from "react-dom";
 import Build from "./build.js";
 import Com from "./components.js";
-import simplebar from "simplebar";
 
 class Editor extends Component {
     constructor( props ) {
@@ -98,14 +97,15 @@ class Editor extends Component {
             content = Build.buildContent( this.state.theme, this.state.script, this.state.page );
         } else {
             content = Build.buildContent( 
-                this.state.theme, 
+                this.state.theme,
                 [{
                     "type": this.state.addType,
                     "template": this.state.addTemplate,
                     "title": this.state.addTitle,
-                    "desc": this.state.addDesc
+                    "desc": this.state.addDesc,
+                    "detail": this.state.addDetail
                 }],
-                0
+                this.state.page
             );
         }
         //build footer for slides
@@ -224,8 +224,10 @@ class Editor extends Component {
             <div>
                 <header id="header">
                 </header>
-                <aside id="aside" data-simplebar>
-                    <div id="aside-add" className="layout-fonts" onClick={ this.clickAdd.bind( this ) }>Add</div>
+                <aside id="aside">
+                    <div id="aside-add" className="layout-fonts" onClick={ this.clickAdd.bind( this ) }>
+                        Add
+                    </div>
                     { add }
                     { slides }
                 </aside>
