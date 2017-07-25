@@ -6382,6 +6382,9 @@ module.exports = {
 	},
 	Footer: {
 		"DefaultCopyright": _FooterDefaultCopyright2.default
+	},
+	Ban: {
+		"CoverDefaultFull": ["Detail"]
 	}
 }; //All template file should be imported here, build them in build.js
 
@@ -10006,6 +10009,11 @@ var Editor = function (_Component) {
                 });
             }
             if (this.state.add) {
+                var ban = void 0;
+                if (_components2.default.Ban[this.state.addType + this.state.addTemplate]) {
+                    ban = _components2.default.Ban[this.state.addType + this.state.addTemplate];
+                }
+                console.log(ban);
                 add = _react2.default.createElement(
                     "div",
                     { id: "aside-new" },
@@ -10104,7 +10112,7 @@ var Editor = function (_Component) {
                             onChange: this.addTitle.bind(this)
                         })
                     ),
-                    _react2.default.createElement(
+                    !ban || ban.indexOf("Desc") === -1 ? _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
                         _react2.default.createElement(
@@ -10117,7 +10125,21 @@ var Editor = function (_Component) {
                             value: this.state.addDesc,
                             onChange: this.addDesc.bind(this)
                         })
-                    ),
+                    ) : null,
+                    !ban || ban.indexOf("Detail") === -1 ? _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Detail:"
+                        ),
+                        _react2.default.createElement("textarea", {
+                            className: "layout-fonts",
+                            value: this.state.addDesc,
+                            onChange: this.addDesc.bind(this)
+                        })
+                    ) : null,
                     _react2.default.createElement(
                         "div",
                         { id: "aside-warn", className: "layout-fonts" },

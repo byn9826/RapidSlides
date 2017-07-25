@@ -14,5 +14,8 @@ module.exports = {
 	},
 	Footer: {
 		"DefaultCopyright": FooterDefaultCopyright
+	},
+	Ban: {
+		"CoverDefaultFull": [ "Detail" ]
 	}
 };

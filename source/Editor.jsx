@@ -239,6 +239,11 @@ class Editor extends Component {
             );
         }
         if ( this.state.add ) {
+            let ban;
+            if ( Com.Ban[ this.state.addType + this.state.addTemplate ] ) {
+                ban = Com.Ban[ this.state.addType + this.state.addTemplate ];
+            }
+            console.log(ban);
             add = (
                 <div id="aside-new">
                     <div className="aside-new-box">
@@ -284,14 +289,30 @@ class Editor extends Component {
                             onChange={ this.addTitle.bind( this ) } 
                         />
                     </div>
-                    <div className="aside-new-box">
-                        <span className="layout-fonts">Desc:</span>
-                        <textarea 
-                            className="layout-fonts" 
-                            value={ this.state.addDesc } 
-                            onChange={ this.addDesc.bind( this ) }
-                        />
-                    </div>
+                    {
+                        !ban || ban.indexOf( "Desc" ) === -1 ? (
+                            <div className="aside-new-box">
+                                <span className="layout-fonts">Desc:</span>
+                                <textarea 
+                                    className="layout-fonts" 
+                                    value={ this.state.addDesc } 
+                                    onChange={ this.addDesc.bind( this ) }
+                                />
+                            </div>
+                        ): null
+                    }
+                    {
+                        !ban || ban.indexOf( "Detail" ) === -1 ? (
+                            <div className="aside-new-box">
+                                <span className="layout-fonts">Detail:</span>
+                                <textarea 
+                                    className="layout-fonts" 
+                                    value={ this.state.addDesc } 
+                                    onChange={ this.addDesc.bind( this ) }
+                                />
+                            </div>
+                        ): null
+                    }
                     <div id="aside-warn" className="layout-fonts">{ this.state.addWarn }</div>
                     <input 
                         type="button" 
