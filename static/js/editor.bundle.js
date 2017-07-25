@@ -9755,9 +9755,7 @@ var Editor = function (_Component) {
             } else if (this.state.addNum === "") {
                 this.setState({ addWarn: "Please input slide number" });
             } else {
-                //let script = this.state.file.getElementById( "script" ).innerHTML;
-                //script = JSON.parse( script );
-                this.state.script.push({
+                this.state.script.splice(this.state.addNum - 1, 0, {
                     "type": this.state.addType,
                     "template": this.state.addTemplate,
                     "title": this.state.addTitle,
@@ -9767,7 +9765,7 @@ var Editor = function (_Component) {
                 this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
                 saveFile(this.props.loc, this.state.file);
                 this.setState({
-                    add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: "",
+                    add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: [],
                     page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
                 });
             }
@@ -9777,7 +9775,13 @@ var Editor = function (_Component) {
     }, {
         key: "addNum",
         value: function addNum(e) {
-            this.setState({ addNum: e.target.value });
+            if (parseInt(e.target.value) === 0) {
+                this.setState({ addNum: 1 });
+            } else if (parseInt(e.target.value) > this.state.script.length + 1) {
+                this.setState({ addNum: this.state.script.length + 1 });
+            } else {
+                this.setState({ addNum: parseInt(e.target.value) });
+            }
         }
         //change type of new added slide
 
