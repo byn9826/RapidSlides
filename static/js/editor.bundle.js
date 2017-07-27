@@ -6384,6 +6384,8 @@ module.exports = {
 		"DefaultCopyright": _FooterDefaultCopyright2.default
 	},
 	Ban: {
+		//each template consist of title, desc, detail, image four fields
+		//if desc, detail image are not required by any template they could be banned here
 		"CoverDefaultFull": ["Detail"]
 	}
 }; //All template file should be imported here, build them in build.js
@@ -9692,6 +9694,7 @@ var Editor = function (_Component) {
             addTemplate: 0,
             addTitle: "",
             addDesc: "",
+            addFile: null,
             addDetail: [],
             addWarn: null,
             //confirm delete slide
@@ -9758,15 +9761,19 @@ var Editor = function (_Component) {
             } else if (this.state.addNum === "") {
                 this.setState({ addWarn: "Please input slide number" });
             } else {
+                var newFile = this.state.addFile.split(".").pop();
+                newFile = new Date().getTime() + "." + newFile;
                 this.state.script.splice(this.state.addNum - 1, 0, {
                     "type": this.state.addType,
                     "template": this.state.addTemplate,
                     "title": this.state.addTitle,
                     "desc": this.state.addDesc,
+                    "image": newFile,
                     "detail": this.state.addDetail
                 });
                 this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
                 saveFile(this.props.loc, this.state.file);
+                copyFile(this.props.storage + newFile, this.state.addFile);
                 this.setState({
                     add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: [],
                     page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
@@ -9813,6 +9820,20 @@ var Editor = function (_Component) {
         key: "addDesc",
         value: function addDesc(e) {
             this.setState({ addDesc: e.target.value });
+        }
+        //change file
+
+    }, {
+        key: "addFile",
+        value: function addFile(e) {
+            this.setState({ addFile: document.getElementById("file-picker").files[0].path });
+        }
+        //change content of new detail
+
+    }, {
+        key: "addDetail",
+        value: function addDetail(e) {
+            console.log(this.state.addDetail);
         }
         //delete a slide
 
@@ -10013,7 +10034,6 @@ var Editor = function (_Component) {
                 if (_components2.default.Ban[this.state.addType + this.state.addTemplate]) {
                     ban = _components2.default.Ban[this.state.addType + this.state.addTemplate];
                 }
-                console.log(ban);
                 add = _react2.default.createElement(
                     "div",
                     { id: "aside-new" },
@@ -10126,18 +10146,35 @@ var Editor = function (_Component) {
                             onChange: this.addDesc.bind(this)
                         })
                     ) : null,
+                    !ban || ban.indexOf("Image") === -1 ? _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Image:"
+                        ),
+                        _react2.default.createElement("input", {
+                            id: "file-picker",
+                            className: "layout-fonts",
+                            type: "file",
+                            onChange: this.addFile.bind(this)
+                        })
+                    ) : null,
+                    this.state.addFile ? _react2.default.createElement("img", { src: this.state.addFile }) : null,
                     !ban || ban.indexOf("Detail") === -1 ? _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
                         _react2.default.createElement(
                             "span",
                             { className: "layout-fonts" },
-                            "Detail:"
+                            "Details:"
                         ),
-                        _react2.default.createElement("textarea", {
+                        _react2.default.createElement("input", {
                             className: "layout-fonts",
-                            value: this.state.addDesc,
-                            onChange: this.addDesc.bind(this)
+                            type: "text",
+                            value: this.state.addDetail,
+                            onChange: this.addDetail.bind(this)
                         })
                     ) : null,
                     _react2.default.createElement(
@@ -10201,6 +10238,8 @@ var script = JSON.parse(document.getElementById("script").innerHTML);
 var fs = __webpack_require__(84);
 var path = __webpack_require__(85);
 var loc = path.join(__dirname, '../workspace/slide.html');
+var storage = path.join(__dirname, '../workspace/storage/');
+
 var file = void 0;
 try {
     file = fs.readFileSync(loc, { encoding: 'utf-8' });
@@ -10209,7 +10248,7 @@ try {
 }
 file = new DOMParser().parseFromString(file, "text/html");
 
-_reactDom2.default.render(_react2.default.createElement(Editor, { script: script, theme: theme, file: file, loc: loc }), document.getElementById("root"));
+_reactDom2.default.render(_react2.default.createElement(Editor, { script: script, theme: theme, file: file, loc: loc, storage: storage }), document.getElementById("root"));
 
 function saveFile(loc, content) {
     content = new XMLSerializer().serializeToString(content);
@@ -10217,6 +10256,14 @@ function saveFile(loc, content) {
         fs.writeFileSync(loc, content, 'utf-8');
     } catch (e) {
         alert('Failed to save the file !');
+    }
+}
+
+function copyFile(loc, file) {
+    try {
+        fs.writeFileSync(loc, fs.readFileSync(file));
+    } catch (e) {
+        alert('Failed to copy the file !');
     }
 }
 
@@ -10264,7 +10311,7 @@ var CoverDefaultFull = function (_Component) {
         value: function render() {
             var contentStyle = {
                 height: "90vh",
-                backgroundImage: "url(../static/img/" + this.props.script[this.props.page].image + ")",
+                backgroundImage: "url(../workspace/storage/" + this.props.script[this.props.page].image + ")",
                 backgroundSize: "cover"
             };
             var sectionStyle = {

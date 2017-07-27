@@ -4,7 +4,7 @@ class CoverDefaultFull extends Component {
     render() {
         const contentStyle = {
             height: "90vh",
-            backgroundImage: "url(../static/img/" + this.props.script[ this.props.page ].image + ")",
+            backgroundImage: "url(../workspace/storage/" + this.props.script[ this.props.page ].image + ")",
             backgroundSize: "cover"
         };
         const sectionStyle = {

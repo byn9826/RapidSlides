@@ -23,6 +23,7 @@ class Editor extends Component {
             addTemplate: 0,
             addTitle: "",
             addDesc: "",
+            addFile: null,
             addDetail: [],
             addWarn: null,
             //confirm delete slide
@@ -71,15 +72,19 @@ class Editor extends Component {
         } else if ( this.state.addNum === ""  ) {
             this.setState({ addWarn: "Please input slide number" });
         } else {
+            let newFile = this.state.addFile.split( "." ).pop();
+            newFile = new Date().getTime() + "." + newFile;
             this.state.script.splice( this.state.addNum - 1, 0, {
                 "type": this.state.addType,
                 "template": this.state.addTemplate,
                 "title": this.state.addTitle,
                 "desc": this.state.addDesc,
+                "image": newFile,
                 "detail": this.state.addDetail
             });
             this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
             saveFile( this.props.loc, this.state.file );
+            copyFile( this.props.storage + newFile, this.state.addFile );
             this.setState({
                 add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: [], 
                 page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
@@ -111,6 +116,14 @@ class Editor extends Component {
     //change content of new desc
     addDesc( e ) {
         this.setState({ addDesc: e.target.value });
+    }
+    //change file
+    addFile( e ) {
+        this.setState({ addFile: document.getElementById( "file-picker" ).files[ 0 ].path });
+    }
+    //change content of new detail
+    addDetail( e ) {
+        console.log(this.state.addDetail);
     }
     //delete a slide
     slideDelete( k ) {
@@ -243,7 +256,6 @@ class Editor extends Component {
             if ( Com.Ban[ this.state.addType + this.state.addTemplate ] ) {
                 ban = Com.Ban[ this.state.addType + this.state.addTemplate ];
             }
-            console.log(ban);
             add = (
                 <div id="aside-new">
                     <div className="aside-new-box">
@@ -302,13 +314,34 @@ class Editor extends Component {
                         ): null
                     }
                     {
+                        !ban || ban.indexOf( "Image" ) === -1 ? (
+                            <div className="aside-new-box">
+                                <span className="layout-fonts">Image:</span>
+                                <input 
+                                    id="file-picker"
+                                    className="layout-fonts" 
+                                    type="file" 
+                                    onChange={ this.addFile.bind( this ) }
+                                />
+                            </div>
+                        ): null
+                    }
+                    {
+                        this.state.addFile ? (
+                            <img src={ this.state.addFile } />
+                        ): null
+                    }
+                    {
                         !ban || ban.indexOf( "Detail" ) === -1 ? (
                             <div className="aside-new-box">
-                                <span className="layout-fonts">Detail:</span>
-                                <textarea 
+                                <span className="layout-fonts">
+                                    Details:
+                                </span>
+                                <input 
                                     className="layout-fonts" 
-                                    value={ this.state.addDesc } 
-                                    onChange={ this.addDesc.bind( this ) }
+                                    type="text" 
+                                    value={ this.state.addDetail } 
+                                    onChange={ this.addDetail.bind( this ) }
                                 />
                             </div>
                         ): null
@@ -361,6 +394,8 @@ const script = JSON.parse( document.getElementById( "script" ).innerHTML );
 const fs = require( 'fs' );
 const path = require( 'path' );
 const loc = path.join( __dirname, '../workspace/slide.html' );
+const storage = path.join( __dirname, '../workspace/storage/' );
+
 let file;
 try {
     file = fs.readFileSync( loc, { encoding:'utf-8' } );
@@ -370,7 +405,7 @@ try {
 file = new DOMParser().parseFromString( file, "text/html" );
 
 ReactDOM.render( 
-    <Editor script={ script } theme={ theme } file={ file } loc={ loc } />,
+    <Editor script={ script } theme={ theme } file={ file } loc={ loc } storage={ storage } />,
     document.getElementById( "root" ) 
 );
 
@@ -380,6 +415,14 @@ function saveFile( loc, content ) {
         fs.writeFileSync( loc, content, 'utf-8' ); 
     } catch( e ) { 
         alert('Failed to save the file !'); 
+    }
+}
+
+function copyFile( loc, file ) {
+    try { 
+        fs.writeFileSync( loc, fs.readFileSync( file ) ); 
+    } catch( e ) { 
+        alert('Failed to copy the file !'); 
     }
 }
 

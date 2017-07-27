@@ -160,6 +160,11 @@ ul{
     padding: 15px 5%;
     background-color: #edf2f9;
 }
+#aside-new img{
+    display: block;
+    width: 90%;
+    margin-bottom: 5px;
+}
 .aside-new-box{
     display: block;
     margin-bottom: 10px;
