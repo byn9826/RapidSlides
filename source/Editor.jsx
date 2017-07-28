@@ -78,7 +78,7 @@ class Editor extends Component {
                 "title": this.state.addTitle,
                 "desc": this.state.addDesc,
                 "image": this.state.addFile,
-                "detail": this.state.addDetail
+                "detail": this.state.addDetail.length > 0? this.state.addDetail.split( ";" ): [],
             });
             this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
             saveFile( this.props.loc, this.state.file );
@@ -123,7 +123,7 @@ class Editor extends Component {
     }
     //change content of new detail
     addDetail( e ) {
-        console.log(this.state.addDetail);
+        this.setState({ addDetail: e.target.value });
     }
     //delete a slide
     slideDelete( k ) {
@@ -152,26 +152,23 @@ class Editor extends Component {
             top: "10vh",
             height: "90vh"
         };
-        //build main for slides
-        let content;
+        //build main, footer for slides
+        let content, footer, temporary;
         if ( !this.state.add ) {
             content = Build.buildContent( this.state.theme, this.state.script, this.state.page );
+            footer = Build.buildFooter( this.state.theme, this.state.script, this.state.page );
         } else {
-            content = Build.buildContent( 
-                this.state.theme,
-                [{
-                    "type": this.state.addType,
-                    "template": this.state.addTemplate,
-                    "title": this.state.addTitle,
-                    "desc": this.state.addDesc,
-                    "image": this.state.addFile,
-                    "detail": this.state.addDetail
-                }],
-                0
-            );
+            temporary = [{
+                "type": this.state.addType,
+                "template": this.state.addTemplate,
+                "title": this.state.addTitle,
+                "desc": this.state.addDesc,
+                "image": this.state.addFile,
+                "detail": this.state.addDetail.length > 0? this.state.addDetail.split( ";" ) : []
+            }];
+            content = Build.buildContent( this.state.theme, temporary, 0 );
+            footer = Build.buildFooter( this.state.theme, temporary, 0 );
         }
-        //build footer for slides
-        const footer = Build.buildFooter( this.state.theme, this.state.script, this.state.page );
         //generate editor for slides
         let slides = this.state.script.map( ( slide, index ) =>
             <div 
@@ -357,11 +354,10 @@ class Editor extends Component {
                         !ban || ban.indexOf( "Detail" ) === -1 ? (
                             <div className="aside-new-box">
                                 <span className="layout-fonts">
-                                    Details:
+                                    Details: Separate by ";"
                                 </span>
-                                <input 
+                                <textarea 
                                     className="layout-fonts" 
-                                    type="text" 
                                     value={ this.state.addDetail } 
                                     onChange={ this.addDetail.bind( this ) }
                                 />

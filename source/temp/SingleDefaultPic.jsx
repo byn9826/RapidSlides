@@ -46,7 +46,7 @@ class SingleDefaultPic extends Component {
             display: "inline-block",
             width: "35%",
             height: "50vh",
-            backgroundImage: "url(../static/img/" + this.props.script[ this.props.page ].image + ")",
+            backgroundImage: "url(../workspace/storage/" + this.props.script[ this.props.page ].image + ")",
             backgroundSize: "cover",
             verticalAlign: "middle"
         };

@@ -9601,7 +9601,8 @@ function buildContent(theme, script, page) {
 }
 
 function buildFooter(theme, script, page) {
-    if (script[page] && script[page].type !== "Cover") {
+    var info = script[page];
+    if (info && info.template && info.type && info.type !== "Cover") {
         switch (theme.footer.template) {
             case "DefaultCopyright":
                 return _react2.default.createElement(_components2.default.Footer.DefaultCopyright, { theme: theme });
@@ -9767,7 +9768,7 @@ var Editor = function (_Component) {
                     "title": this.state.addTitle,
                     "desc": this.state.addDesc,
                     "image": this.state.addFile,
-                    "detail": this.state.addDetail
+                    "detail": this.state.addDetail.length > 0 ? this.state.addDetail.split(";") : []
                 });
                 this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
                 saveFile(this.props.loc, this.state.file);
@@ -9833,7 +9834,7 @@ var Editor = function (_Component) {
     }, {
         key: "addDetail",
         value: function addDetail(e) {
-            console.log(this.state.addDetail);
+            this.setState({ addDetail: e.target.value });
         }
         //delete a slide
 
@@ -9875,22 +9876,25 @@ var Editor = function (_Component) {
                 top: "10vh",
                 height: "90vh"
             };
-            //build main for slides
-            var content = void 0;
+            //build main, footer for slides
+            var content = void 0,
+                footer = void 0,
+                temporary = void 0;
             if (!this.state.add) {
                 content = _build2.default.buildContent(this.state.theme, this.state.script, this.state.page);
+                footer = _build2.default.buildFooter(this.state.theme, this.state.script, this.state.page);
             } else {
-                content = _build2.default.buildContent(this.state.theme, [{
+                temporary = [{
                     "type": this.state.addType,
                     "template": this.state.addTemplate,
                     "title": this.state.addTitle,
                     "desc": this.state.addDesc,
                     "image": this.state.addFile,
-                    "detail": this.state.addDetail
-                }], 0);
+                    "detail": this.state.addDetail.length > 0 ? this.state.addDetail.split(";") : []
+                }];
+                content = _build2.default.buildContent(this.state.theme, temporary, 0);
+                footer = _build2.default.buildFooter(this.state.theme, temporary, 0);
             }
-            //build footer for slides
-            var footer = _build2.default.buildFooter(this.state.theme, this.state.script, this.state.page);
             //generate editor for slides
             var slides = this.state.script.map(function (slide, index) {
                 return _react2.default.createElement(
@@ -10183,11 +10187,10 @@ var Editor = function (_Component) {
                         _react2.default.createElement(
                             "span",
                             { className: "layout-fonts" },
-                            "Details:"
+                            "Details: Separate by \";\""
                         ),
-                        _react2.default.createElement("input", {
+                        _react2.default.createElement("textarea", {
                             className: "layout-fonts",
-                            type: "text",
                             value: this.state.addDetail,
                             onChange: this.addDetail.bind(this)
                         })
@@ -10523,7 +10526,7 @@ var SingleDefaultPic = function (_Component) {
                 display: "inline-block",
                 width: "35%",
                 height: "50vh",
-                backgroundImage: "url(../static/img/" + this.props.script[this.props.page].image + ")",
+                backgroundImage: "url(../workspace/storage/" + this.props.script[this.props.page].image + ")",
                 backgroundSize: "cover",
                 verticalAlign: "middle"
             };
