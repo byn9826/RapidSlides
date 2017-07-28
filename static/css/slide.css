@@ -86,6 +86,11 @@ ul{
     padding-bottom: 20px !important;
     cursor: pointer;
 }
+.aside-slide img{
+    display: block;
+    width: 90%;
+    margin-top: 5px;
+}
 .aside-focus{
     box-shadow: 2px 2px 1px lightgrey;
 }
@@ -113,8 +118,10 @@ ul{
     font-size: 11px;
 }
 .aside-slide-line{
-    padding-bottom: 20px;
-    border-bottom-style: ridge;
+    display: block;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top-style: ridge;
 }
 .aside-slide-num{
     display: inline-block;
@@ -197,6 +204,7 @@ ul{
     font-size: 12px;
     width: 95%;
     padding: 3px 2%;
+    height: 50px;
 }
 
 .aside-new-button{

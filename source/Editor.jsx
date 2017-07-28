@@ -72,22 +72,19 @@ class Editor extends Component {
         } else if ( this.state.addNum === ""  ) {
             this.setState({ addWarn: "Please input slide number" });
         } else {
-            let newFile = this.state.addFile.split( "." ).pop();
-            newFile = new Date().getTime() + "." + newFile;
             this.state.script.splice( this.state.addNum - 1, 0, {
                 "type": this.state.addType,
                 "template": this.state.addTemplate,
                 "title": this.state.addTitle,
                 "desc": this.state.addDesc,
-                "image": newFile,
+                "image": this.state.addFile,
                 "detail": this.state.addDetail
             });
             this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
             saveFile( this.props.loc, this.state.file );
-            copyFile( this.props.storage + newFile, this.state.addFile );
             this.setState({
                 add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: [], 
-                page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
+                addFile: null, page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
             });
         }
     }
@@ -119,7 +116,10 @@ class Editor extends Component {
     }
     //change file
     addFile( e ) {
-        this.setState({ addFile: document.getElementById( "file-picker" ).files[ 0 ].path });
+        let newFile = document.getElementById( "file-picker" ).files[ 0 ].path.split( "." ).pop();
+        newFile = new Date().getTime() + "." + newFile;
+        copyFile( this.props.storage + newFile, document.getElementById( "file-picker" ).files[ 0 ].path );
+        this.setState({ addFile: newFile });
     }
     //change content of new detail
     addDetail( e ) {
@@ -142,7 +142,7 @@ class Editor extends Component {
         this.state.script.splice( this.state.confirmDelete, 1 );
         this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
         saveFile( this.props.loc, this.state.file );
-        this.setState({ page: 0, confirmDelete: null });
+        this.setState({ page: 0, confirmDelete: null, addNum: this.state.script.length + 1 });
     }
     render() {
         const mainStyle = {
@@ -164,6 +164,7 @@ class Editor extends Component {
                     "template": this.state.addTemplate,
                     "title": this.state.addTitle,
                     "desc": this.state.addDesc,
+                    "image": this.state.addFile,
                     "detail": this.state.addDetail
                 }],
                 0
@@ -182,7 +183,7 @@ class Editor extends Component {
             >
                 <div className="aside-slide-box">
                     <span className="layout-fonts">Type:</span>
-                    <div className="layout-fonts">{ slide.title }</div>
+                    <div className="layout-fonts">{ slide.type }</div>
                 </div>
                 <div className="aside-slide-box">
                     <span className="layout-fonts">Template:</span>
@@ -192,32 +193,53 @@ class Editor extends Component {
                     <span className="layout-fonts">Title:</span>
                     <div className="layout-fonts">{ slide.title }</div>
                 </div>
-                <div className="aside-slide-box">
-                    <span className="layout-fonts">Desc:</span>
-                    <div className="layout-fonts">{ slide.desc }</div>
+                {
+                    !Com.Ban[ slide.type + slide.template ] || 
+                    Com.Ban[ slide.type + slide.template ].indexOf( "Desc" ) === -1 ? (
+                        <div className="aside-slide-box">
+                            <span className="layout-fonts">Desc:</span>
+                            <div className="layout-fonts">{ slide.desc }</div>
+                        </div>
+                    ) : null
+                }
+                {
+                    !Com.Ban[ slide.type + slide.template ] || 
+                    Com.Ban[ slide.type + slide.template ].indexOf( "Image" ) === -1 ? (
+                        <div className="aside-slide-box">
+                            <span className="layout-fonts">Image:</span>
+                            <img src={ "../workspace/storage/" + slide.image } />
+                        </div>
+                    ) : null
+                }
+                {
+                    !Com.Ban[ slide.type + slide.template ] || 
+                    Com.Ban[ slide.type + slide.template ].indexOf( "Detail" ) === -1 ? (
+                        <div className="aside-slide-box">
+                            <span className="layout-fonts">Detail:</span>
+                            <ul className="layout-fonts">
+                                {
+                                    slide.detail.map(( a, i ) =>
+                                        <li key={ "sl" + index + "de" + i } className="layout-fonts">{ a }</li>
+                                    )
+                                }
+                            </ul>
+                        </div>
+                    ) : null
+                }
+                <div className="aside-slide-line">
+                    <div className="aside-slide-num layout-fonts">Slide { index + 1 }</div>
+                    <input 
+                        type="button" 
+                        className="aside-slide-button layout-fonts" 
+                        value="Edit"
+                    />
+                    <input 
+                        type="button"  
+                        className="aside-slide-button layout-fonts" 
+                        value="Delete"
+                        onClick={ this.slideDelete.bind( this, index ) }
+                    />
                 </div>
-                <div className="aside-slide-box aside-slide-line">
-                    <span className="layout-fonts">Detail:</span>
-                    <ul className="layout-fonts">
-                        {
-                            slide.detail.map(( a, i ) =>
-                                <li key={ "sl" + index + "de" + i } className="layout-fonts">{ a }</li>
-                            )
-                        }
-                    </ul>
-                </div>
-                <div className="aside-slide-num layout-fonts">Slide { index + 1 }</div>
-                <input 
-                    type="button" 
-                    className="aside-slide-button layout-fonts" 
-                    value="Edit"
-                />
-                <input 
-                    type="button"  
-                    className="aside-slide-button layout-fonts" 
-                    value="Delete"
-                    onClick={ this.slideDelete.bind( this, index ) }
-                />
                 {
                     this.state.confirmDelete === index ?
                     (
@@ -263,7 +285,7 @@ class Editor extends Component {
                         <input 
                             className="layout-fonts" 
                             type="number" 
-                            value={ this.state.addNum } 
+                            value={ this.state.addNum }
                             onChange={ this.addNum.bind( this ) } 
                         />
                     </div>
@@ -328,7 +350,7 @@ class Editor extends Component {
                     }
                     {
                         this.state.addFile ? (
-                            <img src={ this.state.addFile } />
+                            <img src={ "../workspace/storage/" + this.state.addFile } />
                         ): null
                     }
                     {

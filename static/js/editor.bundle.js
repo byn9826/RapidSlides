@@ -9761,22 +9761,19 @@ var Editor = function (_Component) {
             } else if (this.state.addNum === "") {
                 this.setState({ addWarn: "Please input slide number" });
             } else {
-                var newFile = this.state.addFile.split(".").pop();
-                newFile = new Date().getTime() + "." + newFile;
                 this.state.script.splice(this.state.addNum - 1, 0, {
                     "type": this.state.addType,
                     "template": this.state.addTemplate,
                     "title": this.state.addTitle,
                     "desc": this.state.addDesc,
-                    "image": newFile,
+                    "image": this.state.addFile,
                     "detail": this.state.addDetail
                 });
                 this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
                 saveFile(this.props.loc, this.state.file);
-                copyFile(this.props.storage + newFile, this.state.addFile);
                 this.setState({
                     add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: [],
-                    page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
+                    addFile: null, page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
                 });
             }
         }
@@ -9826,7 +9823,10 @@ var Editor = function (_Component) {
     }, {
         key: "addFile",
         value: function addFile(e) {
-            this.setState({ addFile: document.getElementById("file-picker").files[0].path });
+            var newFile = document.getElementById("file-picker").files[0].path.split(".").pop();
+            newFile = new Date().getTime() + "." + newFile;
+            copyFile(this.props.storage + newFile, document.getElementById("file-picker").files[0].path);
+            this.setState({ addFile: newFile });
         }
         //change content of new detail
 
@@ -9861,7 +9861,7 @@ var Editor = function (_Component) {
             this.state.script.splice(this.state.confirmDelete, 1);
             this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
             saveFile(this.props.loc, this.state.file);
-            this.setState({ page: 0, confirmDelete: null });
+            this.setState({ page: 0, confirmDelete: null, addNum: this.state.script.length + 1 });
         }
     }, {
         key: "render",
@@ -9885,6 +9885,7 @@ var Editor = function (_Component) {
                     "template": this.state.addTemplate,
                     "title": this.state.addTitle,
                     "desc": this.state.addDesc,
+                    "image": this.state.addFile,
                     "detail": this.state.addDetail
                 }], 0);
             }
@@ -9910,7 +9911,7 @@ var Editor = function (_Component) {
                         _react2.default.createElement(
                             "div",
                             { className: "layout-fonts" },
-                            slide.title
+                            slide.type
                         )
                     ),
                     _react2.default.createElement(
@@ -9941,7 +9942,7 @@ var Editor = function (_Component) {
                             slide.title
                         )
                     ),
-                    _react2.default.createElement(
+                    !_components2.default.Ban[slide.type + slide.template] || _components2.default.Ban[slide.type + slide.template].indexOf("Desc") === -1 ? _react2.default.createElement(
                         "div",
                         { className: "aside-slide-box" },
                         _react2.default.createElement(
@@ -9954,10 +9955,20 @@ var Editor = function (_Component) {
                             { className: "layout-fonts" },
                             slide.desc
                         )
-                    ),
-                    _react2.default.createElement(
+                    ) : null,
+                    !_components2.default.Ban[slide.type + slide.template] || _components2.default.Ban[slide.type + slide.template].indexOf("Image") === -1 ? _react2.default.createElement(
                         "div",
-                        { className: "aside-slide-box aside-slide-line" },
+                        { className: "aside-slide-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Image:"
+                        ),
+                        _react2.default.createElement("img", { src: "../workspace/storage/" + slide.image })
+                    ) : null,
+                    !_components2.default.Ban[slide.type + slide.template] || _components2.default.Ban[slide.type + slide.template].indexOf("Detail") === -1 ? _react2.default.createElement(
+                        "div",
+                        { className: "aside-slide-box" },
                         _react2.default.createElement(
                             "span",
                             { className: "layout-fonts" },
@@ -9974,24 +9985,28 @@ var Editor = function (_Component) {
                                 );
                             })
                         )
-                    ),
+                    ) : null,
                     _react2.default.createElement(
                         "div",
-                        { className: "aside-slide-num layout-fonts" },
-                        "Slide ",
-                        index + 1
+                        { className: "aside-slide-line" },
+                        _react2.default.createElement(
+                            "div",
+                            { className: "aside-slide-num layout-fonts" },
+                            "Slide ",
+                            index + 1
+                        ),
+                        _react2.default.createElement("input", {
+                            type: "button",
+                            className: "aside-slide-button layout-fonts",
+                            value: "Edit"
+                        }),
+                        _react2.default.createElement("input", {
+                            type: "button",
+                            className: "aside-slide-button layout-fonts",
+                            value: "Delete",
+                            onClick: _this3.slideDelete.bind(_this3, index)
+                        })
                     ),
-                    _react2.default.createElement("input", {
-                        type: "button",
-                        className: "aside-slide-button layout-fonts",
-                        value: "Edit"
-                    }),
-                    _react2.default.createElement("input", {
-                        type: "button",
-                        className: "aside-slide-button layout-fonts",
-                        value: "Delete",
-                        onClick: _this3.slideDelete.bind(_this3, index)
-                    }),
                     _this3.state.confirmDelete === index ? _react2.default.createElement(
                         "div",
                         { id: "aside-slide-delete" },
@@ -10161,7 +10176,7 @@ var Editor = function (_Component) {
                             onChange: this.addFile.bind(this)
                         })
                     ) : null,
-                    this.state.addFile ? _react2.default.createElement("img", { src: this.state.addFile }) : null,
+                    this.state.addFile ? _react2.default.createElement("img", { src: "../workspace/storage/" + this.state.addFile }) : null,
                     !ban || ban.indexOf("Detail") === -1 ? _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
