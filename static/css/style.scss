@@ -1,19 +1,37 @@
-body{
+$layout-color: darkred;
+$font-stack: Helvetica, sans-serif;
+$animation-time: 0.5s forwards;
+$font-normal: 12px;
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+.no-spacing{
     margin: 0;
-    padding: 0;
+    padding: 0; 
+}
+.inline-middle {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+body{
+    @extend .no-spacing;
     overflow: hidden;
 }
 
 ul{
-    padding: 0;
-    margin: 0;
+    @extend .no-spacing;
     margin-left: 5%;
 }
 
 /* App layout */
 
 .layout-fonts{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: $font-stack;
 }
 
 #header{
@@ -22,7 +40,7 @@ ul{
     width: 100%;
     height: 10vh;
     top: 0;
-    background-color: darkred;
+    background-color: $layout-color;
 }
 
 #aside{
@@ -40,21 +58,21 @@ ul{
 }
 
 .left{
-    animation: slide-left 0.5s forwards;
+    animation: slide-left $animation-time;
 }
 @keyframes slide-left {
     from { left: -60%; }
     to { left: 20%; }
 }
 .right{
-    animation: slide-right 0.5s forwards;
+    animation: slide-right $animation-time;
 }
 @keyframes slide-right {
     from { left: 100%; }
     to { left: 20%; }
 }
 .down{
-    animation: slide-down 0.5s forwards;
+    animation: slide-down $animation-time;
 }
 @keyframes slide-down {
     from { top: 100%; }
@@ -66,13 +84,13 @@ ul{
     display: block;
     width: 90%;
     margin: 10px 5%;
-    background-color: darkred;
+    background-color: $layout-color;
     color: white;
     font-weight: bold;
-    border-radius: 5px;
+    @include border-radius(5px);
     text-align: center;
     padding: 5px 0;
-    font-size: 12px;
+    font-size: $font-normal;
     cursor: pointer;
 }
 
@@ -96,27 +114,29 @@ ul{
 }
 .aside-display{
     background-color: lightgray;
-    border-radius: 5px;
+    @include border-radius(5px);
 }
+
 .aside-slide-box{
     display: block;
     margin-bottom: 10px;
 }
-.aside-slide-box span{
-    display: inline-block;
-    font-size: 12px;
-    font-weight: bold;
-    vertical-align: middle;
-    margin-right: 5%;
+.aside-slide-box{
+    span{
+        @extend .inline-middle;
+        font-size: $font-normal;
+        font-weight: bold;
+        margin-right: 5%;
+    }
+    div{
+        @extend .inline-middle;
+        font-size: $font-normal;
+    }
+    li{
+        font-size: 11px;
+    }
 }
-.aside-slide-box div{
-    display: inline-block;
-    font-size: 12px;
-    vertical-align: middle;
-}
-.aside-slide-box li{
-    font-size: 11px;
-}
+
 .aside-slide-line{
     display: block;
     margin-top: 20px;
@@ -125,16 +145,15 @@ ul{
 }
 .aside-slide-num{
     display: inline-block;
-    font-size: 12px;
+    font-size: $font-normal;
     text-align: center;
     font-weight: bold;
 }
 .aside-slide-button{
-    display: inline-block;
-    vertical-align: middle;
+    @extend .inline-middle;
     margin-left: 5%;
     border: 1px solid rebeccapurple;
-    border-radius: 3px;
+    @include border-radius(3px);
     background-color: white;
     cursor: pointer;
 }
@@ -145,21 +164,23 @@ ul{
     padding-top: 10px;
     border-top: 1px dashed lightcoral;
 }
-#aside-slide-delete span{
-    font-size: 11px;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
+#aside-slide-delete{
+    span{
+        font-size: 11px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+    input{
+        @extend .inline-middle;
+        margin-right: 5%;
+        border: 1px solid lightsalmon;
+        @include border-radius(3px);
+        background-color: white;
+        cursor: pointer;
+    }
 }
-#aside-slide-delete input{
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 5%;
-    border: 1px solid lightsalmon;
-    border-radius: 3px;
-    background-color: white;
-    cursor: pointer;
-}
+
 
 #aside-new{
     margin: 10px 5%;
@@ -172,47 +193,49 @@ ul{
     width: 90%;
     margin-bottom: 5px;
 }
+
 .aside-new-box{
     display: block;
     margin-bottom: 10px;
 }
-.aside-new-box span{
-    display: inline-block;
-    font-size: 12px;
-    font-weight: bold;
-    vertical-align: middle;
-    margin-right: 5%;
-}
-.aside-new-box div{
-    display: inline-block;
-    font-size: 12px;
-    vertical-align: middle;
-}
-.aside-new-box select{
-    display: inline-block;
-    font-size: 12px;
-    padding: 3px 2%;
-}
-.aside-new-box input{
-    display: block;
-    font-size: 12px;
-    width: 95%;
-    padding: 3px 2%;
-}
-.aside-new-box textarea{
-    display: block;
-    font-size: 12px;
-    width: 95%;
-    padding: 3px 2%;
-    height: 50px;
+.aside-new-box{
+    span{
+        @extend .inline-middle;
+        font-size: $font-normal;
+        font-weight: bold;
+        margin-right: 5%;
+    }
+    div{
+        @extend .inline-middle;
+        font-size: $font-normal;
+    }
+    select{
+        display: inline-block;
+        font-size: $font-normal;
+        padding: 3px 2%;
+    }
+    input{
+        display: block;
+        font-size: $font-normal;
+        width: 95%;
+        padding: 3px 2%;
+    }
+    textarea{
+        display: block;
+        font-size: $font-normal;
+        width: 95%;
+        padding: 3px 2%;
+        height: 50px;
+    }
 }
 
+
+
 .aside-new-button{
-    display: inline-block;
-    vertical-align: middle;
+    @extend .inline-middle;
     margin-right: 3%;
     border: 1px solid lightsalmon;
-    border-radius: 3px;
+    @include border-radius(3px);
     background-color: white;
     cursor: pointer;
 }

@@ -1,0 +1,234 @@
+.no-spacing, body, ul {
+  margin: 0;
+  padding: 0; }
+
+.inline-middle, .aside-slide-box span, .aside-slide-box div, .aside-slide-button, #aside-slide-delete input, .aside-new-box span, .aside-new-box div, .aside-new-button {
+  display: inline-block;
+  vertical-align: middle; }
+
+body {
+  overflow: hidden; }
+
+ul {
+  margin-left: 5%; }
+
+/* App layout */
+.layout-fonts {
+  font-family: Helvetica, sans-serif; }
+
+#header {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 10vh;
+  top: 0;
+  background-color: darkred; }
+
+#aside {
+  position: absolute;
+  left: 0;
+  width: 20%;
+  height: 90vh;
+  top: 10vh;
+  background-color: lightgoldenrodyellow;
+  overflow-y: scroll; }
+
+#main {
+  position: absolute; }
+
+.left {
+  animation: slide-left 0.5s forwards; }
+
+@keyframes slide-left {
+  from {
+    left: -60%; }
+  to {
+    left: 20%; } }
+
+.right {
+  animation: slide-right 0.5s forwards; }
+
+@keyframes slide-right {
+  from {
+    left: 100%; }
+  to {
+    left: 20%; } }
+
+.down {
+  animation: slide-down 0.5s forwards; }
+
+@keyframes slide-down {
+  from {
+    top: 100%; }
+  to {
+    top: 10%; } }
+
+/* aside editor layout */
+#aside-add {
+  display: block;
+  width: 90%;
+  margin: 10px 5%;
+  background-color: darkred;
+  color: white;
+  font-weight: bold;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px;
+  text-align: center;
+  padding: 5px 0;
+  font-size: 12px;
+  cursor: pointer; }
+
+.aside-slide {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 5%;
+  margin-right: 20%;
+  width: 75%;
+  padding: 5px 5%;
+  padding-bottom: 20px !important;
+  cursor: pointer; }
+
+.aside-slide img {
+  display: block;
+  width: 90%;
+  margin-top: 5px; }
+
+.aside-focus {
+  box-shadow: 2px 2px 1px lightgrey; }
+
+.aside-display {
+  background-color: lightgray;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px; }
+
+.aside-slide-box {
+  display: block;
+  margin-bottom: 10px; }
+
+.aside-slide-box span {
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 5%; }
+
+.aside-slide-box div {
+  font-size: 12px; }
+
+.aside-slide-box li {
+  font-size: 11px; }
+
+.aside-slide-line {
+  display: block;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top-style: ridge; }
+
+.aside-slide-num {
+  display: inline-block;
+  font-size: 12px;
+  text-align: center;
+  font-weight: bold; }
+
+.aside-slide-button {
+  margin-left: 5%;
+  border: 1px solid rebeccapurple;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-color: white;
+  cursor: pointer; }
+
+#aside-slide-delete {
+  display: block;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px dashed lightcoral; }
+
+#aside-slide-delete span {
+  font-size: 11px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px; }
+
+#aside-slide-delete input {
+  margin-right: 5%;
+  border: 1px solid lightsalmon;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-color: white;
+  cursor: pointer; }
+
+#aside-new {
+  margin: 10px 5%;
+  width: 80%;
+  padding: 15px 5%;
+  background-color: #edf2f9; }
+
+#aside-new img {
+  display: block;
+  width: 90%;
+  margin-bottom: 5px; }
+
+.aside-new-box {
+  display: block;
+  margin-bottom: 10px; }
+
+.aside-new-box span {
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 5%; }
+
+.aside-new-box div {
+  font-size: 12px; }
+
+.aside-new-box select {
+  display: inline-block;
+  font-size: 12px;
+  padding: 3px 2%; }
+
+.aside-new-box input {
+  display: block;
+  font-size: 12px;
+  width: 95%;
+  padding: 3px 2%; }
+
+.aside-new-box textarea {
+  display: block;
+  font-size: 12px;
+  width: 95%;
+  padding: 3px 2%;
+  height: 50px; }
+
+.aside-new-button {
+  margin-right: 3%;
+  border: 1px solid lightsalmon;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-color: white;
+  cursor: pointer; }
+
+#aside-warn {
+  display: block;
+  color: red;
+  font-size: 11px;
+  padding: 3px 0; }
+
+/* Slideshow layout */
+#content {
+  display: block;
+  width: 100%; }
+
+#footer {
+  display: block;
+  width: 96%;
+  padding: 0 2%;
+  height: 5vh;
+  line-height: 5vh; }
