@@ -10,6 +10,11 @@ function buildContent( theme, script, page ) {
                 case "DefaultFull":
                     return <Com.Cover.DefaultFull theme={ theme } script={ script } page={ page } />;
             }
+        } else if ( script[ page ].type === "Index" ) {
+            switch ( script[ page ].template ) {
+                case "DefaultHouse":
+                    return <Com.Index.DefaultHouse theme={ theme } script={ script } page={ page } />;
+            }
         } else if ( script[ page ].type === "Single" ) {
             switch ( script[ page ].template ) {
                 case "DefaultPic":

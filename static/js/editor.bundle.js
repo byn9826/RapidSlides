@@ -6362,6 +6362,10 @@ var _CoverDefaultFull = __webpack_require__(87);
 
 var _CoverDefaultFull2 = _interopRequireDefault(_CoverDefaultFull);
 
+var _IndexDefaultHouse = __webpack_require__(190);
+
+var _IndexDefaultHouse2 = _interopRequireDefault(_IndexDefaultHouse);
+
 var _SingleDefaultPic = __webpack_require__(89);
 
 var _SingleDefaultPic2 = _interopRequireDefault(_SingleDefaultPic);
@@ -6372,10 +6376,13 @@ var _FooterDefaultCopyright2 = _interopRequireDefault(_FooterDefaultCopyright);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import ContentDefaultHouse from "./temp/ContentDefaultHouse";
+//All template file should be imported here, build them in build.js
 module.exports = {
 	Cover: {
 		"DefaultFull": _CoverDefaultFull2.default
+	},
+	Index: {
+		"DefaultHouse": _IndexDefaultHouse2.default
 	},
 	Single: {
 		"DefaultPic": _SingleDefaultPic2.default
@@ -6385,10 +6392,10 @@ module.exports = {
 	},
 	Ban: {
 		//each template consist of title, desc, detail, image four fields
-		//if desc, detail image are not required by any template they could be banned here
+		//if desc, detail, image fields are not required by any template they could be banned here
 		"CoverDefaultFull": ["Detail"]
 	}
-}; //All template file should be imported here, build them in build.js
+};
 
 /***/ }),
 /* 50 */
@@ -9591,6 +9598,11 @@ function buildContent(theme, script, page) {
                 case "DefaultFull":
                     return _react2.default.createElement(_components2.default.Cover.DefaultFull, { theme: theme, script: script, page: page });
             }
+        } else if (script[page].type === "Index") {
+            switch (script[page].template) {
+                case "DefaultHouse":
+                    return _react2.default.createElement(_components2.default.Index.DefaultHouse, { theme: theme, script: script, page: page });
+            }
         } else if (script[page].type === "Single") {
             switch (script[page].template) {
                 case "DefaultPic":
@@ -10541,13 +10553,34 @@ var SingleDefaultPic = function (_Component) {
                 fontSize: this.props.theme.fontSize[2],
                 fontFamily: this.props.theme.fontFamily
             };
-            var details = this.props.script[this.props.page].detail.map(function (detail, index) {
-                return _react2.default.createElement(
+            var details = void 0;
+            if (this.props.script[this.props.page].detail.length > 0) {
+                details = this.props.script[this.props.page].detail.map(function (detail, index) {
+                    return _react2.default.createElement(
+                        "li",
+                        { key: "details" + index, style: liStyle },
+                        detail
+                    );
+                });
+            } else {
+                details = [_react2.default.createElement(
                     "li",
-                    { key: "details" + index, style: liStyle },
-                    detail
-                );
-            });
+                    { style: liStyle },
+                    "Details shows here"
+                ), _react2.default.createElement(
+                    "li",
+                    { style: liStyle },
+                    "Details shows here"
+                ), _react2.default.createElement(
+                    "li",
+                    { style: liStyle },
+                    "Details shows here"
+                ), _react2.default.createElement(
+                    "li",
+                    { style: liStyle },
+                    "Details shows here"
+                )];
+            }
             return _react2.default.createElement(
                 "div",
                 { id: "content", style: mainStyle },
@@ -10557,12 +10590,12 @@ var SingleDefaultPic = function (_Component) {
                     _react2.default.createElement(
                         "div",
                         { style: titleStyle },
-                        this.props.script[this.props.page].title
+                        this.props.script[this.props.page].title || "Title shows here"
                     ),
                     _react2.default.createElement(
                         "div",
                         { style: descStyle },
-                        this.props.script[this.props.page].desc
+                        this.props.script[this.props.page].desc || "Description shows here"
                     )
                 ),
                 _react2.default.createElement("div", { style: lineStyle }),
@@ -23160,6 +23193,189 @@ function traverseAllChildren(children, callback, traverseContext) {
 }
 
 module.exports = traverseAllChildren;
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(19);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var IndexDefaultHouse = function (_Component) {
+    _inherits(IndexDefaultHouse, _Component);
+
+    function IndexDefaultHouse() {
+        _classCallCheck(this, IndexDefaultHouse);
+
+        return _possibleConstructorReturn(this, (IndexDefaultHouse.__proto__ || Object.getPrototypeOf(IndexDefaultHouse)).apply(this, arguments));
+    }
+
+    _createClass(IndexDefaultHouse, [{
+        key: "render",
+        value: function render() {
+            var mainStyle = {
+                height: "94vh",
+                backgroundColor: this.props.theme.background
+            };
+            var fullWidth = window.innerWidth;
+            var headerStyle = {
+                width: 0,
+                height: 0,
+                borderLeft: fullWidth * 0.45 + "px solid transparent",
+                borderRight: fullWidth * 0.45 + "px solid transparent",
+                borderBottom: "16vh solid #590808",
+                position: "absolute",
+                top: "8vh",
+                left: "5%"
+            };
+            var titleStyle = {
+                width: "100%",
+                color: "white",
+                textAlign: "center",
+                fontSize: this.props.theme.fonts[1],
+                position: "absolute",
+                top: "15vh"
+            };
+            var sectionStyle = {
+                position: "absolute",
+                width: "90%",
+                left: "5%",
+                top: "24vh"
+            };
+            var singleWidth = 100 / (this.props.script.length - 2);
+            var holderStyle = {
+                display: "inline-block",
+                color: "white",
+                width: singleWidth - 0.5 + "%",
+                height: "55vh",
+                margin: "5vh 0.25%",
+                backgroundColor: "#ffe9bf",
+                borderRadius: "5px"
+            };
+            var emptyStyle = {
+                position: "relative",
+                top: "8vh",
+                left: "101%",
+                width: 0,
+                height: 0,
+                borderTop: "4vh solid transparent",
+                borderBottom: "4vh solid transparent",
+                borderLeft: "40px solid" + this.props.theme.background,
+                zIndex: "2"
+            };
+            var lineStyle = {
+                display: "block",
+                width: "100%",
+                height: "8vh",
+                zIndex: "1",
+                backgroundColor: "#003b42",
+                textAlign: "center",
+                lineHeight: "8vh",
+                fontSize: this.props.theme.fonts[2],
+                fontWeight: "bold"
+            };
+            var arrowStyle = {
+                position: "relative",
+                top: "-8vh",
+                left: "100%",
+                width: 0,
+                height: 0,
+                borderTop: "4vh solid transparent",
+                borderBottom: "4vh solid transparent",
+                borderLeft: "40px solid #003b42",
+                zIndex: "3"
+            };
+            var dictStyle = {
+                position: "absolute",
+                width: "90%",
+                left: "5%",
+                top: "53vh"
+            };
+            var descStyle = {
+                display: "inline-block",
+                verticalAlign: "middle",
+                backgroundColor: "#d9dbdd",
+                width: singleWidth - 8 + "%",
+                margin: "0 2%",
+                padding: "15px 2%",
+                color: "black",
+                textAlign: "center",
+                borderRadius: "5px"
+            };
+            var section = [],
+                i = void 0,
+                j = void 0,
+                desc = [],
+                info = void 0;
+            for (i = 2; i < this.props.script.length; i++) {
+                section.push(_react2.default.createElement(
+                    "div",
+                    { key: "content" + i, style: holderStyle },
+                    _react2.default.createElement("div", { style: emptyStyle }),
+                    _react2.default.createElement(
+                        "div",
+                        { style: lineStyle },
+                        this.props.script[i]
+                    ),
+                    _react2.default.createElement("div", { style: arrowStyle })
+                ));
+                findDesc: for (j = 0; j < this.props.data.length; j++) {
+                    if (this.props.data[j][0] === this.props.script[i]) {
+                        info = this.props.data[j][3];
+                        break findDesc;
+                    }
+                }
+                desc.push(_react2.default.createElement(
+                    "div",
+                    { key: "info" + i, style: descStyle },
+                    info
+                ));
+            }
+            return _react2.default.createElement(
+                "main",
+                { id: "main", style: mainStyle },
+                _react2.default.createElement("div", { style: headerStyle }),
+                _react2.default.createElement(
+                    "div",
+                    { style: titleStyle },
+                    this.props.script[0]
+                ),
+                _react2.default.createElement(
+                    "section",
+                    { style: sectionStyle },
+                    section
+                ),
+                _react2.default.createElement(
+                    "section",
+                    { style: dictStyle },
+                    desc
+                )
+            );
+        }
+    }]);
+
+    return IndexDefaultHouse;
+}(_react.Component);
+
+exports.default = IndexDefaultHouse;
 
 /***/ })
 /******/ ]);

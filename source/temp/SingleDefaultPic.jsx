@@ -61,17 +61,27 @@ class SingleDefaultPic extends Component {
             fontSize: this.props.theme.fontSize[ 2 ],
             fontFamily: this.props.theme.fontFamily
         };
-        let details = this.props.script[ this.props.page ].detail.map((detail, index) =>
-            <li key={ "details" + index } style={ liStyle }>{ detail }</li>
-        );
+        let details
+        if ( this.props.script[ this.props.page ].detail.length > 0 ) {
+            details = this.props.script[ this.props.page ].detail.map((detail, index) =>
+                <li key={ "details" + index } style={ liStyle }>{ detail }</li>
+            );
+        } else {
+            details = [
+                <li style={ liStyle }>Details shows here</li>,
+                <li style={ liStyle }>Details shows here</li>,
+                <li style={ liStyle }>Details shows here</li>,
+                <li style={ liStyle }>Details shows here</li>
+            ];
+        }
 		return (
             <div id="content" style={ mainStyle }>
                 <header style={ headerStyle }>
                     <div style={ titleStyle }>
-                        { this.props.script[ this.props.page ].title }
+                        { this.props.script[ this.props.page ].title || "Title shows here" }
                     </div>
                     <div style={ descStyle }>
-                        { this.props.script[ this.props.page ].desc }
+                        { this.props.script[ this.props.page ].desc || "Description shows here" }
                     </div>
                 </header>
                 <div style={ lineStyle }></div>
