@@ -6393,7 +6393,8 @@ module.exports = {
 	Ban: {
 		//each template consist of title, desc, detail, image four fields
 		//if desc, detail, image fields are not required by any template they could be banned here
-		"CoverDefaultFull": ["Detail"]
+		"CoverDefaultFull": ["Detail"],
+		"IndexDefaultHouse": ["Desc", "Image"]
 	}
 };
 
@@ -9706,6 +9707,7 @@ var Editor = function (_Component) {
             addType: 0,
             addTemplate: 0,
             addTitle: "",
+            addCheck: [],
             addDesc: "",
             addFile: null,
             addDetail: [],
@@ -9817,6 +9819,18 @@ var Editor = function (_Component) {
         value: function addTemplate(e) {
             this.setState({ addTemplate: e.target.value });
         }
+        //change checked single pages for index template
+
+    }, {
+        key: "addCheck",
+        value: function addCheck(e) {
+            if (this.state.addCheck.indexOf(e.target.value) === -1) {
+                this.state.addCheck.push(e.target.value);
+            } else {
+                this.state.addCheck.splice(this.state.addCheck.indexOf(e.target.value), 1);
+            }
+            this.setState({ addCheck: this.state.addCheck });
+        }
         //change content of new title
 
     }, {
@@ -9899,6 +9913,7 @@ var Editor = function (_Component) {
                 temporary = [{
                     "type": this.state.addType,
                     "template": this.state.addTemplate,
+                    "check": this.state.addCheck,
                     "title": this.state.addTitle,
                     "desc": this.state.addDesc,
                     "image": this.state.addFile,
@@ -10148,6 +10163,27 @@ var Editor = function (_Component) {
                             temps
                         )
                     ),
+                    this.state.addType === "Index" ? _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { id: "aside-new-box-check", className: "layout-fonts" },
+                            "Link with Single pages:"
+                        ),
+                        this.state.script.map(function (s) {
+                            return s.type === "Single" ? _react2.default.createElement(
+                                "label",
+                                { key: "addcheck" + s.title },
+                                _react2.default.createElement("input", {
+                                    type: "checkbox",
+                                    value: s.title,
+                                    onChange: _this3.addCheck.bind(_this3)
+                                }),
+                                s.title
+                            ) : null;
+                        })
+                    ) : null,
                     _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
@@ -10193,7 +10229,7 @@ var Editor = function (_Component) {
                         })
                     ) : null,
                     this.state.addFile ? _react2.default.createElement("img", { src: "../workspace/storage/" + this.state.addFile }) : null,
-                    !ban || ban.indexOf("Detail") === -1 ? _react2.default.createElement(
+                    this.state.addType !== "Index" && (!ban || ban.indexOf("Detail") === -1) ? _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
                         _react2.default.createElement(
@@ -23232,10 +23268,10 @@ var IndexDefaultHouse = function (_Component) {
         key: "render",
         value: function render() {
             var mainStyle = {
-                height: "94vh",
+                height: "85vh",
                 backgroundColor: this.props.theme.background
             };
-            var fullWidth = window.innerWidth;
+            var fullWidth = document.getElementById("main").offsetWidth;
             var headerStyle = {
                 width: 0,
                 height: 0,
@@ -23250,7 +23286,7 @@ var IndexDefaultHouse = function (_Component) {
                 width: "100%",
                 color: "white",
                 textAlign: "center",
-                fontSize: this.props.theme.fonts[1],
+                fontSize: this.props.theme.fontSize[1],
                 position: "absolute",
                 top: "15vh"
             };
@@ -23289,7 +23325,7 @@ var IndexDefaultHouse = function (_Component) {
                 backgroundColor: "#003b42",
                 textAlign: "center",
                 lineHeight: "8vh",
-                fontSize: this.props.theme.fonts[2],
+                fontSize: this.props.theme.fontSize[2],
                 fontWeight: "bold"
             };
             var arrowStyle = {
@@ -23349,14 +23385,15 @@ var IndexDefaultHouse = function (_Component) {
                     info
                 ));
             }
+            console.log(this.props.script[this.props.page].check);
             return _react2.default.createElement(
-                "main",
-                { id: "main", style: mainStyle },
+                "div",
+                { id: "content", style: mainStyle },
                 _react2.default.createElement("div", { style: headerStyle }),
                 _react2.default.createElement(
                     "div",
                     { style: titleStyle },
-                    this.props.script[0]
+                    this.props.script[this.props.page].title || "Title shows here"
                 ),
                 _react2.default.createElement(
                     "section",

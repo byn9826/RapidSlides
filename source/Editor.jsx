@@ -22,6 +22,7 @@ class Editor extends Component {
             addType: 0,
             addTemplate: 0,
             addTitle: "",
+            addCheck: [],
             addDesc: "",
             addFile: null,
             addDetail: [],
@@ -106,6 +107,15 @@ class Editor extends Component {
     addTemplate( e ) {
         this.setState({ addTemplate: e.target.value });
     }
+    //change checked single pages for index template
+    addCheck( e ) {
+        if ( this.state.addCheck.indexOf( e.target.value ) === -1 ) {
+            this.state.addCheck.push( e.target.value );
+        } else {
+            this.state.addCheck.splice( this.state.addCheck.indexOf( e.target.value ), 1 );
+        }
+        this.setState({ addCheck: this.state.addCheck });
+    }
     //change content of new title
     addTitle( e ) {
         this.setState({ addTitle: e.target.value });
@@ -161,6 +171,7 @@ class Editor extends Component {
             temporary = [{
                 "type": this.state.addType,
                 "template": this.state.addTemplate,
+                "check": this.state.addCheck,
                 "title": this.state.addTitle,
                 "desc": this.state.addDesc,
                 "image": this.state.addFile,
@@ -216,7 +227,9 @@ class Editor extends Component {
                             <ul className="layout-fonts">
                                 {
                                     slide.detail.map(( a, i ) =>
-                                        <li key={ "sl" + index + "de" + i } className="layout-fonts">{ a }</li>
+                                        <li key={ "sl" + index + "de" + i } className="layout-fonts">
+                                            { a }
+                                        </li>
                                     )
                                 }
                             </ul>
@@ -311,6 +324,27 @@ class Editor extends Component {
                             {temps}
                         </select>
                     </div>
+                    {
+                        this.state.addType === "Index" ? (
+                            <div className="aside-new-box">
+                                <span id="aside-new-box-check" className="layout-fonts">Link with Single pages:</span>
+                                {
+                                    this.state.script.map( ( s ) => 
+                                        s.type === "Single" ? (
+                                            <label key={ "addcheck" + s.title }>
+                                                <input 
+                                                    type="checkbox"
+                                                    value={ s.title }
+                                                    onChange={ this.addCheck.bind( this ) } 
+                                                />
+                                                { s.title }
+                                            </label>
+                                        ): null
+                                    )
+                                }
+                            </div>
+                        ): null
+                    }
                     <div className="aside-new-box">
                         <span className="layout-fonts">Title:</span>
                         <input 
@@ -351,7 +385,7 @@ class Editor extends Component {
                         ): null
                     }
                     {
-                        !ban || ban.indexOf( "Detail" ) === -1 ? (
+                        ( ( this.state.addType !== "Index" ) && ( !ban || ban.indexOf( "Detail" ) === -1 ) ) ? (
                             <div className="aside-new-box">
                                 <span className="layout-fonts">
                                     Details: Separate by ";"

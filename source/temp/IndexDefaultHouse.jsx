@@ -4,10 +4,10 @@ import React, { Component } from 'react';
 class IndexDefaultHouse extends Component {
     render() {
         let mainStyle = {
-            height: "94vh",
+            height: "85vh",
             backgroundColor: this.props.theme.background,
         };
-        let fullWidth = window.innerWidth;
+        let fullWidth = document.getElementById( "main" ).offsetWidth;
         let headerStyle = {
             width: 0,
             height: 0,
@@ -22,7 +22,7 @@ class IndexDefaultHouse extends Component {
             width: "100%",
             color: "white",
             textAlign: "center",
-            fontSize: this.props.theme.fonts[1],
+            fontSize: this.props.theme.fontSize[ 1 ],
             position: "absolute",
             top: "15vh"
         };
@@ -61,7 +61,7 @@ class IndexDefaultHouse extends Component {
             backgroundColor: "#003b42",
             textAlign: "center",
             lineHeight: "8vh",
-            fontSize: this.props.theme.fonts[2],
+            fontSize: this.props.theme.fontSize[ 2 ],
             fontWeight: "bold"
         };
         let arrowStyle = {
@@ -116,11 +116,12 @@ class IndexDefaultHouse extends Component {
                 </div>
             );
         }
+        console.log( this.props.script[ this.props.page ].check );
 		return (
-            <main id="main" style={ mainStyle }>
+            <div id="content" style={ mainStyle }>
                 <div style={ headerStyle }></div>
                 <div style={ titleStyle }>
-                    { this.props.script[ 0 ] }
+                    { this.props.script[ this.props.page ].title || "Title shows here" }
                 </div>
                 <section style={ sectionStyle }>
                     { section }
@@ -128,7 +129,7 @@ class IndexDefaultHouse extends Component {
                 <section style={ dictStyle }>
                     { desc }
                 </section>
-            </main>
+            </div>
 		);
 	}
 }

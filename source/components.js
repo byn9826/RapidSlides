@@ -20,6 +20,7 @@ module.exports = {
 	Ban: {
 		//each template consist of title, desc, detail, image four fields
 		//if desc, detail, image fields are not required by any template they could be banned here
-		"CoverDefaultFull": [ "Detail" ]
+		"CoverDefaultFull": [ "Detail" ],
+		"IndexDefaultHouse": [ "Desc", "Image" ]
 	}
 };

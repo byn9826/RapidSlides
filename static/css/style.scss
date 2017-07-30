@@ -227,9 +227,21 @@ ul{
         padding: 3px 2%;
         height: 50px;
     }
+    label{
+        @extend .inline-middle;
+        text-align: center;
+        font-size: $font-normal;
+    }
+    input[type="checkbox"]{
+        @extend .inline-middle;
+        width: auto;
+    }
 }
 
-
+#aside-new-box-check{
+    display: block;
+    margin-bottom: 5px;
+}
 
 .aside-new-button{
     @extend .inline-middle;
