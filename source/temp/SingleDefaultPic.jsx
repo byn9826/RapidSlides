@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 
 class SingleDefaultPic extends Component {
+    constructor( props ) {
+        super( props );
+		this.state = {
+            fullHeight: null
+		};
+    }
+    componentDidMount() {
+        this.setState({ fullHeight: document.getElementById( "temp-main" ).offsetHeight });
+    }
     render() {
         let mainStyle = {
             height: "81vh",
@@ -40,12 +49,12 @@ class SingleDefaultPic extends Component {
         };
         let sectionStyle = {
             display: "block",
-            marginTop: "10vh"
+            marginTop: 0.1 * this.state.fullHeight + "px"
         };
         let imgStyle = {
             display: "inline-block",
             width: "35%",
-            height: "50vh",
+            height: 0.5 * this.state.fullHeight + "px",
             backgroundImage: "url(../workspace/storage/" + this.props.script[ this.props.page ].image + ")",
             backgroundSize: "cover",
             verticalAlign: "middle"
@@ -68,10 +77,10 @@ class SingleDefaultPic extends Component {
             );
         } else {
             details = [
-                <li style={ liStyle }>Details shows here</li>,
-                <li style={ liStyle }>Details shows here</li>,
-                <li style={ liStyle }>Details shows here</li>,
-                <li style={ liStyle }>Details shows here</li>
+                <li key="detiali1" style={ liStyle }>Details shows here</li>,
+                <li key="detiali2" style={ liStyle }>Details shows here</li>,
+                <li key="detiali3" style={ liStyle }>Details shows here</li>,
+                <li key="detiali4" style={ liStyle }>Details shows here</li>
             ];
         }
 		return (

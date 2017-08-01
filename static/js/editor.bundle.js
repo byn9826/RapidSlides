@@ -9919,6 +9919,7 @@ var Editor = function (_Component) {
                     "image": this.state.addFile,
                     "detail": this.state.addDetail.length > 0 ? this.state.addDetail.split(";") : []
                 }];
+                temporary = temporary.concat(this.state.script);
                 content = _build2.default.buildContent(this.state.theme, temporary, 0);
                 footer = _build2.default.buildFooter(this.state.theme, temporary, 0);
             }
@@ -10280,7 +10281,7 @@ var Editor = function (_Component) {
                 _react2.default.createElement(
                     "main",
                     {
-                        id: "main",
+                        id: "temp-main",
                         style: mainStyle,
                         className: this.state.trans,
                         key: "trans" + this.state.page
@@ -10366,13 +10367,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var CoverDefaultFull = function (_Component) {
     _inherits(CoverDefaultFull, _Component);
 
-    function CoverDefaultFull() {
+    function CoverDefaultFull(props) {
         _classCallCheck(this, CoverDefaultFull);
 
-        return _possibleConstructorReturn(this, (CoverDefaultFull.__proto__ || Object.getPrototypeOf(CoverDefaultFull)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (CoverDefaultFull.__proto__ || Object.getPrototypeOf(CoverDefaultFull)).call(this, props));
+
+        _this.state = {
+            fullHeight: null
+        };
+        return _this;
     }
 
     _createClass(CoverDefaultFull, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.setState({ fullHeight: document.getElementById("temp-main").offsetHeight });
+        }
+    }, {
         key: "render",
         value: function render() {
             var contentStyle = {
@@ -10385,8 +10396,8 @@ var CoverDefaultFull = function (_Component) {
                 color: "white",
                 width: "60%",
                 right: 0,
-                top: "45vh",
-                minHeight: "18vh",
+                top: 0.45 * this.state.fullHeight + "px",
+                minHeight: 0.18 * this.state.fullHeight + "px",
                 borderRadius: "5px 0 0 5px",
                 position: "absolute",
                 padding: "10px 1%",
@@ -10521,13 +10532,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var SingleDefaultPic = function (_Component) {
     _inherits(SingleDefaultPic, _Component);
 
-    function SingleDefaultPic() {
+    function SingleDefaultPic(props) {
         _classCallCheck(this, SingleDefaultPic);
 
-        return _possibleConstructorReturn(this, (SingleDefaultPic.__proto__ || Object.getPrototypeOf(SingleDefaultPic)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (SingleDefaultPic.__proto__ || Object.getPrototypeOf(SingleDefaultPic)).call(this, props));
+
+        _this.state = {
+            fullHeight: null
+        };
+        return _this;
     }
 
     _createClass(SingleDefaultPic, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.setState({ fullHeight: document.getElementById("temp-main").offsetHeight });
+        }
+    }, {
         key: "render",
         value: function render() {
             var mainStyle = {
@@ -10568,12 +10589,12 @@ var SingleDefaultPic = function (_Component) {
             };
             var sectionStyle = {
                 display: "block",
-                marginTop: "10vh"
+                marginTop: 0.1 * this.state.fullHeight + "px"
             };
             var imgStyle = {
                 display: "inline-block",
                 width: "35%",
-                height: "50vh",
+                height: 0.5 * this.state.fullHeight + "px",
                 backgroundImage: "url(../workspace/storage/" + this.props.script[this.props.page].image + ")",
                 backgroundSize: "cover",
                 verticalAlign: "middle"
@@ -10601,19 +10622,19 @@ var SingleDefaultPic = function (_Component) {
             } else {
                 details = [_react2.default.createElement(
                     "li",
-                    { style: liStyle },
+                    { key: "detiali1", style: liStyle },
                     "Details shows here"
                 ), _react2.default.createElement(
                     "li",
-                    { style: liStyle },
+                    { key: "detiali2", style: liStyle },
                     "Details shows here"
                 ), _react2.default.createElement(
                     "li",
-                    { style: liStyle },
+                    { key: "detiali3", style: liStyle },
                     "Details shows here"
                 ), _react2.default.createElement(
                     "li",
-                    { style: liStyle },
+                    { key: "detiali4", style: liStyle },
                     "Details shows here"
                 )];
             }
@@ -23258,28 +23279,43 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var IndexDefaultHouse = function (_Component) {
     _inherits(IndexDefaultHouse, _Component);
 
-    function IndexDefaultHouse() {
+    function IndexDefaultHouse(props) {
         _classCallCheck(this, IndexDefaultHouse);
 
-        return _possibleConstructorReturn(this, (IndexDefaultHouse.__proto__ || Object.getPrototypeOf(IndexDefaultHouse)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (IndexDefaultHouse.__proto__ || Object.getPrototypeOf(IndexDefaultHouse)).call(this, props));
+
+        _this.state = {
+            fullHeight: null,
+            fullWidth: null
+        };
+        return _this;
     }
 
     _createClass(IndexDefaultHouse, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.setState({
+                fullHeight: document.getElementById("temp-main").offsetHeight,
+                fullWidth: document.getElementById("temp-main").offsetWidth
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
+            var _this2 = this;
+
             var mainStyle = {
                 height: "85vh",
                 backgroundColor: this.props.theme.background
             };
-            var fullWidth = document.getElementById("main").offsetWidth;
             var headerStyle = {
                 width: 0,
                 height: 0,
-                borderLeft: fullWidth * 0.45 + "px solid transparent",
-                borderRight: fullWidth * 0.45 + "px solid transparent",
-                borderBottom: "16vh solid #590808",
+                borderLeft: this.state.fullWidth * 0.45 + "px solid transparent",
+                borderRight: this.state.fullWidth * 0.45 + "px solid transparent",
+                borderBottom: 0.16 * this.state.fullHeight + "px solid #590808",
                 position: "absolute",
-                top: "8vh",
+                top: 0.08 * this.state.fullHeight + "px",
                 left: "5%"
             };
             var titleStyle = {
@@ -23288,54 +23324,55 @@ var IndexDefaultHouse = function (_Component) {
                 textAlign: "center",
                 fontSize: this.props.theme.fontSize[1],
                 position: "absolute",
-                top: "15vh"
+                top: 0.15 * this.state.fullHeight + "px"
             };
             var sectionStyle = {
                 position: "absolute",
                 width: "90%",
                 left: "5%",
-                top: "24vh"
+                top: 0.24 * this.state.fullHeight + "px"
             };
-            var singleWidth = 100 / (this.props.script.length - 2);
+            var singleWidth = void 0;
+            this.props.script[this.props.page].check.length !== 0 ? singleWidth = 100 / this.props.script[this.props.page].check.length : singleWidth = 100 / 3;
             var holderStyle = {
                 display: "inline-block",
                 color: "white",
                 width: singleWidth - 0.5 + "%",
-                height: "55vh",
-                margin: "5vh 0.25%",
+                height: 0.55 * this.state.fullHeight + "px",
+                margin: 0.05 * this.state.fullHeight + "px 0.25%",
                 backgroundColor: "#ffe9bf",
                 borderRadius: "5px"
             };
             var emptyStyle = {
                 position: "relative",
-                top: "8vh",
+                top: 0.08 * this.state.fullHeight + "px",
                 left: "101%",
                 width: 0,
                 height: 0,
-                borderTop: "4vh solid transparent",
-                borderBottom: "4vh solid transparent",
+                borderTop: 0.04 * this.state.fullHeight + "px solid transparent",
+                borderBottom: 0.04 * this.state.fullHeight + "px solid transparent",
                 borderLeft: "40px solid" + this.props.theme.background,
                 zIndex: "2"
             };
             var lineStyle = {
                 display: "block",
                 width: "100%",
-                height: "8vh",
+                height: 0.08 * this.state.fullHeight + "px",
                 zIndex: "1",
                 backgroundColor: "#003b42",
                 textAlign: "center",
-                lineHeight: "8vh",
+                lineHeight: 0.08 * this.state.fullHeight + "px",
                 fontSize: this.props.theme.fontSize[2],
                 fontWeight: "bold"
             };
             var arrowStyle = {
                 position: "relative",
-                top: "-8vh",
+                top: -0.08 * this.state.fullHeight + "px",
                 left: "100%",
                 width: 0,
                 height: 0,
-                borderTop: "4vh solid transparent",
-                borderBottom: "4vh solid transparent",
+                borderTop: 0.04 * this.state.fullHeight + "px solid transparent",
+                borderBottom: 0.04 * this.state.fullHeight + "px solid transparent",
                 borderLeft: "40px solid #003b42",
                 zIndex: "3"
             };
@@ -23343,7 +23380,7 @@ var IndexDefaultHouse = function (_Component) {
                 position: "absolute",
                 width: "90%",
                 left: "5%",
-                top: "53vh"
+                top: 0.53 * this.state.fullHeight + "px"
             };
             var descStyle = {
                 display: "inline-block",
@@ -23357,35 +23394,76 @@ var IndexDefaultHouse = function (_Component) {
                 borderRadius: "5px"
             };
             var section = [],
-                i = void 0,
-                j = void 0,
-                desc = [],
-                info = void 0;
-            for (i = 2; i < this.props.script.length; i++) {
-                section.push(_react2.default.createElement(
+                desc = [];
+            if (this.props.script[this.props.page].check.length !== 0) {
+                this.props.script[this.props.page].check.forEach(function (a, i) {
+                    _this2.props.script.forEach(function (b) {
+                        if (b.title === a) {
+                            section.push(_react2.default.createElement(
+                                "div",
+                                { key: "content" + i, style: holderStyle },
+                                _react2.default.createElement("div", { style: emptyStyle }),
+                                _react2.default.createElement(
+                                    "div",
+                                    { style: lineStyle },
+                                    b.title
+                                ),
+                                _react2.default.createElement("div", { style: arrowStyle })
+                            ));
+                            desc.push(_react2.default.createElement(
+                                "div",
+                                { key: "info" + i, style: descStyle },
+                                b.desc
+                            ));
+                        }
+                    });
+                });
+            } else {
+                section = [_react2.default.createElement(
                     "div",
-                    { key: "content" + i, style: holderStyle },
+                    { key: "contenti1", style: holderStyle },
                     _react2.default.createElement("div", { style: emptyStyle }),
                     _react2.default.createElement(
                         "div",
                         { style: lineStyle },
-                        this.props.script[i]
+                        "1st key point"
                     ),
                     _react2.default.createElement("div", { style: arrowStyle })
-                ));
-                findDesc: for (j = 0; j < this.props.data.length; j++) {
-                    if (this.props.data[j][0] === this.props.script[i]) {
-                        info = this.props.data[j][3];
-                        break findDesc;
-                    }
-                }
-                desc.push(_react2.default.createElement(
+                ), _react2.default.createElement(
                     "div",
-                    { key: "info" + i, style: descStyle },
-                    info
-                ));
+                    { key: "contenti2", style: holderStyle },
+                    _react2.default.createElement("div", { style: emptyStyle }),
+                    _react2.default.createElement(
+                        "div",
+                        { style: lineStyle },
+                        "2nd key point"
+                    ),
+                    _react2.default.createElement("div", { style: arrowStyle })
+                ), _react2.default.createElement(
+                    "div",
+                    { key: "contenti3", style: holderStyle },
+                    _react2.default.createElement("div", { style: emptyStyle }),
+                    _react2.default.createElement(
+                        "div",
+                        { style: lineStyle },
+                        "3rd key point"
+                    ),
+                    _react2.default.createElement("div", { style: arrowStyle })
+                )];
+                desc = [_react2.default.createElement(
+                    "div",
+                    { key: "infoi1", style: descStyle },
+                    "1st desc shows here"
+                ), _react2.default.createElement(
+                    "div",
+                    { key: "infoi2", style: descStyle },
+                    "2nd desc shows here"
+                ), _react2.default.createElement(
+                    "div",
+                    { key: "infoi3", style: descStyle },
+                    "3rd desc shows here"
+                )];
             }
-            console.log(this.props.script[this.props.page].check);
             return _react2.default.createElement(
                 "div",
                 { id: "content", style: mainStyle },

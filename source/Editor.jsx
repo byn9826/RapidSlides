@@ -177,6 +177,7 @@ class Editor extends Component {
                 "image": this.state.addFile,
                 "detail": this.state.addDetail.length > 0? this.state.addDetail.split( ";" ) : []
             }];
+            temporary = temporary.concat( this.state.script );
             content = Build.buildContent( this.state.theme, temporary, 0 );
             footer = Build.buildFooter( this.state.theme, temporary, 0 );
         }
@@ -426,7 +427,7 @@ class Editor extends Component {
                     { slides }
                 </aside>
                 <main 
-                    id="main" 
+                    id="temp-main" 
                     style={ mainStyle } 
                     className={ this.state.trans } 
                     key={ "trans" + this.state.page }

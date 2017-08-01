@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 
 class CoverDefaultFull extends Component {
+    constructor( props ) {
+        super( props );
+		this.state = {
+            fullHeight: null
+		};
+    }
+    componentDidMount() {
+        this.setState({ fullHeight: document.getElementById( "temp-main" ).offsetHeight });
+    }
     render() {
         const contentStyle = {
             height: "90vh",
@@ -12,8 +21,8 @@ class CoverDefaultFull extends Component {
             color: "white",
             width: "60%",
             right: 0,
-            top: "45vh",
-            minHeight: "18vh",
+            top: 0.45 * this.state.fullHeight + "px",
+            minHeight: 0.18 * this.state.fullHeight + "px",
             borderRadius: "5px 0 0 5px",
             position: "absolute",
             padding: "10px 1%",
