@@ -30,7 +30,8 @@ class Editor extends Component {
             //confirm delete slide
             confirmDelete: null,
             //status of edit slide
-            editPage: null
+            editPage: null,
+            newPage: null
 		};
 	}
     componentWillMount() {
@@ -49,7 +50,7 @@ class Editor extends Component {
     }
     //click slide on side bar
     clickSlide( index ) {
-        if ( this.state.add ) {
+        if ( this.state.add || this.state.editPage ) {
             forceAdd();
         } else {
             this.setState({ trans: "down", page: index });
@@ -57,12 +58,16 @@ class Editor extends Component {
     }
     //click add slide button
     clickAdd() {
-        this.setState({ add: true, page: this.state.script.length + 1 });
+        if ( !this.state.editPage ) {
+            this.setState({ add: true, page: this.state.script.length + 1, confirmDelete: null });
+        } else {
+            forceAdd();
+        }
     }
     //cancal add slide button
     cancelAdd() {
         this.setState({ 
-            add: false, addType: 0, addTemplate: 0, addTitle: "", 
+            add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [],
             addDesc: "", addDetail: "", page: 0, addWarn: null
         });
     }
@@ -87,8 +92,9 @@ class Editor extends Component {
             this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
             saveFile( this.props.loc, this.state.file );
             this.setState({
-                add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: [], 
-                addFile: null, page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
+                add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [], addDesc: "", 
+                addDetail: [], addFile: null, page: this.state.addNum - 1, addNum: script.length + 1, 
+                addWarn: null
             });
         }
     }
@@ -140,7 +146,7 @@ class Editor extends Component {
     }
     //delete a slide
     slideDelete( k ) {
-        if ( !this.state.add ) {
+        if ( !this.state.add && !this.state.editPage ) {
             this.setState({ confirmDelete: k, page: k });
         } else {
             forceAdd();
@@ -157,6 +163,18 @@ class Editor extends Component {
         saveFile( this.props.loc, this.state.file );
         this.setState({ page: 0, confirmDelete: null, addNum: this.state.script.length + 1 });
     }
+    //click edit slide
+    clickEdit( i ) {
+        if ( !this.state.add ) {
+            this.setState({ confirmDelete: null, editPage: i, changePage: i + 1 });
+        } else {
+            forceAdd();
+        }
+    }
+    //change page number
+    changePage( e ) {
+        this.setState({ changePage: e.target.value });
+    }
     render() {
         const mainStyle = {
             position: "absolute",
@@ -167,11 +185,13 @@ class Editor extends Component {
         };
         //build main, footer for slides
         let content, footer, temporary;
-        if ( !this.state.add ) {
+        if ( !this.state.add && isNaN ( this.state.editPage ) ) {
+            //normal display
             content = Build.buildContent( this.state.theme, this.state.script, this.state.page );
             footer = Build.buildFooter( this.state.theme, this.state.script, this.state.page );
         } else {
-            temporary = [{
+            //display add new preview
+            temporary = {
                 "type": this.state.addType,
                 "template": this.state.addTemplate,
                 "check": this.state.addCheck,
@@ -179,10 +199,17 @@ class Editor extends Component {
                 "desc": this.state.addDesc,
                 "image": this.state.addFile,
                 "detail": this.state.addDetail.length > 0? this.state.addDetail.split( ";" ) : []
-            }];
-            temporary = temporary.concat( this.state.script );
-            content = Build.buildContent( this.state.theme, temporary, 0 );
-            footer = Build.buildFooter( this.state.theme, temporary, 0 );
+            };
+            if ( this.state.add ) {
+                //add new preview
+                temporary = [ temporary ].concat( this.state.script );
+                content = Build.buildContent( this.state.theme, temporary, 0 );
+                footer = Build.buildFooter( this.state.theme, temporary, 0 );
+            } else if ( this.state.editPage >= 0 ) {
+                let orig = this.state.script.slice()
+                orig.splice( this.state.editPage, 1, temporary);
+                console.log(orig);
+            }
         }
         //generate editor for slides
         let slides = this.state.script.map( ( slide, index ) =>
@@ -258,6 +285,7 @@ class Editor extends Component {
                             type="button" 
                             className="aside-slide-button layout-fonts" 
                             value="Edit"
+                            onClick={ this.clickEdit.bind( this, index ) }
                         />
                         <input 
                             type="button"  
@@ -290,7 +318,17 @@ class Editor extends Component {
                     }
                 </div>
             ) : (
-                123
+                <div key={ "changeSlide" + index }  className="aside-new">
+                    <div className="aside-new-box">
+                        <span className="layout-fonts">Slide Num:</span>
+                        <input 
+                            className="layout-fonts" 
+                            type="number" 
+                            value={ this.state.changePage }
+                            onChange={ this.changePage.bind( this ) } 
+                        />
+                    </div>
+                </div>
             )
         );
         //show new slide editor
@@ -308,7 +346,7 @@ class Editor extends Component {
                 ban = Com.Ban[ this.state.addType + this.state.addTemplate ];
             }
             add = (
-                <div id="aside-new">
+                <div className="aside-new">
                     <div className="aside-new-box">
                         <span className="layout-fonts">Slide Num:</span>
                         <input 
@@ -504,5 +542,5 @@ function copyFile( loc, file ) {
 }
 
 function forceAdd() {
-    alert( "Please finish edit new slide first" );
+    alert( "Please finish add or edit slide first" );
 }

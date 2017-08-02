@@ -164,13 +164,13 @@ ul {
   background-color: white;
   cursor: pointer; }
 
-#aside-new {
+.aside-new {
   margin: 10px 5%;
   width: 80%;
   padding: 15px 5%;
   background-color: #edf2f9; }
 
-#aside-new img {
+.aside-new img {
   display: block;
   width: 90%;
   margin-bottom: 5px; }

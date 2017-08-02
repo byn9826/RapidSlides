@@ -9715,7 +9715,8 @@ var Editor = function (_Component) {
             //confirm delete slide
             confirmDelete: null,
             //status of edit slide
-            editPage: null
+            editPage: null,
+            newPage: null
         };
         return _this;
     }
@@ -9743,7 +9744,7 @@ var Editor = function (_Component) {
     }, {
         key: "clickSlide",
         value: function clickSlide(index) {
-            if (this.state.add) {
+            if (this.state.add || this.state.editPage) {
                 forceAdd();
             } else {
                 this.setState({ trans: "down", page: index });
@@ -9754,7 +9755,11 @@ var Editor = function (_Component) {
     }, {
         key: "clickAdd",
         value: function clickAdd() {
-            this.setState({ add: true, page: this.state.script.length + 1 });
+            if (!this.state.editPage) {
+                this.setState({ add: true, page: this.state.script.length + 1, confirmDelete: null });
+            } else {
+                forceAdd();
+            }
         }
         //cancal add slide button
 
@@ -9762,7 +9767,7 @@ var Editor = function (_Component) {
         key: "cancelAdd",
         value: function cancelAdd() {
             this.setState({
-                add: false, addType: 0, addTemplate: 0, addTitle: "",
+                add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [],
                 addDesc: "", addDetail: "", page: 0, addWarn: null
             });
         }
@@ -9790,8 +9795,9 @@ var Editor = function (_Component) {
                 this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
                 saveFile(this.props.loc, this.state.file);
                 this.setState({
-                    add: false, addType: 0, addTemplate: 0, addTitle: "", addDesc: "", addDetail: [],
-                    addFile: null, page: this.state.addNum - 1, addNum: script.length + 1, addWarn: null
+                    add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [], addDesc: "",
+                    addDetail: [], addFile: null, page: this.state.addNum - 1, addNum: script.length + 1,
+                    addWarn: null
                 });
             }
         }
@@ -9870,7 +9876,7 @@ var Editor = function (_Component) {
     }, {
         key: "slideDelete",
         value: function slideDelete(k) {
-            if (!this.state.add) {
+            if (!this.state.add && !this.state.editPage) {
                 this.setState({ confirmDelete: k, page: k });
             } else {
                 forceAdd();
@@ -9893,6 +9899,24 @@ var Editor = function (_Component) {
             saveFile(this.props.loc, this.state.file);
             this.setState({ page: 0, confirmDelete: null, addNum: this.state.script.length + 1 });
         }
+        //click edit slide
+
+    }, {
+        key: "clickEdit",
+        value: function clickEdit(i) {
+            if (!this.state.add) {
+                this.setState({ confirmDelete: null, editPage: i, changePage: i + 1 });
+            } else {
+                forceAdd();
+            }
+        }
+        //change page number
+
+    }, {
+        key: "changePage",
+        value: function changePage(e) {
+            this.setState({ changePage: e.target.value });
+        }
     }, {
         key: "render",
         value: function render() {
@@ -9909,11 +9933,13 @@ var Editor = function (_Component) {
             var content = void 0,
                 footer = void 0,
                 temporary = void 0;
-            if (!this.state.add) {
+            if (!this.state.add && isNaN(this.state.editPage)) {
+                //normal display
                 content = _build2.default.buildContent(this.state.theme, this.state.script, this.state.page);
                 footer = _build2.default.buildFooter(this.state.theme, this.state.script, this.state.page);
             } else {
-                temporary = [{
+                //display add new preview
+                temporary = {
                     "type": this.state.addType,
                     "template": this.state.addTemplate,
                     "check": this.state.addCheck,
@@ -9921,10 +9947,17 @@ var Editor = function (_Component) {
                     "desc": this.state.addDesc,
                     "image": this.state.addFile,
                     "detail": this.state.addDetail.length > 0 ? this.state.addDetail.split(";") : []
-                }];
-                temporary = temporary.concat(this.state.script);
-                content = _build2.default.buildContent(this.state.theme, temporary, 0);
-                footer = _build2.default.buildFooter(this.state.theme, temporary, 0);
+                };
+                if (this.state.add) {
+                    //add new preview
+                    temporary = [temporary].concat(this.state.script);
+                    content = _build2.default.buildContent(this.state.theme, temporary, 0);
+                    footer = _build2.default.buildFooter(this.state.theme, temporary, 0);
+                } else if (this.state.editPage >= 0) {
+                    var orig = this.state.script.slice();
+                    orig.splice(this.state.editPage, 1, temporary);
+                    console.log(orig);
+                }
             }
             //generate editor for slides
             var slides = this.state.script.map(function (slide, index) {
@@ -10047,7 +10080,8 @@ var Editor = function (_Component) {
                         _react2.default.createElement("input", {
                             type: "button",
                             className: "aside-slide-button layout-fonts",
-                            value: "Edit"
+                            value: "Edit",
+                            onClick: _this3.clickEdit.bind(_this3, index)
                         }),
                         _react2.default.createElement("input", {
                             type: "button",
@@ -10077,7 +10111,25 @@ var Editor = function (_Component) {
                             onClick: _this3.confirmDelete.bind(_this3)
                         })
                     ) : null
-                ) : 123;
+                ) : _react2.default.createElement(
+                    "div",
+                    { key: "changeSlide" + index, className: "aside-new" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Slide Num:"
+                        ),
+                        _react2.default.createElement("input", {
+                            className: "layout-fonts",
+                            type: "number",
+                            value: _this3.state.changePage,
+                            onChange: _this3.changePage.bind(_this3)
+                        })
+                    )
+                );
             });
             //show new slide editor
             var add = void 0;
@@ -10100,7 +10152,7 @@ var Editor = function (_Component) {
                 }
                 add = _react2.default.createElement(
                     "div",
-                    { id: "aside-new" },
+                    { className: "aside-new" },
                     _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
@@ -10352,7 +10404,7 @@ function copyFile(loc, file) {
 }
 
 function forceAdd() {
-    alert("Please finish edit new slide first");
+    alert("Please finish add or edit slide first");
 }
 /* WEBPACK VAR INJECTION */}.call(exports, "source"))
 
