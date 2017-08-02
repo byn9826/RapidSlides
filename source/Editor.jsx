@@ -28,7 +28,9 @@ class Editor extends Component {
             addDetail: [],
             addWarn: null,
             //confirm delete slide
-            confirmDelete: null
+            confirmDelete: null,
+            //status of edit slide
+            editPage: null
 		};
 	}
     componentWillMount() {
@@ -77,6 +79,7 @@ class Editor extends Component {
                 "type": this.state.addType,
                 "template": this.state.addTemplate,
                 "title": this.state.addTitle,
+                "check": this.state.addCheck,
                 "desc": this.state.addDesc,
                 "image": this.state.addFile,
                 "detail": this.state.addDetail.length > 0? this.state.addDetail.split( ";" ): [],
@@ -183,97 +186,112 @@ class Editor extends Component {
         }
         //generate editor for slides
         let slides = this.state.script.map( ( slide, index ) =>
-            <div 
-                key={ "editSlide" + index } 
-                className={ 
-                    this.state.page === index ? "aside-slide aside-focus" : "aside-slide aside-display" 
-                }
-                onClick={ this.clickSlide.bind( this, index )}
-            >
-                <div className="aside-slide-box">
-                    <span className="layout-fonts">Type:</span>
-                    <div className="layout-fonts">{ slide.type }</div>
+            index !== this.state.editPage ? (
+                <div 
+                    key={ "editSlide" + index } 
+                    className={ 
+                        this.state.page === index ? "aside-slide aside-focus" : "aside-slide aside-display" 
+                    }
+                    onClick={ this.clickSlide.bind( this, index )}
+                >
+                    <div className="aside-slide-box">
+                        <span className="layout-fonts">Type:</span>
+                        <div className="layout-fonts">{ slide.type }</div>
+                    </div>
+                    <div className="aside-slide-box">
+                        <span className="layout-fonts">Template:</span>
+                        <div className="layout-fonts">{ slide.template }</div>
+                    </div>
+                    <div className="aside-slide-box">
+                        <span className="layout-fonts">Title:</span>
+                        <div className="layout-fonts">{ slide.title }</div>
+                    </div>
+                    {
+                        slide.type === "Index" ? (
+                            <div className="aside-slide-box">
+                                <span className="layout-fonts">Linked with:</span>
+                                <div className="layout-fonts">{ slide.check.join( ", " ) }</div>
+                            </div>
+                        ) : null
+                    }
+                    {
+                        !Com.Ban[ slide.type + slide.template ] || 
+                        Com.Ban[ slide.type + slide.template ].indexOf( "Desc" ) === -1 ? (
+                            <div className="aside-slide-box">
+                                <span className="layout-fonts">Desc:</span>
+                                <div className="layout-fonts">{ slide.desc }</div>
+                            </div>
+                        ) : null
+                    }
+                    {
+                        !Com.Ban[ slide.type + slide.template ] || 
+                        Com.Ban[ slide.type + slide.template ].indexOf( "Image" ) === -1 ? (
+                            <div className="aside-slide-box">
+                                <span className="layout-fonts">Image:</span>
+                                <img src={ "../workspace/storage/" + slide.image } />
+                            </div>
+                        ) : null
+                    }
+                    {
+                        slide.type !== "Index" && 
+                        (
+                            !Com.Ban[ slide.type + slide.template ] || 
+                            Com.Ban[ slide.type + slide.template ].indexOf( "Detail" ) === -1 
+                        ) ? (
+                            <div className="aside-slide-box">
+                                <span className="layout-fonts">Detail:</span>
+                                <ul className="layout-fonts">
+                                    {
+                                        slide.detail.map(( a, i ) =>
+                                            <li key={ "sl" + index + "de" + i } className="layout-fonts">
+                                                { a }
+                                            </li>
+                                        )
+                                    }
+                                </ul>
+                            </div>
+                        ) : null
+                    }
+                    <div className="aside-slide-line">
+                        <div className="aside-slide-num layout-fonts">Slide { index + 1 }</div>
+                        <input 
+                            type="button" 
+                            className="aside-slide-button layout-fonts" 
+                            value="Edit"
+                        />
+                        <input 
+                            type="button"  
+                            className="aside-slide-button layout-fonts" 
+                            value="Delete"
+                            onClick={ this.slideDelete.bind( this, index ) }
+                        />
+                    </div>
+                    {
+                        this.state.confirmDelete === index ?
+                        (
+                            <div id="aside-slide-delete">
+                                <span className="layout-fonts">
+                                    Are you really want to delete this slide?
+                                </span>
+                                <input 
+                                    type="button"  
+                                    className="layout-fonts" 
+                                    value="Cancel"
+                                    onClick={ this.stopDelete.bind( this ) }
+                                />
+                                <input 
+                                    type="button"  
+                                    className="layout-fonts" 
+                                    value="Confirm"
+                                    onClick={ this.confirmDelete.bind( this ) }
+                                />
+                            </div>
+                        ) : null
+                    }
                 </div>
-                <div className="aside-slide-box">
-                    <span className="layout-fonts">Template:</span>
-                    <div className="layout-fonts">{ slide.template }</div>
-                </div>
-                <div className="aside-slide-box">
-                    <span className="layout-fonts">Title:</span>
-                    <div className="layout-fonts">{ slide.title }</div>
-                </div>
-                {
-                    !Com.Ban[ slide.type + slide.template ] || 
-                    Com.Ban[ slide.type + slide.template ].indexOf( "Desc" ) === -1 ? (
-                        <div className="aside-slide-box">
-                            <span className="layout-fonts">Desc:</span>
-                            <div className="layout-fonts">{ slide.desc }</div>
-                        </div>
-                    ) : null
-                }
-                {
-                    !Com.Ban[ slide.type + slide.template ] || 
-                    Com.Ban[ slide.type + slide.template ].indexOf( "Image" ) === -1 ? (
-                        <div className="aside-slide-box">
-                            <span className="layout-fonts">Image:</span>
-                            <img src={ "../workspace/storage/" + slide.image } />
-                        </div>
-                    ) : null
-                }
-                {
-                    !Com.Ban[ slide.type + slide.template ] || 
-                    Com.Ban[ slide.type + slide.template ].indexOf( "Detail" ) === -1 ? (
-                        <div className="aside-slide-box">
-                            <span className="layout-fonts">Detail:</span>
-                            <ul className="layout-fonts">
-                                {
-                                    slide.detail.map(( a, i ) =>
-                                        <li key={ "sl" + index + "de" + i } className="layout-fonts">
-                                            { a }
-                                        </li>
-                                    )
-                                }
-                            </ul>
-                        </div>
-                    ) : null
-                }
-                <div className="aside-slide-line">
-                    <div className="aside-slide-num layout-fonts">Slide { index + 1 }</div>
-                    <input 
-                        type="button" 
-                        className="aside-slide-button layout-fonts" 
-                        value="Edit"
-                    />
-                    <input 
-                        type="button"  
-                        className="aside-slide-button layout-fonts" 
-                        value="Delete"
-                        onClick={ this.slideDelete.bind( this, index ) }
-                    />
-                </div>
-                {
-                    this.state.confirmDelete === index ?
-                    (
-                        <div id="aside-slide-delete">
-                            <span className="layout-fonts">
-                                Are you really want to delete this slide?
-                            </span>
-                            <input 
-                                type="button"  
-                                className="layout-fonts" 
-                                value="Cancel"
-                                onClick={ this.stopDelete.bind( this ) }
-                            />
-                            <input 
-                                type="button"  
-                                className="layout-fonts" 
-                                value="Confirm"
-                                onClick={ this.confirmDelete.bind( this ) }
-                            />
-                        </div>
-                    ) : null
-                }
-            </div>
+            ) : (
+                123
+            )
         );
         //show new slide editor
         let add;
@@ -328,7 +346,13 @@ class Editor extends Component {
                     {
                         this.state.addType === "Index" ? (
                             <div className="aside-new-box">
-                                <span id="aside-new-box-check" className="layout-fonts">Link with Single pages:</span>
+                                <span id="aside-new-box-check" className="layout-fonts">
+                                    {
+                                        this.state.addCheck.length !== 0 ? 
+                                            "Link with Single pages:" : 
+                                            "Please create single pages first"
+                                    }
+                                </span>
                                 {
                                     this.state.script.map( ( s ) => 
                                         s.type === "Single" ? (

@@ -9713,7 +9713,9 @@ var Editor = function (_Component) {
             addDetail: [],
             addWarn: null,
             //confirm delete slide
-            confirmDelete: null
+            confirmDelete: null,
+            //status of edit slide
+            editPage: null
         };
         return _this;
     }
@@ -9780,6 +9782,7 @@ var Editor = function (_Component) {
                     "type": this.state.addType,
                     "template": this.state.addTemplate,
                     "title": this.state.addTitle,
+                    "check": this.state.addCheck,
                     "desc": this.state.addDesc,
                     "image": this.state.addFile,
                     "detail": this.state.addDetail.length > 0 ? this.state.addDetail.split(";") : []
@@ -9925,7 +9928,7 @@ var Editor = function (_Component) {
             }
             //generate editor for slides
             var slides = this.state.script.map(function (slide, index) {
-                return _react2.default.createElement(
+                return index !== _this3.state.editPage ? _react2.default.createElement(
                     "div",
                     {
                         key: "editSlide" + index,
@@ -9974,6 +9977,20 @@ var Editor = function (_Component) {
                             slide.title
                         )
                     ),
+                    slide.type === "Index" ? _react2.default.createElement(
+                        "div",
+                        { className: "aside-slide-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Linked with:"
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { className: "layout-fonts" },
+                            slide.check.join(", ")
+                        )
+                    ) : null,
                     !_components2.default.Ban[slide.type + slide.template] || _components2.default.Ban[slide.type + slide.template].indexOf("Desc") === -1 ? _react2.default.createElement(
                         "div",
                         { className: "aside-slide-box" },
@@ -9998,7 +10015,7 @@ var Editor = function (_Component) {
                         ),
                         _react2.default.createElement("img", { src: "../workspace/storage/" + slide.image })
                     ) : null,
-                    !_components2.default.Ban[slide.type + slide.template] || _components2.default.Ban[slide.type + slide.template].indexOf("Detail") === -1 ? _react2.default.createElement(
+                    slide.type !== "Index" && (!_components2.default.Ban[slide.type + slide.template] || _components2.default.Ban[slide.type + slide.template].indexOf("Detail") === -1) ? _react2.default.createElement(
                         "div",
                         { className: "aside-slide-box" },
                         _react2.default.createElement(
@@ -10060,7 +10077,7 @@ var Editor = function (_Component) {
                             onClick: _this3.confirmDelete.bind(_this3)
                         })
                     ) : null
-                );
+                ) : 123;
             });
             //show new slide editor
             var add = void 0;
@@ -10170,7 +10187,7 @@ var Editor = function (_Component) {
                         _react2.default.createElement(
                             "span",
                             { id: "aside-new-box-check", className: "layout-fonts" },
-                            "Link with Single pages:"
+                            this.state.addCheck.length !== 0 ? "Link with Single pages:" : "Please create single pages first"
                         ),
                         this.state.script.map(function (s) {
                             return s.type === "Single" ? _react2.default.createElement(
