@@ -165,8 +165,14 @@ class Editor extends Component {
     }
     //click edit slide
     clickEdit( i ) {
-        if ( !this.state.add ) {
-            this.setState({ confirmDelete: null, editPage: i, changePage: i + 1 });
+        if ( !this.state.add && !this.state.editPage ) {
+            this.setState({ 
+                confirmDelete: null, editPage: i, changePage: i + 1,
+                addType: this.state.script[ i ].type, addTemplate: this.state.script[ i ].template,
+                addCheck: this.state.script[ i ].check, addTitle: this.state.script[ i ].title,
+                addDesc: this.state.script[ i ].desc, addFile: this.state.script[ i ].image,
+                addDetail: this.state.script[ i ].detail
+            });
         } else {
             forceAdd();
         }
@@ -198,7 +204,7 @@ class Editor extends Component {
                 "title": this.state.addTitle,
                 "desc": this.state.addDesc,
                 "image": this.state.addFile,
-                "detail": this.state.addDetail.length > 0? this.state.addDetail.split( ";" ) : []
+                "detail": this.state.addDetail
             };
             if ( this.state.add ) {
                 //add new preview
@@ -208,7 +214,8 @@ class Editor extends Component {
             } else if ( this.state.editPage >= 0 ) {
                 let orig = this.state.script.slice()
                 orig.splice( this.state.editPage, 1, temporary);
-                console.log(orig);
+                content = Build.buildContent( this.state.theme, orig, this.state.editPage );
+                footer = Build.buildFooter( this.state.theme, orig, this.state.editPage );
             }
         }
         //generate editor for slides
@@ -328,6 +335,86 @@ class Editor extends Component {
                             onChange={ this.changePage.bind( this ) } 
                         />
                     </div>
+                    <div className="aside-new-box">
+                        <span className="layout-fonts">Type:</span>
+                        <select 
+                            className="layout-fonts" 
+                            value={ this.state.addType } 
+                            onChange={ this.addType.bind( this ) }
+                        >
+                            <option disabled value={ 0 }>- Choose -</option>
+                            <option value="Cover">Cover</option>
+                            <option value="Index">Index</option>
+                            <option value="Single">Single</option>
+                            <option value="End">End</option>
+                        </select>
+                    </div>
+                    <div className="aside-new-box">
+                        <span className="layout-fonts">Template:</span>
+                        <select 
+                            className="layout-fonts" 
+                            value={ this.state.addTemplate } 
+                            onChange={ this.addTemplate.bind( this ) }
+                        >
+                            <option disabled value={ 0 }>- Choose -</option>
+                            {
+                                Object.entries( Com[ this.state.addType ] ).map( ( template, index) =>
+                                    <option key={ "temOption" + index } value={ template[ 0 ] }>
+                                        { template[ 0 ] }
+                                    </option>
+                                )
+                            }
+                        </select>
+                    </div>
+                    {
+                        this.state.addType === "Index" ? (
+                            <div className="aside-new-box">
+                                <span id="aside-new-box-check" className="layout-fonts">
+                                    {
+                                        this.state.addCheck.length !== 0 ? 
+                                            "Link with Single pages:" : 
+                                            "Please create single pages first"
+                                    }
+                                </span>
+                                {
+                                    this.state.script.map( ( s ) => 
+                                        s.type === "Single" ? (
+                                            <label key={ "addcheck" + s.title }>
+                                                <input 
+                                                    type="checkbox"
+                                                    value={ s.title }
+                                                    onChange={ this.addCheck.bind( this ) } 
+                                                />
+                                                { s.title }
+                                            </label>
+                                        ): null
+                                    )
+                                }
+                            </div>
+                        ): null
+                    }
+                    <div className="aside-new-box">
+                        <span className="layout-fonts">Title:</span>
+                        <input 
+                            className="layout-fonts" 
+                            type="text" 
+                            value={ this.state.addTitle } 
+                            onChange={ this.addTitle.bind( this ) } 
+                        />
+                    </div>
+                    {
+                        !Com.Ban[ this.state.addType + this.state.addTemplate ] ||
+                        Com.Ban[ this.state.addType + this.state.addTemplate ].indexOf( "Desc" ) === -1 ? (
+                            <div className="aside-new-box">
+                                <span className="layout-fonts">Desc:</span>
+                                <textarea 
+                                    className="layout-fonts" 
+                                    value={ this.state.addDesc } 
+                                    onChange={ this.addDesc.bind( this ) }
+                                />
+                            </div>
+                        ): null
+                    }
                 </div>
             )
         );
@@ -336,7 +423,7 @@ class Editor extends Component {
         let templates, temps;
         if ( Com[ this.state.addType ] ) {
             templates = Object.entries( Com[ this.state.addType ] );
-            temps = templates.map(( template, index) =>
+            temps = templates.map( ( template, index) =>
                 <option key={ "temOption" + index } value={ template[ 0 ] }>{ template[ 0 ] }</option>
             );
         }

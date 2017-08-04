@@ -9904,8 +9904,14 @@ var Editor = function (_Component) {
     }, {
         key: "clickEdit",
         value: function clickEdit(i) {
-            if (!this.state.add) {
-                this.setState({ confirmDelete: null, editPage: i, changePage: i + 1 });
+            if (!this.state.add && !this.state.editPage) {
+                this.setState({
+                    confirmDelete: null, editPage: i, changePage: i + 1,
+                    addType: this.state.script[i].type, addTemplate: this.state.script[i].template,
+                    addCheck: this.state.script[i].check, addTitle: this.state.script[i].title,
+                    addDesc: this.state.script[i].desc, addFile: this.state.script[i].image,
+                    addDetail: this.state.script[i].detail
+                });
             } else {
                 forceAdd();
             }
@@ -9946,7 +9952,7 @@ var Editor = function (_Component) {
                     "title": this.state.addTitle,
                     "desc": this.state.addDesc,
                     "image": this.state.addFile,
-                    "detail": this.state.addDetail.length > 0 ? this.state.addDetail.split(";") : []
+                    "detail": this.state.addDetail
                 };
                 if (this.state.add) {
                     //add new preview
@@ -9956,7 +9962,8 @@ var Editor = function (_Component) {
                 } else if (this.state.editPage >= 0) {
                     var orig = this.state.script.slice();
                     orig.splice(this.state.editPage, 1, temporary);
-                    console.log(orig);
+                    content = _build2.default.buildContent(this.state.theme, orig, this.state.editPage);
+                    footer = _build2.default.buildFooter(this.state.theme, orig, this.state.editPage);
                 }
             }
             //generate editor for slides
@@ -10128,7 +10135,128 @@ var Editor = function (_Component) {
                             value: _this3.state.changePage,
                             onChange: _this3.changePage.bind(_this3)
                         })
-                    )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Type:"
+                        ),
+                        _react2.default.createElement(
+                            "select",
+                            {
+                                className: "layout-fonts",
+                                value: _this3.state.addType,
+                                onChange: _this3.addType.bind(_this3)
+                            },
+                            _react2.default.createElement(
+                                "option",
+                                { disabled: true, value: 0 },
+                                "- Choose -"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "Cover" },
+                                "Cover"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "Index" },
+                                "Index"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "Single" },
+                                "Single"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "End" },
+                                "End"
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Template:"
+                        ),
+                        _react2.default.createElement(
+                            "select",
+                            {
+                                className: "layout-fonts",
+                                value: _this3.state.addTemplate,
+                                onChange: _this3.addTemplate.bind(_this3)
+                            },
+                            _react2.default.createElement(
+                                "option",
+                                { disabled: true, value: 0 },
+                                "- Choose -"
+                            ),
+                            Object.entries(_components2.default[_this3.state.addType]).map(function (template, index) {
+                                return _react2.default.createElement(
+                                    "option",
+                                    { key: "temOption" + index, value: template[0] },
+                                    template[0]
+                                );
+                            })
+                        )
+                    ),
+                    _this3.state.addType === "Index" ? _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { id: "aside-new-box-check", className: "layout-fonts" },
+                            _this3.state.addCheck.length !== 0 ? "Link with Single pages:" : "Please create single pages first"
+                        ),
+                        _this3.state.script.map(function (s) {
+                            return s.type === "Single" ? _react2.default.createElement(
+                                "label",
+                                { key: "addcheck" + s.title },
+                                _react2.default.createElement("input", {
+                                    type: "checkbox",
+                                    value: s.title,
+                                    onChange: _this3.addCheck.bind(_this3)
+                                }),
+                                s.title
+                            ) : null;
+                        })
+                    ) : null,
+                    _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Title:"
+                        ),
+                        _react2.default.createElement("input", {
+                            className: "layout-fonts",
+                            type: "text",
+                            value: _this3.state.addTitle,
+                            onChange: _this3.addTitle.bind(_this3)
+                        })
+                    ),
+                    !_components2.default.Ban[_this3.state.addType + _this3.state.addTemplate] || _components2.default.Ban[_this3.state.addType + _this3.state.addTemplate].indexOf("Desc") === -1 ? _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Desc:"
+                        ),
+                        _react2.default.createElement("textarea", {
+                            className: "layout-fonts",
+                            value: _this3.state.addDesc,
+                            onChange: _this3.addDesc.bind(_this3)
+                        })
+                    ) : null
                 );
             });
             //show new slide editor
