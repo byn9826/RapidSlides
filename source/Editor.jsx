@@ -30,8 +30,7 @@ class Editor extends Component {
             //confirm delete slide
             confirmDelete: null,
             //status of edit slide
-            editPage: null,
-            newPage: null
+            editPage: null
 		};
 	}
     componentWillMount() {
@@ -68,7 +67,7 @@ class Editor extends Component {
     cancelAdd() {
         this.setState({ 
             add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [],
-            addDesc: "", addDetail: "", page: 0, addWarn: null
+            addDesc: "", addDetail: "", page: 0, addWarn: null, addFile: null
         });
     }
     //confirm create new slide
@@ -165,7 +164,7 @@ class Editor extends Component {
     }
     //click edit slide
     clickEdit( i ) {
-        if ( !this.state.add && !this.state.editPage ) {
+        if ( !this.state.add && this.state.editPage === null ) {
             this.setState({ 
                 confirmDelete: null, editPage: i, changePage: i + 1,
                 addType: this.state.script[ i ].type, addTemplate: this.state.script[ i ].template,
@@ -176,6 +175,13 @@ class Editor extends Component {
         } else {
             forceAdd();
         }
+    }
+    //cancel edit
+    cancelEdit() {
+        this.setState({
+            editPage: null, changePage: null, addType: 0, addTemplate: 0, addCheck: [], addTitle: "",
+            addDesc: "", addDetail: "", addFile: null
+        });
     }
     //change page number
     changePage( e ) {
@@ -415,6 +421,47 @@ class Editor extends Component {
                             </div>
                         ): null
                     }
+                    {
+                        !Com.Ban[ this.state.addType + this.state.addTemplate ] ||
+                        Com.Ban[ this.state.addType + this.state.addTemplate ].indexOf( "Image" ) === -1 ? (
+                            <div className="aside-new-box">
+                                <span className="layout-fonts">Edit Image:</span>
+                                <input 
+                                    id="file-picker"
+                                    className="layout-fonts" 
+                                    type="file" 
+                                    onChange={ this.addFile.bind( this ) }
+                                />
+                            </div>
+                        ): null
+                    }
+                    {
+                        this.state.addFile ? (
+                            <img src={ "../workspace/storage/" + this.state.addFile } />
+                        ): null
+                    }
+                    {
+                        ( ( this.state.addType !== "Index" ) && 
+                          ( !Com.Ban[ this.state.addType + this.state.addTemplate ] || Com.Ban[ this.state.addType + this.state.addTemplate ].indexOf( "Detail" ) === -1 ) 
+                        ) ? (
+                            <div className="aside-new-box">
+                                <span className="layout-fonts">
+                                    Details: Separate by ";"
+                                </span>
+                                <textarea 
+                                    className="layout-fonts" 
+                                    value={ this.state.addDetail } 
+                                    onChange={ this.addDetail.bind( this ) }
+                                />
+                            </div>
+                        ): null
+                    }
+                    <input 
+                        type="button"  
+                        className="aside-new-button layout-fonts" 
+                        value="Cancel" 
+                        onClick={ this.cancelEdit.bind( this ) } 
+                    />
                 </div>
             )
         );

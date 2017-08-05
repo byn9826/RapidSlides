@@ -9715,8 +9715,7 @@ var Editor = function (_Component) {
             //confirm delete slide
             confirmDelete: null,
             //status of edit slide
-            editPage: null,
-            newPage: null
+            editPage: null
         };
         return _this;
     }
@@ -9768,7 +9767,7 @@ var Editor = function (_Component) {
         value: function cancelAdd() {
             this.setState({
                 add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [],
-                addDesc: "", addDetail: "", page: 0, addWarn: null
+                addDesc: "", addDetail: "", page: 0, addWarn: null, addFile: null
             });
         }
         //confirm create new slide
@@ -9904,7 +9903,7 @@ var Editor = function (_Component) {
     }, {
         key: "clickEdit",
         value: function clickEdit(i) {
-            if (!this.state.add && !this.state.editPage) {
+            if (!this.state.add && this.state.editPage === null) {
                 this.setState({
                     confirmDelete: null, editPage: i, changePage: i + 1,
                     addType: this.state.script[i].type, addTemplate: this.state.script[i].template,
@@ -9915,6 +9914,16 @@ var Editor = function (_Component) {
             } else {
                 forceAdd();
             }
+        }
+        //cancel edit
+
+    }, {
+        key: "cancelEdit",
+        value: function cancelEdit() {
+            this.setState({
+                editPage: null, changePage: null, addType: 0, addTemplate: 0, addCheck: [], addTitle: "",
+                addDesc: "", addDetail: "", addFile: null
+            });
         }
         //change page number
 
@@ -10256,7 +10265,43 @@ var Editor = function (_Component) {
                             value: _this3.state.addDesc,
                             onChange: _this3.addDesc.bind(_this3)
                         })
-                    ) : null
+                    ) : null,
+                    !_components2.default.Ban[_this3.state.addType + _this3.state.addTemplate] || _components2.default.Ban[_this3.state.addType + _this3.state.addTemplate].indexOf("Image") === -1 ? _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Edit Image:"
+                        ),
+                        _react2.default.createElement("input", {
+                            id: "file-picker",
+                            className: "layout-fonts",
+                            type: "file",
+                            onChange: _this3.addFile.bind(_this3)
+                        })
+                    ) : null,
+                    _this3.state.addFile ? _react2.default.createElement("img", { src: "../workspace/storage/" + _this3.state.addFile }) : null,
+                    _this3.state.addType !== "Index" && (!_components2.default.Ban[_this3.state.addType + _this3.state.addTemplate] || _components2.default.Ban[_this3.state.addType + _this3.state.addTemplate].indexOf("Detail") === -1) ? _react2.default.createElement(
+                        "div",
+                        { className: "aside-new-box" },
+                        _react2.default.createElement(
+                            "span",
+                            { className: "layout-fonts" },
+                            "Details: Separate by \";\""
+                        ),
+                        _react2.default.createElement("textarea", {
+                            className: "layout-fonts",
+                            value: _this3.state.addDetail,
+                            onChange: _this3.addDetail.bind(_this3)
+                        })
+                    ) : null,
+                    _react2.default.createElement("input", {
+                        type: "button",
+                        className: "aside-new-button layout-fonts",
+                        value: "Cancel",
+                        onClick: _this3.cancelEdit.bind(_this3)
+                    })
                 );
             });
             //show new slide editor
