@@ -9932,6 +9932,37 @@ var Editor = function (_Component) {
         value: function changePage(e) {
             this.setState({ changePage: e.target.value });
         }
+        //confirm edit slide
+
+    }, {
+        key: "saveEdit",
+        value: function saveEdit() {
+            if (this.state.addType === 0) {
+                this.setState({ addWarn: "Please choose Slide Type" });
+            } else if (this.state.addTemplate === 0) {
+                this.setState({ addWarn: "Please choose Slide Template" });
+            } else if (this.state.addNum === "") {
+                this.setState({ addWarn: "Please input slide number" });
+            } else {
+                this.state.script.splice(this.state.editPage, 1);
+                this.state.script.splice(this.state.changePage - 1, 0, {
+                    "type": this.state.addType,
+                    "template": this.state.addTemplate,
+                    "title": this.state.addTitle,
+                    "check": this.state.addCheck,
+                    "desc": this.state.addDesc,
+                    "image": this.state.addFile,
+                    "detail": this.state.addDetail.length > 0 ? this.state.addDetail.split(";") : []
+                });
+                this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
+                saveFile(this.props.loc, this.state.file);
+                this.setState({
+                    add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [], addDesc: "",
+                    addDetail: [], addFile: null, page: this.state.changePage - 1,
+                    addWarn: null, editPage: null, changePage: null
+                });
+            }
+        }
     }, {
         key: "render",
         value: function render() {
@@ -9948,7 +9979,7 @@ var Editor = function (_Component) {
             var content = void 0,
                 footer = void 0,
                 temporary = void 0;
-            if (!this.state.add && isNaN(this.state.editPage)) {
+            if (!this.state.add && this.state.editPage === null) {
                 //normal display
                 content = _build2.default.buildContent(this.state.theme, this.state.script, this.state.page);
                 footer = _build2.default.buildFooter(this.state.theme, this.state.script, this.state.page);
@@ -10296,6 +10327,17 @@ var Editor = function (_Component) {
                             onChange: _this3.addDetail.bind(_this3)
                         })
                     ) : null,
+                    _react2.default.createElement(
+                        "div",
+                        { id: "aside-warn", className: "layout-fonts" },
+                        _this3.state.addWarn
+                    ),
+                    _react2.default.createElement("input", {
+                        type: "button",
+                        className: "aside-new-button layout-fonts",
+                        value: "Save",
+                        onClick: _this3.saveEdit.bind(_this3)
+                    }),
                     _react2.default.createElement("input", {
                         type: "button",
                         className: "aside-new-button layout-fonts",

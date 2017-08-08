@@ -187,6 +187,34 @@ class Editor extends Component {
     changePage( e ) {
         this.setState({ changePage: e.target.value });
     }
+    //confirm edit slide
+    saveEdit() {
+        if ( this.state.addType === 0 ) {
+            this.setState({ addWarn: "Please choose Slide Type" });
+        } else if ( this.state.addTemplate === 0 ) {
+            this.setState({ addWarn: "Please choose Slide Template" });
+        } else if ( this.state.addNum === ""  ) {
+            this.setState({ addWarn: "Please input slide number" });
+        } else {
+            this.state.script.splice( this.state.editPage, 1);
+            this.state.script.splice( this.state.changePage - 1, 0, {
+                "type": this.state.addType,
+                "template": this.state.addTemplate,
+                "title": this.state.addTitle,
+                "check": this.state.addCheck,
+                "desc": this.state.addDesc,
+                "image": this.state.addFile,
+                "detail": this.state.addDetail.length > 0? this.state.addDetail.split( ";" ): [],
+            });
+            this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
+            saveFile( this.props.loc, this.state.file );
+            this.setState({
+                add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [], addDesc: "", 
+                addDetail: [], addFile: null, page: this.state.changePage - 1, 
+                addWarn: null, editPage: null, changePage: null
+            });
+        }
+    }
     render() {
         const mainStyle = {
             position: "absolute",
@@ -197,7 +225,7 @@ class Editor extends Component {
         };
         //build main, footer for slides
         let content, footer, temporary;
-        if ( !this.state.add && isNaN ( this.state.editPage ) ) {
+        if ( !this.state.add && this.state.editPage === null ) {
             //normal display
             content = Build.buildContent( this.state.theme, this.state.script, this.state.page );
             footer = Build.buildFooter( this.state.theme, this.state.script, this.state.page );
@@ -218,7 +246,7 @@ class Editor extends Component {
                 content = Build.buildContent( this.state.theme, temporary, 0 );
                 footer = Build.buildFooter( this.state.theme, temporary, 0 );
             } else if ( this.state.editPage >= 0 ) {
-                let orig = this.state.script.slice()
+                let orig = this.state.script.slice();
                 orig.splice( this.state.editPage, 1, temporary);
                 content = Build.buildContent( this.state.theme, orig, this.state.editPage );
                 footer = Build.buildFooter( this.state.theme, orig, this.state.editPage );
@@ -456,6 +484,13 @@ class Editor extends Component {
                             </div>
                         ): null
                     }
+                    <div id="aside-warn" className="layout-fonts">{ this.state.addWarn }</div>
+                    <input 
+                        type="button" 
+                        className="aside-new-button layout-fonts" 
+                        value="Save"
+                        onClick={ this.saveEdit.bind( this ) }
+                    />
                     <input 
                         type="button"  
                         className="aside-new-button layout-fonts" 
