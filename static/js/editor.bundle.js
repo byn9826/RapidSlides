@@ -9692,6 +9692,7 @@ var Editor = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Editor.__proto__ || Object.getPrototypeOf(Editor)).call(this, props));
 
         _this.state = {
+            mode: 0,
             //file content
             file: _this.props.file,
             //default data for script and theme
@@ -9963,6 +9964,13 @@ var Editor = function (_Component) {
                 });
             }
         }
+        //change editor mode
+
+    }, {
+        key: "changeMode",
+        value: function changeMode() {
+            this.state.mode === 0 ? this.setState({ mode: 1 }) : this.setState({ mode: 0 });
+        }
     }, {
         key: "render",
         value: function render() {
@@ -10031,7 +10039,7 @@ var Editor = function (_Component) {
                     ),
                     _react2.default.createElement(
                         "div",
-                        { className: "aside-slide-box" },
+                        { className: "aside-slide-box aside-slide-template" },
                         _react2.default.createElement(
                             "span",
                             { className: "layout-fonts" },
@@ -10124,18 +10132,18 @@ var Editor = function (_Component) {
                             "Slide ",
                             index + 1
                         ),
-                        _react2.default.createElement("input", {
+                        _this3.state.mode === 0 ? _react2.default.createElement("input", {
                             type: "button",
                             className: "aside-slide-button layout-fonts",
                             value: "Edit",
                             onClick: _this3.clickEdit.bind(_this3, index)
-                        }),
-                        _react2.default.createElement("input", {
+                        }) : null,
+                        _this3.state.mode === 0 ? _react2.default.createElement("input", {
                             type: "button",
                             className: "aside-slide-button layout-fonts",
                             value: "Delete",
                             onClick: _this3.slideDelete.bind(_this3, index)
-                        })
+                        }) : null
                     ),
                     _this3.state.confirmDelete === index ? _react2.default.createElement(
                         "div",
@@ -10220,7 +10228,7 @@ var Editor = function (_Component) {
                     ),
                     _react2.default.createElement(
                         "div",
-                        { className: "aside-new-box" },
+                        { className: "aside-new-box aside-slide-template" },
                         _react2.default.createElement(
                             "span",
                             { className: "layout-fonts" },
@@ -10427,7 +10435,7 @@ var Editor = function (_Component) {
                     ),
                     _react2.default.createElement(
                         "div",
-                        { className: "aside-new-box" },
+                        { className: "aside-new-box aside-slide-template" },
                         _react2.default.createElement(
                             "span",
                             { className: "layout-fonts" },
@@ -10550,15 +10558,51 @@ var Editor = function (_Component) {
             return _react2.default.createElement(
                 "div",
                 null,
-                _react2.default.createElement("header", { id: "header" }),
+                _react2.default.createElement(
+                    "header",
+                    { id: "header" },
+                    _react2.default.createElement(
+                        "label",
+                        { id: "header-mode", className: "switch-light switch-candy switch-candy-blue" },
+                        _react2.default.createElement("input", {
+                            type: "checkbox",
+                            value: this.state.mode,
+                            onClick: this.changeMode.bind(this)
+                        }),
+                        _react2.default.createElement(
+                            "strong",
+                            { className: "layout-fonts" },
+                            "Mode"
+                        ),
+                        _react2.default.createElement(
+                            "span",
+                            null,
+                            _react2.default.createElement(
+                                "span",
+                                { className: "layout-fonts" },
+                                "Edit"
+                            ),
+                            _react2.default.createElement(
+                                "span",
+                                { className: "layout-fonts" },
+                                "Display"
+                            ),
+                            _react2.default.createElement("a", null)
+                        )
+                    )
+                ),
                 _react2.default.createElement(
                     "aside",
                     { id: "aside" },
-                    _react2.default.createElement(
+                    this.state.mode === 0 ? _react2.default.createElement(
                         "div",
-                        { id: "aside-add", className: "layout-fonts", onClick: this.clickAdd.bind(this) },
+                        {
+                            id: "aside-add",
+                            className: "layout-fonts",
+                            onClick: this.clickAdd.bind(this)
+                        },
                         "Add"
-                    ),
+                    ) : null,
                     add,
                     slides
                 ),

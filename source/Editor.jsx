@@ -7,6 +7,7 @@ class Editor extends Component {
     constructor( props ) {
         super( props );
 		this.state = {
+            mode: 0,
             //file content
             file: this.props.file,
             //default data for script and theme
@@ -168,8 +169,8 @@ class Editor extends Component {
             this.setState({ 
                 confirmDelete: null, editPage: i, changePage: i + 1,
                 addType: this.state.script[ i ].type, addTemplate: this.state.script[ i ].template,
-                addCheck: this.state.script[ i ].check, addTitle: this.state.script[ i ].title,
-                addDesc: this.state.script[ i ].desc, addFile: this.state.script[ i ].image,
+                addCheck: this.state.script[ i ].check, addTitle: this.state.script[ i ].title, 
+                addDesc: this.state.script[ i ].desc, addFile: this.state.script[ i ].image, 
                 addDetail: this.state.script[ i ].detail
             });
         } else {
@@ -214,6 +215,10 @@ class Editor extends Component {
                 addWarn: null, editPage: null, changePage: null
             });
         }
+    }
+    //change editor mode
+    changeMode() {
+        this.state.mode === 0 ? this.setState({ mode: 1 }) : this.setState({ mode: 0 });
     }
     render() {
         const mainStyle = {
@@ -266,7 +271,7 @@ class Editor extends Component {
                         <span className="layout-fonts">Type:</span>
                         <div className="layout-fonts">{ slide.type }</div>
                     </div>
-                    <div className="aside-slide-box">
+                    <div className="aside-slide-box aside-slide-template">
                         <span className="layout-fonts">Template:</span>
                         <div className="layout-fonts">{ slide.template }</div>
                     </div>
@@ -322,18 +327,26 @@ class Editor extends Component {
                     }
                     <div className="aside-slide-line">
                         <div className="aside-slide-num layout-fonts">Slide { index + 1 }</div>
-                        <input 
-                            type="button" 
-                            className="aside-slide-button layout-fonts" 
-                            value="Edit"
-                            onClick={ this.clickEdit.bind( this, index ) }
-                        />
-                        <input 
-                            type="button"  
-                            className="aside-slide-button layout-fonts" 
-                            value="Delete"
-                            onClick={ this.slideDelete.bind( this, index ) }
-                        />
+                        {
+                            this.state.mode === 0 ? (
+                                <input 
+                                    type="button" 
+                                    className="aside-slide-button layout-fonts" 
+                                    value="Edit"
+                                    onClick={ this.clickEdit.bind( this, index ) }
+                                />
+                            ) : null
+                        }
+                        {
+                            this.state.mode === 0 ? (
+                                <input 
+                                    type="button"  
+                                    className="aside-slide-button layout-fonts" 
+                                    value="Delete"
+                                    onClick={ this.slideDelete.bind( this, index ) }
+                                />
+                            ) : null
+                        }
                     </div>
                     {
                         this.state.confirmDelete === index ?
@@ -383,7 +396,7 @@ class Editor extends Component {
                             <option value="End">End</option>
                         </select>
                     </div>
-                    <div className="aside-new-box">
+                    <div className="aside-new-box aside-slide-template">
                         <span className="layout-fonts">Template:</span>
                         <select 
                             className="layout-fonts" 
@@ -539,7 +552,7 @@ class Editor extends Component {
                             <option value="End">End</option>
                         </select>
                     </div>
-                    <div className="aside-new-box">
+                    <div className="aside-new-box aside-slide-template">
                         <span className="layout-fonts">Template:</span>
                         <select 
                             className="layout-fonts" 
@@ -649,11 +662,36 @@ class Editor extends Component {
         return (
             <div>
                 <header id="header">
+                    <label id="header-mode" className="switch-light switch-candy switch-candy-blue">
+                        <input 
+                            type="checkbox" 
+                            value={ this.state.mode } 
+                            onClick={ this.changeMode.bind( this ) } 
+                        />
+                        <strong className="layout-fonts">Mode</strong>
+                        <span>
+                            <span className="layout-fonts">
+                                Edit
+                            </span>
+                            <span className="layout-fonts">
+                                Display
+                            </span>
+                            <a></a>
+                        </span>
+                    </label>
                 </header>
                 <aside id="aside">
-                    <div id="aside-add" className="layout-fonts" onClick={ this.clickAdd.bind( this ) }>
-                        Add
-                    </div>
+                    {
+                        this.state.mode === 0 ? (
+                            <div 
+                                id="aside-add" 
+                                className="layout-fonts" 
+                                onClick={ this.clickAdd.bind( this ) }
+                            >
+                                Add
+                            </div>
+                        ) : null
+                    }
                     { add }
                     { slides }
                 </aside>

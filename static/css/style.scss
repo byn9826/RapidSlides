@@ -2,6 +2,7 @@ $layout-color: darkred;
 $font-stack: Helvetica, sans-serif;
 $animation-time: 0.5s forwards;
 $font-normal: 12px;
+$font-large: 14px;
 @mixin border-radius($radius) {
     -webkit-border-radius: $radius;
     -moz-border-radius: $radius;
@@ -79,6 +80,26 @@ ul{
     to { top: 10%; }
 }
 
+/*editor option layout*/
+#header-mode{
+    float: right;
+    width: 120px;
+    margin-right: 10px;
+    height: 8vh;
+    padding: 1vh 0;
+    vertical-align: middle;
+}
+#header-mode{
+    strong{
+        color: white;
+        font-size: $font-normal;
+        font-weight: bold;
+    }
+    span span{
+        font-size: $font-large;
+    }
+}
+
 /* aside editor layout */
 #aside-add{
     display: block;
@@ -117,6 +138,11 @@ ul{
 .aside-display{
     background-color: lightgray;
     @include border-radius(5px);
+}
+
+.aside-slide-template{
+    border-bottom: 1px dashed darkred;
+    padding-bottom: 10px;
 }
 
 .aside-slide-box{

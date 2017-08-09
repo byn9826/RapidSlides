@@ -63,6 +63,23 @@ ul {
   to {
     top: 10%; } }
 
+/*editor option layout*/
+#header-mode {
+  float: right;
+  width: 120px;
+  margin-right: 10px;
+  height: 8vh;
+  padding: 1vh 0;
+  vertical-align: middle; }
+
+#header-mode strong {
+  color: white;
+  font-size: 12px;
+  font-weight: bold; }
+
+#header-mode span span {
+  font-size: 14px; }
+
 /* aside editor layout */
 #aside-add {
   display: block;
@@ -104,6 +121,10 @@ ul {
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   border-radius: 5px; }
+
+.aside-slide-template {
+  border-bottom: 1px dashed darkred;
+  padding-bottom: 10px; }
 
 .aside-slide-box {
   display: block;
