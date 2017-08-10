@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import ReactDOM from "react-dom";
 import Build from "./build.js";
 import Com from "./components.js";
+import Resource from "./resource.js";
 
 class Editor extends Component {
     constructor( props ) {
@@ -220,6 +221,13 @@ class Editor extends Component {
     changeMode() {
         this.state.mode === 0 ? this.setState({ mode: 1 }) : this.setState({ mode: 0 });
     }
+    //change theme font family
+    themeFont( e ) {
+        this.state.theme.fontFamily = e.target.value;
+        this.state.file.getElementById( "theme" ).innerHTML = JSON.stringify( this.state.theme );
+        saveFile( this.props.loc, this.state.file );
+        this.setState({ theme: this.state.theme });
+    }
     render() {
         const mainStyle = {
             position: "absolute",
@@ -316,7 +324,10 @@ class Editor extends Component {
                                 <ul className="layout-fonts">
                                     {
                                         slide.detail.map(( a, i ) =>
-                                            <li key={ "sl" + index + "de" + i } className="layout-fonts">
+                                            <li 
+                                                key={ "sl" + index + "de" + i } 
+                                                className="layout-fonts"
+                                            >
                                                 { a }
                                             </li>
                                         )
@@ -330,20 +341,16 @@ class Editor extends Component {
                         {
                             this.state.mode === 0 ? (
                                 <input 
-                                    type="button" 
-                                    className="aside-slide-button layout-fonts" 
-                                    value="Edit"
-                                    onClick={ this.clickEdit.bind( this, index ) }
+                                    type="button" className="aside-slide-button layout-fonts" 
+                                    value="Edit" onClick={ this.clickEdit.bind( this, index ) }
                                 />
                             ) : null
                         }
                         {
                             this.state.mode === 0 ? (
                                 <input 
-                                    type="button"  
-                                    className="aside-slide-button layout-fonts" 
-                                    value="Delete"
-                                    onClick={ this.slideDelete.bind( this, index ) }
+                                    type="button" className="aside-slide-button layout-fonts" 
+                                    value="Delete" onClick={ this.slideDelete.bind( this, index ) }
                                 />
                             ) : null
                         }
@@ -356,15 +363,11 @@ class Editor extends Component {
                                     Are you really want to delete this slide?
                                 </span>
                                 <input 
-                                    type="button"  
-                                    className="layout-fonts" 
-                                    value="Cancel"
+                                    type="button" className="layout-fonts" value="Cancel"
                                     onClick={ this.stopDelete.bind( this ) }
                                 />
                                 <input 
-                                    type="button"  
-                                    className="layout-fonts" 
-                                    value="Confirm"
+                                    type="button" className="layout-fonts" value="Confirm"
                                     onClick={ this.confirmDelete.bind( this ) }
                                 />
                             </div>
@@ -376,17 +379,14 @@ class Editor extends Component {
                     <div className="aside-new-box">
                         <span className="layout-fonts">Slide Num:</span>
                         <input 
-                            className="layout-fonts" 
-                            type="number" 
-                            value={ this.state.changePage }
+                            className="layout-fonts" type="number" value={ this.state.changePage }
                             onChange={ this.changePage.bind( this ) } 
                         />
                     </div>
                     <div className="aside-new-box">
                         <span className="layout-fonts">Type:</span>
                         <select 
-                            className="layout-fonts" 
-                            value={ this.state.addType } 
+                            className="layout-fonts" value={ this.state.addType } 
                             onChange={ this.addType.bind( this ) }
                         >
                             <option disabled value={ 0 }>- Choose -</option>
@@ -399,8 +399,7 @@ class Editor extends Component {
                     <div className="aside-new-box aside-slide-template">
                         <span className="layout-fonts">Template:</span>
                         <select 
-                            className="layout-fonts" 
-                            value={ this.state.addTemplate } 
+                            className="layout-fonts" value={ this.state.addTemplate } 
                             onChange={ this.addTemplate.bind( this ) }
                         >
                             <option disabled value={ 0 }>- Choose -</option>
@@ -428,8 +427,7 @@ class Editor extends Component {
                                         s.type === "Single" ? (
                                             <label key={ "addcheck" + s.title }>
                                                 <input 
-                                                    type="checkbox"
-                                                    value={ s.title }
+                                                    type="checkbox" value={ s.title }
                                                     onChange={ this.addCheck.bind( this ) } 
                                                 />
                                                 { s.title }
@@ -443,9 +441,7 @@ class Editor extends Component {
                     <div className="aside-new-box">
                         <span className="layout-fonts">Title:</span>
                         <input 
-                            className="layout-fonts" 
-                            type="text" 
-                            value={ this.state.addTitle } 
+                            className="layout-fonts" type="text" value={ this.state.addTitle } 
                             onChange={ this.addTitle.bind( this ) } 
                         />
                     </div>
@@ -455,8 +451,7 @@ class Editor extends Component {
                             <div className="aside-new-box">
                                 <span className="layout-fonts">Desc:</span>
                                 <textarea 
-                                    className="layout-fonts" 
-                                    value={ this.state.addDesc } 
+                                    className="layout-fonts" value={ this.state.addDesc } 
                                     onChange={ this.addDesc.bind( this ) }
                                 />
                             </div>
@@ -468,9 +463,7 @@ class Editor extends Component {
                             <div className="aside-new-box">
                                 <span className="layout-fonts">Edit Image:</span>
                                 <input 
-                                    id="file-picker"
-                                    className="layout-fonts" 
-                                    type="file" 
+                                    id="file-picker" className="layout-fonts" type="file" 
                                     onChange={ this.addFile.bind( this ) }
                                 />
                             </div>
@@ -490,8 +483,7 @@ class Editor extends Component {
                                     Details: Separate by ";"
                                 </span>
                                 <textarea 
-                                    className="layout-fonts" 
-                                    value={ this.state.addDetail } 
+                                    className="layout-fonts" value={ this.state.addDetail } 
                                     onChange={ this.addDetail.bind( this ) }
                                 />
                             </div>
@@ -499,15 +491,11 @@ class Editor extends Component {
                     }
                     <div id="aside-warn" className="layout-fonts">{ this.state.addWarn }</div>
                     <input 
-                        type="button" 
-                        className="aside-new-button layout-fonts" 
-                        value="Save"
+                        type="button" className="aside-new-button layout-fonts" value="Save"
                         onClick={ this.saveEdit.bind( this ) }
                     />
                     <input 
-                        type="button"  
-                        className="aside-new-button layout-fonts" 
-                        value="Cancel" 
+                        type="button" className="aside-new-button layout-fonts" value="Cancel" 
                         onClick={ this.cancelEdit.bind( this ) } 
                     />
                 </div>
@@ -532,17 +520,14 @@ class Editor extends Component {
                     <div className="aside-new-box">
                         <span className="layout-fonts">Slide Num:</span>
                         <input 
-                            className="layout-fonts" 
-                            type="number" 
-                            value={ this.state.addNum }
+                            className="layout-fonts" type="number" value={ this.state.addNum }
                             onChange={ this.addNum.bind( this ) } 
                         />
                     </div>
                     <div className="aside-new-box">
                         <span className="layout-fonts">Type:</span>
                         <select 
-                            className="layout-fonts" 
-                            value={ this.state.addType } 
+                            className="layout-fonts" value={ this.state.addType } 
                             onChange={ this.addType.bind( this ) }
                         >
                             <option disabled value={ 0 }>- Choose -</option>
@@ -578,8 +563,7 @@ class Editor extends Component {
                                         s.type === "Single" ? (
                                             <label key={ "addcheck" + s.title }>
                                                 <input 
-                                                    type="checkbox"
-                                                    value={ s.title }
+                                                    type="checkbox" value={ s.title }
                                                     onChange={ this.addCheck.bind( this ) } 
                                                 />
                                                 { s.title }
@@ -593,9 +577,7 @@ class Editor extends Component {
                     <div className="aside-new-box">
                         <span className="layout-fonts">Title:</span>
                         <input 
-                            className="layout-fonts" 
-                            type="text" 
-                            value={ this.state.addTitle } 
+                            className="layout-fonts" type="text" value={ this.state.addTitle } 
                             onChange={ this.addTitle.bind( this ) } 
                         />
                     </div>
@@ -604,8 +586,7 @@ class Editor extends Component {
                             <div className="aside-new-box">
                                 <span className="layout-fonts">Desc:</span>
                                 <textarea 
-                                    className="layout-fonts" 
-                                    value={ this.state.addDesc } 
+                                    className="layout-fonts" value={ this.state.addDesc } 
                                     onChange={ this.addDesc.bind( this ) }
                                 />
                             </div>
@@ -616,9 +597,7 @@ class Editor extends Component {
                             <div className="aside-new-box">
                                 <span className="layout-fonts">Image:</span>
                                 <input 
-                                    id="file-picker"
-                                    className="layout-fonts" 
-                                    type="file" 
+                                    id="file-picker" className="layout-fonts" type="file" 
                                     onChange={ this.addFile.bind( this ) }
                                 />
                             </div>
@@ -636,8 +615,7 @@ class Editor extends Component {
                                     Details: Separate by ";"
                                 </span>
                                 <textarea 
-                                    className="layout-fonts" 
-                                    value={ this.state.addDetail } 
+                                    className="layout-fonts" value={ this.state.addDetail } 
                                     onChange={ this.addDetail.bind( this ) }
                                 />
                             </div>
@@ -645,27 +623,41 @@ class Editor extends Component {
                     }
                     <div id="aside-warn" className="layout-fonts">{ this.state.addWarn }</div>
                     <input 
-                        type="button" 
-                        className="aside-new-button layout-fonts" 
+                        type="button" className="aside-new-button layout-fonts" 
                         value="Save"
                         onClick={ this.saveAdd.bind( this ) }
                     />
                     <input 
-                        type="button"  
-                        className="aside-new-button layout-fonts" 
+                        type="button" className="aside-new-button layout-fonts" 
                         value="Cancel" 
                         onClick={ this.cancelAdd.bind( this ) } 
                     />
                 </div>
             );
         }
+        //provide options for theme font styles
+        const fontFamily = Resource.FontsList.map( ( f, i ) =>
+            <option key={ "fontFamily" + i } style={ { "fontFamily": f } }>{ f }</option>
+        );
         return (
             <div>
                 <header id="header">
+                    {
+                        this.state.mode === 0 ? (
+                            <section id="header-theme">
+                                <header className="layout-fonts">Font</header>
+                                <select 
+                                    value={ this.state.theme.fontFamily } 
+                                    onChange={ this.themeFont.bind( this ) }
+                                >
+                                    { fontFamily }
+                                </select>
+                            </section>
+                        ) : null
+                    }
                     <label id="header-mode" className="switch-light switch-candy switch-candy-blue">
                         <input 
-                            type="checkbox" 
-                            value={ this.state.mode } 
+                            type="checkbox" value={ this.state.mode } 
                             onClick={ this.changeMode.bind( this ) } 
                         />
                         <strong className="layout-fonts">Mode</strong>
@@ -684,8 +676,7 @@ class Editor extends Component {
                     {
                         this.state.mode === 0 ? (
                             <div 
-                                id="aside-add" 
-                                className="layout-fonts" 
+                                id="aside-add" className="layout-fonts" 
                                 onClick={ this.clickAdd.bind( this ) }
                             >
                                 Add
@@ -696,9 +687,7 @@ class Editor extends Component {
                     { slides }
                 </aside>
                 <main 
-                    id="temp-main" 
-                    style={ mainStyle } 
-                    className={ this.state.trans } 
+                    id="temp-main" style={ mainStyle } className={ this.state.trans } 
                     key={ "trans" + this.state.page }
                 >
                     { content }
@@ -730,6 +719,8 @@ ReactDOM.render(
     <Editor script={ script } theme={ theme } file={ file } loc={ loc } storage={ storage } />,
     document.getElementById( "root" ) 
 );
+
+
 
 function saveFile( loc, content ) {
     content = new XMLSerializer().serializeToString( content );

@@ -33,6 +33,7 @@ class IndexDefaultHouse extends Component {
             width: "100%",
             color: "white",
             textAlign: "center",
+            fontFamily: this.props.theme.fontFamily,
             fontSize: this.props.theme.fontSize[ 1 ],
             position: "absolute",
             top: 0.15 * this.state.fullHeight + "px"
@@ -76,6 +77,7 @@ class IndexDefaultHouse extends Component {
             textAlign: "center",
             lineHeight: 0.08 * this.state.fullHeight + "px",
             fontSize: this.props.theme.fontSize[ 2 ],
+            fontFamily: this.props.theme.fontFamily,
             fontWeight: "bold"
         };
         let arrowStyle = {
@@ -104,7 +106,9 @@ class IndexDefaultHouse extends Component {
             padding: "15px 2%",
             color: "black",
             textAlign: "center",
-            borderRadius: "5px"
+            borderRadius: "5px",
+            fontSize: this.props.theme.fontSize[ 3 ],
+            fontFamily: this.props.theme.fontFamily,
         };
         let section = [], desc = [];
         if ( this.props.script[ this.props.page ].check.length !== 0 ) {

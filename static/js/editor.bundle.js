@@ -9675,6 +9675,10 @@ var _components = __webpack_require__(49);
 
 var _components2 = _interopRequireDefault(_components);
 
+var _resource = __webpack_require__(191);
+
+var _resource2 = _interopRequireDefault(_resource);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9971,6 +9975,16 @@ var Editor = function (_Component) {
         value: function changeMode() {
             this.state.mode === 0 ? this.setState({ mode: 1 }) : this.setState({ mode: 0 });
         }
+        //change theme font family
+
+    }, {
+        key: "themeFont",
+        value: function themeFont(e) {
+            this.state.theme.fontFamily = e.target.value;
+            this.state.file.getElementById("theme").innerHTML = JSON.stringify(this.state.theme);
+            saveFile(this.props.loc, this.state.file);
+            this.setState({ theme: this.state.theme });
+        }
     }, {
         key: "render",
         value: function render() {
@@ -10117,7 +10131,10 @@ var Editor = function (_Component) {
                             slide.detail.map(function (a, i) {
                                 return _react2.default.createElement(
                                     "li",
-                                    { key: "sl" + index + "de" + i, className: "layout-fonts" },
+                                    {
+                                        key: "sl" + index + "de" + i,
+                                        className: "layout-fonts"
+                                    },
                                     a
                                 );
                             })
@@ -10133,16 +10150,12 @@ var Editor = function (_Component) {
                             index + 1
                         ),
                         _this3.state.mode === 0 ? _react2.default.createElement("input", {
-                            type: "button",
-                            className: "aside-slide-button layout-fonts",
-                            value: "Edit",
-                            onClick: _this3.clickEdit.bind(_this3, index)
+                            type: "button", className: "aside-slide-button layout-fonts",
+                            value: "Edit", onClick: _this3.clickEdit.bind(_this3, index)
                         }) : null,
                         _this3.state.mode === 0 ? _react2.default.createElement("input", {
-                            type: "button",
-                            className: "aside-slide-button layout-fonts",
-                            value: "Delete",
-                            onClick: _this3.slideDelete.bind(_this3, index)
+                            type: "button", className: "aside-slide-button layout-fonts",
+                            value: "Delete", onClick: _this3.slideDelete.bind(_this3, index)
                         }) : null
                     ),
                     _this3.state.confirmDelete === index ? _react2.default.createElement(
@@ -10154,15 +10167,11 @@ var Editor = function (_Component) {
                             "Are you really want to delete this slide?"
                         ),
                         _react2.default.createElement("input", {
-                            type: "button",
-                            className: "layout-fonts",
-                            value: "Cancel",
+                            type: "button", className: "layout-fonts", value: "Cancel",
                             onClick: _this3.stopDelete.bind(_this3)
                         }),
                         _react2.default.createElement("input", {
-                            type: "button",
-                            className: "layout-fonts",
-                            value: "Confirm",
+                            type: "button", className: "layout-fonts", value: "Confirm",
                             onClick: _this3.confirmDelete.bind(_this3)
                         })
                     ) : null
@@ -10178,9 +10187,7 @@ var Editor = function (_Component) {
                             "Slide Num:"
                         ),
                         _react2.default.createElement("input", {
-                            className: "layout-fonts",
-                            type: "number",
-                            value: _this3.state.changePage,
+                            className: "layout-fonts", type: "number", value: _this3.state.changePage,
                             onChange: _this3.changePage.bind(_this3)
                         })
                     ),
@@ -10195,8 +10202,7 @@ var Editor = function (_Component) {
                         _react2.default.createElement(
                             "select",
                             {
-                                className: "layout-fonts",
-                                value: _this3.state.addType,
+                                className: "layout-fonts", value: _this3.state.addType,
                                 onChange: _this3.addType.bind(_this3)
                             },
                             _react2.default.createElement(
@@ -10237,8 +10243,7 @@ var Editor = function (_Component) {
                         _react2.default.createElement(
                             "select",
                             {
-                                className: "layout-fonts",
-                                value: _this3.state.addTemplate,
+                                className: "layout-fonts", value: _this3.state.addTemplate,
                                 onChange: _this3.addTemplate.bind(_this3)
                             },
                             _react2.default.createElement(
@@ -10268,8 +10273,7 @@ var Editor = function (_Component) {
                                 "label",
                                 { key: "addcheck" + s.title },
                                 _react2.default.createElement("input", {
-                                    type: "checkbox",
-                                    value: s.title,
+                                    type: "checkbox", value: s.title,
                                     onChange: _this3.addCheck.bind(_this3)
                                 }),
                                 s.title
@@ -10285,9 +10289,7 @@ var Editor = function (_Component) {
                             "Title:"
                         ),
                         _react2.default.createElement("input", {
-                            className: "layout-fonts",
-                            type: "text",
-                            value: _this3.state.addTitle,
+                            className: "layout-fonts", type: "text", value: _this3.state.addTitle,
                             onChange: _this3.addTitle.bind(_this3)
                         })
                     ),
@@ -10300,8 +10302,7 @@ var Editor = function (_Component) {
                             "Desc:"
                         ),
                         _react2.default.createElement("textarea", {
-                            className: "layout-fonts",
-                            value: _this3.state.addDesc,
+                            className: "layout-fonts", value: _this3.state.addDesc,
                             onChange: _this3.addDesc.bind(_this3)
                         })
                     ) : null,
@@ -10314,9 +10315,7 @@ var Editor = function (_Component) {
                             "Edit Image:"
                         ),
                         _react2.default.createElement("input", {
-                            id: "file-picker",
-                            className: "layout-fonts",
-                            type: "file",
+                            id: "file-picker", className: "layout-fonts", type: "file",
                             onChange: _this3.addFile.bind(_this3)
                         })
                     ) : null,
@@ -10330,8 +10329,7 @@ var Editor = function (_Component) {
                             "Details: Separate by \";\""
                         ),
                         _react2.default.createElement("textarea", {
-                            className: "layout-fonts",
-                            value: _this3.state.addDetail,
+                            className: "layout-fonts", value: _this3.state.addDetail,
                             onChange: _this3.addDetail.bind(_this3)
                         })
                     ) : null,
@@ -10341,15 +10339,11 @@ var Editor = function (_Component) {
                         _this3.state.addWarn
                     ),
                     _react2.default.createElement("input", {
-                        type: "button",
-                        className: "aside-new-button layout-fonts",
-                        value: "Save",
+                        type: "button", className: "aside-new-button layout-fonts", value: "Save",
                         onClick: _this3.saveEdit.bind(_this3)
                     }),
                     _react2.default.createElement("input", {
-                        type: "button",
-                        className: "aside-new-button layout-fonts",
-                        value: "Cancel",
+                        type: "button", className: "aside-new-button layout-fonts", value: "Cancel",
                         onClick: _this3.cancelEdit.bind(_this3)
                     })
                 );
@@ -10385,9 +10379,7 @@ var Editor = function (_Component) {
                             "Slide Num:"
                         ),
                         _react2.default.createElement("input", {
-                            className: "layout-fonts",
-                            type: "number",
-                            value: this.state.addNum,
+                            className: "layout-fonts", type: "number", value: this.state.addNum,
                             onChange: this.addNum.bind(this)
                         })
                     ),
@@ -10402,8 +10394,7 @@ var Editor = function (_Component) {
                         _react2.default.createElement(
                             "select",
                             {
-                                className: "layout-fonts",
-                                value: this.state.addType,
+                                className: "layout-fonts", value: this.state.addType,
                                 onChange: this.addType.bind(this)
                             },
                             _react2.default.createElement(
@@ -10469,8 +10460,7 @@ var Editor = function (_Component) {
                                 "label",
                                 { key: "addcheck" + s.title },
                                 _react2.default.createElement("input", {
-                                    type: "checkbox",
-                                    value: s.title,
+                                    type: "checkbox", value: s.title,
                                     onChange: _this3.addCheck.bind(_this3)
                                 }),
                                 s.title
@@ -10486,9 +10476,7 @@ var Editor = function (_Component) {
                             "Title:"
                         ),
                         _react2.default.createElement("input", {
-                            className: "layout-fonts",
-                            type: "text",
-                            value: this.state.addTitle,
+                            className: "layout-fonts", type: "text", value: this.state.addTitle,
                             onChange: this.addTitle.bind(this)
                         })
                     ),
@@ -10501,8 +10489,7 @@ var Editor = function (_Component) {
                             "Desc:"
                         ),
                         _react2.default.createElement("textarea", {
-                            className: "layout-fonts",
-                            value: this.state.addDesc,
+                            className: "layout-fonts", value: this.state.addDesc,
                             onChange: this.addDesc.bind(this)
                         })
                     ) : null,
@@ -10515,9 +10502,7 @@ var Editor = function (_Component) {
                             "Image:"
                         ),
                         _react2.default.createElement("input", {
-                            id: "file-picker",
-                            className: "layout-fonts",
-                            type: "file",
+                            id: "file-picker", className: "layout-fonts", type: "file",
                             onChange: this.addFile.bind(this)
                         })
                     ) : null,
@@ -10531,8 +10516,7 @@ var Editor = function (_Component) {
                             "Details: Separate by \";\""
                         ),
                         _react2.default.createElement("textarea", {
-                            className: "layout-fonts",
-                            value: this.state.addDetail,
+                            className: "layout-fonts", value: this.state.addDetail,
                             onChange: this.addDetail.bind(this)
                         })
                     ) : null,
@@ -10542,31 +10526,53 @@ var Editor = function (_Component) {
                         this.state.addWarn
                     ),
                     _react2.default.createElement("input", {
-                        type: "button",
-                        className: "aside-new-button layout-fonts",
+                        type: "button", className: "aside-new-button layout-fonts",
                         value: "Save",
                         onClick: this.saveAdd.bind(this)
                     }),
                     _react2.default.createElement("input", {
-                        type: "button",
-                        className: "aside-new-button layout-fonts",
+                        type: "button", className: "aside-new-button layout-fonts",
                         value: "Cancel",
                         onClick: this.cancelAdd.bind(this)
                     })
                 );
             }
+            //provide options for theme font styles
+            var fontFamily = _resource2.default.FontsList.map(function (f, i) {
+                return _react2.default.createElement(
+                    "option",
+                    { key: "fontFamily" + i, style: { "fontFamily": f } },
+                    f
+                );
+            });
             return _react2.default.createElement(
                 "div",
                 null,
                 _react2.default.createElement(
                     "header",
                     { id: "header" },
+                    this.state.mode === 0 ? _react2.default.createElement(
+                        "section",
+                        { id: "header-theme" },
+                        _react2.default.createElement(
+                            "header",
+                            { className: "layout-fonts" },
+                            "Font"
+                        ),
+                        _react2.default.createElement(
+                            "select",
+                            {
+                                value: this.state.theme.fontFamily,
+                                onChange: this.themeFont.bind(this)
+                            },
+                            fontFamily
+                        )
+                    ) : null,
                     _react2.default.createElement(
                         "label",
                         { id: "header-mode", className: "switch-light switch-candy switch-candy-blue" },
                         _react2.default.createElement("input", {
-                            type: "checkbox",
-                            value: this.state.mode,
+                            type: "checkbox", value: this.state.mode,
                             onClick: this.changeMode.bind(this)
                         }),
                         _react2.default.createElement(
@@ -10597,8 +10603,7 @@ var Editor = function (_Component) {
                     this.state.mode === 0 ? _react2.default.createElement(
                         "div",
                         {
-                            id: "aside-add",
-                            className: "layout-fonts",
+                            id: "aside-add", className: "layout-fonts",
                             onClick: this.clickAdd.bind(this)
                         },
                         "Add"
@@ -10609,9 +10614,7 @@ var Editor = function (_Component) {
                 _react2.default.createElement(
                     "main",
                     {
-                        id: "temp-main",
-                        style: mainStyle,
-                        className: this.state.trans,
+                        id: "temp-main", style: mainStyle, className: this.state.trans,
                         key: "trans" + this.state.page
                     },
                     content,
@@ -23650,6 +23653,7 @@ var IndexDefaultHouse = function (_Component) {
                 width: "100%",
                 color: "white",
                 textAlign: "center",
+                fontFamily: this.props.theme.fontFamily,
                 fontSize: this.props.theme.fontSize[1],
                 position: "absolute",
                 top: 0.15 * this.state.fullHeight + "px"
@@ -23691,6 +23695,7 @@ var IndexDefaultHouse = function (_Component) {
                 textAlign: "center",
                 lineHeight: 0.08 * this.state.fullHeight + "px",
                 fontSize: this.props.theme.fontSize[2],
+                fontFamily: this.props.theme.fontFamily,
                 fontWeight: "bold"
             };
             var arrowStyle = {
@@ -23719,7 +23724,9 @@ var IndexDefaultHouse = function (_Component) {
                 padding: "15px 2%",
                 color: "black",
                 textAlign: "center",
-                borderRadius: "5px"
+                borderRadius: "5px",
+                fontSize: this.props.theme.fontSize[3],
+                fontFamily: this.props.theme.fontFamily
             };
             var section = [],
                 desc = [];
@@ -23819,6 +23826,17 @@ var IndexDefaultHouse = function (_Component) {
 }(_react.Component);
 
 exports.default = IndexDefaultHouse;
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+       FontsList: ["Arial", "Helvetica", "Times New Roman", "Times", "Courier New", "Courier", "Verdana", "Georgia", "Palatino", "Garamond", "Bookman", "Comic Sans MS", "Trebuchet MS", "Arial Black", "Impact"]
+};
 
 /***/ })
 /******/ ]);

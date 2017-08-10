@@ -14,7 +14,7 @@ ul {
 
 /* App layout */
 .layout-fonts {
-  font-family: Helvetica, sans-serif; }
+  font-family: Arial; }
 
 #header {
   position: absolute;
@@ -64,21 +64,40 @@ ul {
     top: 10%; } }
 
 /*editor option layout*/
+#header-theme {
+  float: left;
+  height: 8vh;
+  padding: 1vh 0;
+  vertical-align: middle;
+  margin-left: 20px; }
+
+#header-theme header {
+  color: white;
+  font-weight: bold;
+  font-size: 14px; }
+
+#header-theme select {
+  font-size: 14px;
+  width: 120px;
+  margin-top: 5px;
+  border-radius: 3px;
+  padding: 3px 0; }
+
 #header-mode {
   float: right;
   width: 120px;
-  margin-right: 10px;
+  margin-right: 20px;
   height: 8vh;
   padding: 1vh 0;
   vertical-align: middle; }
 
 #header-mode strong {
   color: white;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold; }
 
 #header-mode span span {
-  font-size: 14px; }
+  font-size: 12px; }
 
 /* aside editor layout */
 #aside-add {
@@ -94,7 +113,7 @@ ul {
   border-radius: 5px;
   text-align: center;
   padding: 5px 0;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer; }
 
 .aside-slide {
@@ -131,12 +150,12 @@ ul {
   margin-bottom: 10px; }
 
 .aside-slide-box span {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   margin-right: 5%; }
 
 .aside-slide-box div {
-  font-size: 12px; }
+  font-size: 14px; }
 
 .aside-slide-box li {
   font-size: 11px; }
@@ -149,7 +168,7 @@ ul {
 
 .aside-slide-num {
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   font-weight: bold; }
 
@@ -201,34 +220,34 @@ ul {
   margin-bottom: 10px; }
 
 .aside-new-box span {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   margin-right: 5%; }
 
 .aside-new-box div {
-  font-size: 12px; }
+  font-size: 14px; }
 
 .aside-new-box select {
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   padding: 3px 2%; }
 
 .aside-new-box input {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   width: 95%;
   padding: 3px 2%; }
 
 .aside-new-box textarea {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   width: 95%;
   padding: 3px 2%;
   height: 50px; }
 
 .aside-new-box label {
   text-align: center;
-  font-size: 12px; }
+  font-size: 14px; }
 
 .aside-new-box input[type="checkbox"] {
   width: auto; }

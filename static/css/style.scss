@@ -1,8 +1,9 @@
 $layout-color: darkred;
-$font-stack: Helvetica, sans-serif;
+$font-stack: Arial;
 $animation-time: 0.5s forwards;
-$font-normal: 12px;
-$font-large: 14px;
+$font-small: 12px;
+$font-normal: 14px;
+$font-large: 16px;
 @mixin border-radius($radius) {
     -webkit-border-radius: $radius;
     -moz-border-radius: $radius;
@@ -81,10 +82,32 @@ ul{
 }
 
 /*editor option layout*/
+#header-theme{
+    float: left;
+    height: 8vh;
+    padding: 1vh 0;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+#header-theme{
+    header{
+        color: white;
+        font-weight: bold;
+        font-size: $font-normal;
+    }
+    select{
+        font-size: $font-normal;
+        width: 120px;
+        margin-top: 5px;
+        border-radius: 3px;
+        padding: 3px 0;
+    }
+}
+
 #header-mode{
     float: right;
     width: 120px;
-    margin-right: 10px;
+    margin-right: 20px;
     height: 8vh;
     padding: 1vh 0;
     vertical-align: middle;
@@ -96,7 +119,7 @@ ul{
         font-weight: bold;
     }
     span span{
-        font-size: $font-large;
+        font-size: $font-small;
     }
 }
 
