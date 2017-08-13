@@ -82,14 +82,14 @@ ul{
 }
 
 /*editor option layout*/
-#header-theme{
+#header-theme, #header-footer{
     float: left;
     height: 8vh;
     padding: 1vh 0;
     vertical-align: middle;
     margin-left: 20px;
 }
-#header-theme{
+#header-theme, #header-footer{
     header{
         color: white;
         font-weight: bold;
@@ -103,23 +103,49 @@ ul{
         padding: 3px 0;
     }
 }
+#header-footer{
+    select{
+        width: 150px;
+    }
+    input{
+        font-size: $font-normal;
+        width: 150px;
+        margin-top: 5px;
+        margin-left: 1px;
+        padding: 3px 0;
+    }
+}
 
 #header-mode{
-    float: right;
     width: 120px;
+}
+#header-arrow{
+    width: 60px;
+}
+#header-mode, #header-arrow{
+    float: right;
     margin-right: 20px;
     height: 8vh;
     padding: 1vh 0;
     vertical-align: middle;
 }
-#header-mode{
-    strong{
+#header-mode, #header-arrow{
+    strong, header{
         color: white;
         font-size: $font-normal;
         font-weight: bold;
     }
     span span{
         font-size: $font-small;
+    }
+}
+#header-arrow{
+    div{
+        @extend .inline-middle;
+        font-size: $font-large;
+        margin-top: 5px;
+        margin-right: 5px;
+        cursor: pointer;
     }
 }
 

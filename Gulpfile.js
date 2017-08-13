@@ -11,6 +11,6 @@ gulp.task('sass', function () {
     .pipe(gulp.dest(output));
 });
 
-gulp.task('sass:watch', function () {
+gulp.task('sass--watch', function () {
   gulp.watch(input, ['sass']);
 });

@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0; }
 
-.inline-middle, .aside-slide-box span, .aside-slide-box div, .aside-slide-button, #aside-slide-delete input, .aside-new-box span, .aside-new-box div, .aside-new-box label, .aside-new-box input[type="checkbox"], .aside-new-button {
+.inline-middle, #header-arrow div, .aside-slide-box span, .aside-slide-box div, .aside-slide-button, #aside-slide-delete input, .aside-new-box span, .aside-new-box div, .aside-new-box label, .aside-new-box input[type="checkbox"], .aside-new-button {
   display: inline-block;
   vertical-align: middle; }
 
@@ -64,40 +64,61 @@ ul {
     top: 10%; } }
 
 /*editor option layout*/
-#header-theme {
+#header-theme, #header-footer {
   float: left;
   height: 8vh;
   padding: 1vh 0;
   vertical-align: middle;
   margin-left: 20px; }
 
-#header-theme header {
+#header-theme header, #header-footer header {
   color: white;
   font-weight: bold;
   font-size: 14px; }
 
-#header-theme select {
+#header-theme select, #header-footer select {
   font-size: 14px;
   width: 120px;
   margin-top: 5px;
   border-radius: 3px;
   padding: 3px 0; }
 
+#header-footer select {
+  width: 150px; }
+
+#header-footer input {
+  font-size: 14px;
+  width: 150px;
+  margin-top: 5px;
+  margin-left: 1px;
+  padding: 3px 0; }
+
 #header-mode {
+  width: 120px; }
+
+#header-arrow {
+  width: 60px; }
+
+#header-mode, #header-arrow {
   float: right;
-  width: 120px;
   margin-right: 20px;
   height: 8vh;
   padding: 1vh 0;
   vertical-align: middle; }
 
-#header-mode strong {
+#header-mode strong, #header-mode header, #header-arrow strong, #header-arrow header {
   color: white;
   font-size: 14px;
   font-weight: bold; }
 
-#header-mode span span {
+#header-mode span span, #header-arrow span span {
   font-size: 12px; }
+
+#header-arrow div {
+  font-size: 16px;
+  margin-top: 5px;
+  margin-right: 5px;
+  cursor: pointer; }
 
 /* aside editor layout */
 #aside-add {

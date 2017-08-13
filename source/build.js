@@ -30,6 +30,8 @@ function buildFooter( theme, script, page ) {
         switch ( theme.footer.template ) {
             case "DefaultCopyright":
                  return <Com.Footer.DefaultCopyright theme={ theme } />;
+            default:
+                return false;
         }
     }
 }

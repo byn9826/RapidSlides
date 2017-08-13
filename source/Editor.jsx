@@ -49,6 +49,18 @@ class Editor extends Component {
             }
         }, false );
     }
+    //move left
+    pageLeft() {
+        if ( this.state.page !== 0 ) {
+            this.setState({ trans: "left", page: this.state.page - 1 });
+        }
+    }
+    //move right
+    pageRight() {
+        if ( this.state.page !== ( this.state.script.length - 1 ) ) {
+            this.setState({ trans: "right", page: this.state.page + 1 });
+        }
+    }
     //click slide on side bar
     clickSlide( index ) {
         if ( this.state.add || this.state.editPage ) {
@@ -224,6 +236,20 @@ class Editor extends Component {
     //change theme font family
     themeFont( e ) {
         this.state.theme.fontFamily = e.target.value;
+        this.state.file.getElementById( "theme" ).innerHTML = JSON.stringify( this.state.theme );
+        saveFile( this.props.loc, this.state.file );
+        this.setState({ theme: this.state.theme });
+    }
+    //change theme footer
+    themeFooter( e ) {
+        this.state.theme.footer.template = e.target.value;
+        this.state.file.getElementById( "theme" ).innerHTML = JSON.stringify( this.state.theme );
+        saveFile( this.props.loc, this.state.file );
+        this.setState({ theme: this.state.theme });
+    }
+    //change theme title
+    themeTitle( e ) {
+        this.state.theme.footer.title = e.target.value;
         this.state.file.getElementById( "theme" ).innerHTML = JSON.stringify( this.state.theme );
         saveFile( this.props.loc, this.state.file );
         this.setState({ theme: this.state.theme });
@@ -639,6 +665,10 @@ class Editor extends Component {
         const fontFamily = Resource.FontsList.map( ( f, i ) =>
             <option key={ "fontFamily" + i } style={ { "fontFamily": f } }>{ f }</option>
         );
+        //provide options for theme footer template
+        const footTemps = Object.entries( Com[ "Footer" ] ).map( ( temp, index) =>
+            <option key={ "footOption" + index } value={ temp[ 0 ] }>{ temp[ 0 ] }</option>
+        );
         return (
             <div>
                 <header id="header">
@@ -652,6 +682,29 @@ class Editor extends Component {
                                 >
                                     { fontFamily }
                                 </select>
+                            </section>
+                        ) : null
+                    }
+                    {
+                        this.state.mode === 0 ? (
+                            <section id="header-footer">
+                                <header className="layout-fonts">Footer</header>
+                                <select 
+                                    value={ this.state.theme.footer.template } 
+                                    onChange={ this.themeFooter.bind( this ) }
+                                >
+                                    <option key={ "footOptionNull" } value={ null }>Empty</option>
+                                    { footTemps }
+                                </select>
+                                {
+                                    this.state.theme.footer.template !== "Empty" ? (
+                                        <input 
+                                            type="text" value={ this.state.theme.footer.title } 
+                                            onChange={ this.themeTitle.bind( this ) }
+                                            placeholder="Content for Footer"
+                                        />
+                                    ) : null
+                                }
                             </section>
                         ) : null
                     }
@@ -671,6 +724,11 @@ class Editor extends Component {
                             <a></a>
                         </span>
                     </label>
+                    <section id="header-arrow">
+                        <header className="layout-fonts">Move</header>
+                        <div onClick={ this.pageLeft.bind( this ) }>&#9198;</div>
+                        <div onClick={ this.pageRight.bind( this ) }>&#9197;</div>
+                    </section>
                 </header>
                 <aside id="aside">
                     {
