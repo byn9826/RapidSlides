@@ -12,8 +12,8 @@ class SingleDefaultPic extends Component {
     }
     render() {
         let mainStyle = {
-            height: "81vh",
-            paddingTop: "4vh",
+            height: this.props.full ? "90vh" : "80vh",
+            paddingTop: "5vh",
             backgroundColor: this.props.theme.background,
             paddingLeft: "4%",
             paddingRight: "4%",

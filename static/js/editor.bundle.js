@@ -9592,22 +9592,28 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //all template file should be build here, import them in components.js
 
-function buildContent(theme, script, page) {
+function buildContent(theme, script, page, full) {
     if (script[page]) {
         if (script[page].type === "Cover") {
             switch (script[page].template) {
                 case "DefaultFull":
-                    return _react2.default.createElement(_components2.default.Cover.DefaultFull, { theme: theme, script: script, page: page });
+                    return _react2.default.createElement(_components2.default.Cover.DefaultFull, {
+                        theme: theme, script: script, page: page, full: full
+                    });
             }
         } else if (script[page].type === "Index") {
             switch (script[page].template) {
                 case "DefaultHouse":
-                    return _react2.default.createElement(_components2.default.Index.DefaultHouse, { theme: theme, script: script, page: page });
+                    return _react2.default.createElement(_components2.default.Index.DefaultHouse, {
+                        theme: theme, script: script, page: page, full: full
+                    });
             }
         } else if (script[page].type === "Single") {
             switch (script[page].template) {
                 case "DefaultPic":
-                    return _react2.default.createElement(_components2.default.Single.DefaultPic, { theme: theme, script: script, page: page });
+                    return _react2.default.createElement(_components2.default.Single.DefaultPic, {
+                        theme: theme, script: script, page: page, full: full
+                    });
             }
         }
     }
@@ -9638,7 +9644,7 @@ module.exports = {
 
 
 module.exports = {
-       FontsList: ["Arial", "Helvetica", "Times New Roman", "Times", "Courier New", "Courier", "Verdana", "Georgia", "Palatino", "Garamond", "Bookman", "Comic Sans MS", "Trebuchet MS", "Arial Black", "Impact"]
+       FontsList: ["Arial", "Helvetica", "Times New Roman", "Courier New", "Courier", "Verdana", "Georgia", "Palatino", "Garamond", "Bookman", "Comic Sans MS", "Trebuchet MS", "Arial Black", "Impact"]
 };
 
 /***/ }),
@@ -9709,6 +9715,7 @@ var Editor = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Editor.__proto__ || Object.getPrototypeOf(Editor)).call(this, props));
 
         _this.state = {
+            full: false,
             mode: 0,
             //file content
             file: _this.props.file,
@@ -9747,11 +9754,11 @@ var Editor = function (_Component) {
                 var code = e.keyCode;
                 if (code === 37) {
                     if (_this2.state.page !== 0) {
-                        _this2.setState({ trans: "left", page: _this2.state.page - 1 });
+                        !_this2.state.full ? _this2.setState({ trans: "left", page: _this2.state.page - 1 }) : _this2.setState({ trans: "fullLeft", page: _this2.state.page - 1 });
                     }
                 } else if (code === 39) {
                     if (_this2.state.page !== _this2.state.script.length - 1) {
-                        _this2.setState({ trans: "right", page: _this2.state.page + 1 });
+                        !_this2.state.full ? _this2.setState({ trans: "right", page: _this2.state.page + 1 }) : _this2.setState({ trans: "fullRight", page: _this2.state.page + 1 });
                     }
                 }
             }, false);
@@ -10036,11 +10043,19 @@ var Editor = function (_Component) {
             saveFile(this.props.loc, this.state.file);
             this.setState({ theme: this.state.theme });
         }
+        //full screen or not
+
+    }, {
+        key: "themeFull",
+        value: function themeFull() {
+            this.setState({ full: !this.state.full, trans: null });
+        }
     }, {
         key: "render",
         value: function render() {
             var _this3 = this;
 
+            //style for editor layout
             var mainStyle = {
                 position: "absolute",
                 left: "20%",
@@ -10048,13 +10063,21 @@ var Editor = function (_Component) {
                 top: "10vh",
                 height: "90vh"
             };
+            //style for full screen
+            var fullStyle = {
+                position: "absolute",
+                left: "0",
+                width: "100%",
+                top: "0",
+                height: "100vh"
+            };
             //build main, footer for slides
             var content = void 0,
                 footer = void 0,
                 temporary = void 0;
             if (!this.state.add && this.state.editPage === null) {
                 //normal display
-                content = _build2.default.buildContent(this.state.theme, this.state.script, this.state.page);
+                content = _build2.default.buildContent(this.state.theme, this.state.script, this.state.page, this.state.full);
                 footer = _build2.default.buildFooter(this.state.theme, this.state.script, this.state.page);
             } else {
                 //display add new preview
@@ -10070,12 +10093,12 @@ var Editor = function (_Component) {
                 if (this.state.add) {
                     //add new preview
                     temporary = [temporary].concat(this.state.script);
-                    content = _build2.default.buildContent(this.state.theme, temporary, 0);
+                    content = _build2.default.buildContent(this.state.theme, temporary, 0, this.state.full);
                     footer = _build2.default.buildFooter(this.state.theme, temporary, 0);
                 } else if (this.state.editPage >= 0) {
                     var orig = this.state.script.slice();
                     orig.splice(this.state.editPage, 1, temporary);
-                    content = _build2.default.buildContent(this.state.theme, orig, this.state.editPage);
+                    content = _build2.default.buildContent(this.state.theme, orig, this.state.editPage, this.state.full);
                     footer = _build2.default.buildFooter(this.state.theme, orig, this.state.editPage);
                 }
             }
@@ -10607,7 +10630,7 @@ var Editor = function (_Component) {
             return _react2.default.createElement(
                 "div",
                 null,
-                _react2.default.createElement(
+                !this.state.full ? _react2.default.createElement(
                     "header",
                     { id: "header" },
                     this.state.mode === 0 ? _react2.default.createElement(
@@ -10655,6 +10678,11 @@ var Editor = function (_Component) {
                         }) : null
                     ) : null,
                     _react2.default.createElement(
+                        "section",
+                        { id: "header-full", onClick: this.themeFull.bind(this) },
+                        "Full Screen"
+                    ),
+                    _react2.default.createElement(
                         "label",
                         { id: "header-mode", className: "switch-light switch-candy switch-candy-blue" },
                         _react2.default.createElement("input", {
@@ -10701,8 +10729,8 @@ var Editor = function (_Component) {
                             "\u23ED"
                         )
                     )
-                ),
-                _react2.default.createElement(
+                ) : null,
+                !this.state.full ? _react2.default.createElement(
                     "aside",
                     { id: "aside" },
                     this.state.mode === 0 ? _react2.default.createElement(
@@ -10715,16 +10743,21 @@ var Editor = function (_Component) {
                     ) : null,
                     add,
                     slides
-                ),
+                ) : null,
                 _react2.default.createElement(
                     "main",
                     {
-                        id: "temp-main", style: mainStyle, className: this.state.trans,
-                        key: "trans" + this.state.page
+                        id: "temp-main", style: this.state.full ? fullStyle : mainStyle,
+                        className: this.state.trans, key: "trans" + this.state.page
                     },
                     content,
                     footer
-                )
+                ),
+                this.state.full ? _react2.default.createElement(
+                    "span",
+                    { id: "header-exit", onClick: this.themeFull.bind(this) },
+                    "Editor View"
+                ) : null
             );
         }
     }]);
@@ -10823,7 +10856,7 @@ var CoverDefaultFull = function (_Component) {
         key: "render",
         value: function render() {
             var contentStyle = {
-                height: "90vh",
+                height: this.props.full ? "100vh" : "90vh",
                 backgroundImage: "url(../workspace/storage/" + this.props.script[this.props.page].image + ")",
                 backgroundSize: "cover"
             };
@@ -10989,12 +11022,22 @@ var IndexDefaultHouse = function (_Component) {
             });
         }
     }, {
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(nextProps) {
+            if (this.props.full !== nextProps.full) {
+                this.setState({
+                    fullHeight: document.getElementById("temp-main").offsetHeight,
+                    fullWidth: document.getElementById("temp-main").offsetWidth
+                });
+            }
+        }
+    }, {
         key: "render",
         value: function render() {
             var _this2 = this;
 
             var mainStyle = {
-                height: "85vh",
+                height: this.props.full ? "95vh" : "85vh",
                 backgroundColor: this.props.theme.background
             };
             var headerStyle = {
@@ -11233,8 +11276,8 @@ var SingleDefaultPic = function (_Component) {
         key: "render",
         value: function render() {
             var mainStyle = {
-                height: "81vh",
-                paddingTop: "4vh",
+                height: this.props.full ? "90vh" : "80vh",
+                paddingTop: "5vh",
                 backgroundColor: this.props.theme.background,
                 paddingLeft: "4%",
                 paddingRight: "4%",

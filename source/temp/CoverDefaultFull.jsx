@@ -12,7 +12,7 @@ class CoverDefaultFull extends Component {
     }
     render() {
         const contentStyle = {
-            height: "90vh",
+            height: this.props.full ? "100vh" : "90vh",
             backgroundImage: "url(../workspace/storage/" + this.props.script[ this.props.page ].image + ")",
             backgroundSize: "cover"
         };

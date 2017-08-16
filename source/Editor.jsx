@@ -8,6 +8,7 @@ class Editor extends Component {
     constructor( props ) {
         super( props );
 		this.state = {
+            full: false,
             mode: 0,
             //file content
             file: this.props.file,
@@ -40,11 +41,15 @@ class Editor extends Component {
             let code = e.keyCode;
             if ( code === 37 ) {
                 if ( this.state.page !== 0 ) {
-                    this.setState({ trans: "left", page: this.state.page - 1 });
+                    !this.state.full ? 
+                        this.setState({ trans: "left", page: this.state.page - 1 }) :
+                        this.setState({ trans: "fullLeft", page: this.state.page - 1 });
                 }
             } else if ( code === 39 ) {
                 if ( this.state.page !== ( this.state.script.length - 1 ) ) {
-                    this.setState({ trans: "right", page: this.state.page + 1 });
+                    !this.state.full ?
+                        this.setState({ trans: "right", page: this.state.page + 1 }) :
+                        this.setState({ trans: "fullRight", page: this.state.page + 1 });
                 }
             }
         }, false );
@@ -254,7 +259,12 @@ class Editor extends Component {
         saveFile( this.props.loc, this.state.file );
         this.setState({ theme: this.state.theme });
     }
+    //full screen or not
+    themeFull() {
+        this.setState({ full: !this.state.full, trans: null });
+    }
     render() {
+        //style for editor layout
         const mainStyle = {
             position: "absolute",
             left: "20%",
@@ -262,11 +272,21 @@ class Editor extends Component {
             top: "10vh",
             height: "90vh"
         };
+        //style for full screen
+        const fullStyle = {
+            position: "absolute",
+            left: "0",
+            width: "100%",
+            top: "0",
+            height: "100vh"
+        };
         //build main, footer for slides
         let content, footer, temporary;
         if ( !this.state.add && this.state.editPage === null ) {
             //normal display
-            content = Build.buildContent( this.state.theme, this.state.script, this.state.page );
+            content = Build.buildContent( 
+                this.state.theme, this.state.script, this.state.page, this.state.full
+            );
             footer = Build.buildFooter( this.state.theme, this.state.script, this.state.page );
         } else {
             //display add new preview
@@ -282,12 +302,14 @@ class Editor extends Component {
             if ( this.state.add ) {
                 //add new preview
                 temporary = [ temporary ].concat( this.state.script );
-                content = Build.buildContent( this.state.theme, temporary, 0 );
+                content = Build.buildContent( this.state.theme, temporary, 0, this.state.full );
                 footer = Build.buildFooter( this.state.theme, temporary, 0 );
             } else if ( this.state.editPage >= 0 ) {
                 let orig = this.state.script.slice();
                 orig.splice( this.state.editPage, 1, temporary);
-                content = Build.buildContent( this.state.theme, orig, this.state.editPage );
+                content = Build.buildContent( 
+                    this.state.theme, orig, this.state.editPage, this.state.full
+                );
                 footer = Build.buildFooter( this.state.theme, orig, this.state.editPage );
             }
         }
@@ -671,86 +693,107 @@ class Editor extends Component {
         );
         return (
             <div>
-                <header id="header">
-                    {
-                        this.state.mode === 0 ? (
-                            <section id="header-theme">
-                                <header className="layout-fonts">Font</header>
-                                <select 
-                                    value={ this.state.theme.fontFamily } 
-                                    onChange={ this.themeFont.bind( this ) }
-                                >
-                                    { fontFamily }
-                                </select>
+                {
+                    !this.state.full ? (
+                        <header id="header">
+                            {
+                                this.state.mode === 0 ? (
+                                    <section id="header-theme">
+                                        <header className="layout-fonts">Font</header>
+                                        <select 
+                                            value={ this.state.theme.fontFamily } 
+                                            onChange={ this.themeFont.bind( this ) }
+                                        >
+                                            { fontFamily }
+                                        </select>
+                                    </section>
+                                ) : null
+                            }
+                            {
+                                this.state.mode === 0 ? (
+                                    <section id="header-footer">
+                                        <header className="layout-fonts">Footer</header>
+                                        <select 
+                                            value={ this.state.theme.footer.template } 
+                                            onChange={ this.themeFooter.bind( this ) }
+                                        >
+                                            <option key={ "footOptionNull" } value={ null }>Empty</option>
+                                            { footTemps }
+                                        </select>
+                                        {
+                                            this.state.theme.footer.template !== "Empty" ? (
+                                                <input 
+                                                    type="text" value={ this.state.theme.footer.title } 
+                                                    onChange={ this.themeTitle.bind( this ) }
+                                                    placeholder="Content for Footer"
+                                                />
+                                            ) : null
+                                        }
+                                    </section>
+                                ) : null
+                            }
+                            <section id="header-full" onClick={ this.themeFull.bind( this ) }>
+                                Full
+                                Screen
                             </section>
-                        ) : null
-                    }
-                    {
-                        this.state.mode === 0 ? (
-                            <section id="header-footer">
-                                <header className="layout-fonts">Footer</header>
-                                <select 
-                                    value={ this.state.theme.footer.template } 
-                                    onChange={ this.themeFooter.bind( this ) }
-                                >
-                                    <option key={ "footOptionNull" } value={ null }>Empty</option>
-                                    { footTemps }
-                                </select>
-                                {
-                                    this.state.theme.footer.template !== "Empty" ? (
-                                        <input 
-                                            type="text" value={ this.state.theme.footer.title } 
-                                            onChange={ this.themeTitle.bind( this ) }
-                                            placeholder="Content for Footer"
-                                        />
-                                    ) : null
-                                }
+                            <label id="header-mode" className="switch-light switch-candy switch-candy-blue">
+                                <input 
+                                    type="checkbox" value={ this.state.mode } 
+                                    onClick={ this.changeMode.bind( this ) } 
+                                />
+                                <strong className="layout-fonts">Mode</strong>
+                                <span>
+                                    <span className="layout-fonts">
+                                        Edit
+                                    </span>
+                                    <span className="layout-fonts">
+                                        Display
+                                    </span>
+                                    <a></a>
+                                </span>
+                            </label>
+                            <section id="header-arrow">
+                                <header className="layout-fonts">Move</header>
+                                <div onClick={ this.pageLeft.bind( this ) }>&#9198;</div>
+                                <div onClick={ this.pageRight.bind( this ) }>&#9197;</div>
                             </section>
-                        ) : null
-                    }
-                    <label id="header-mode" className="switch-light switch-candy switch-candy-blue">
-                        <input 
-                            type="checkbox" value={ this.state.mode } 
-                            onClick={ this.changeMode.bind( this ) } 
-                        />
-                        <strong className="layout-fonts">Mode</strong>
-                        <span>
-                            <span className="layout-fonts">
-                                Edit
-                            </span>
-                            <span className="layout-fonts">
-                                Display
-                            </span>
-                            <a></a>
-                        </span>
-                    </label>
-                    <section id="header-arrow">
-                        <header className="layout-fonts">Move</header>
-                        <div onClick={ this.pageLeft.bind( this ) }>&#9198;</div>
-                        <div onClick={ this.pageRight.bind( this ) }>&#9197;</div>
-                    </section>
-                </header>
-                <aside id="aside">
-                    {
-                        this.state.mode === 0 ? (
-                            <div 
-                                id="aside-add" className="layout-fonts" 
-                                onClick={ this.clickAdd.bind( this ) }
-                            >
-                                Add
-                            </div>
-                        ) : null
-                    }
-                    { add }
-                    { slides }
-                </aside>
+                        </header>
+                    ) : null
+                }
+                {
+                    !this.state.full ? (
+                        <aside id="aside">
+                            {
+                                this.state.mode === 0 ? (
+                                    <div 
+                                        id="aside-add" className="layout-fonts" 
+                                        onClick={ this.clickAdd.bind( this ) }
+                                    >
+                                        Add
+                                    </div>
+                                ) : null
+                            }
+                            { add }
+                            { slides }
+                        </aside>
+                    ) : null
+                }
                 <main 
-                    id="temp-main" style={ mainStyle } className={ this.state.trans } 
-                    key={ "trans" + this.state.page }
+                    id="temp-main" style={ this.state.full ? fullStyle : mainStyle } 
+                    className={ this.state.trans } key={ "trans" + this.state.page }
                 >
                     { content }
                     { footer }
                 </main>
+                {
+                    this.state.full ? (
+                        <span id="header-exit" onClick={ this.themeFull.bind( this ) }>
+                            Editor
+                            View
+                        </span>
+                    ) : null
+                }
+                
             </div>
         );
     }

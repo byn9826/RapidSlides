@@ -14,9 +14,17 @@ class IndexDefaultHouse extends Component {
             fullWidth: document.getElementById( "temp-main" ).offsetWidth
         });
     }
+    componentWillReceiveProps( nextProps ) {
+        if ( this.props.full !== nextProps.full ) {
+            this.setState({ 
+                fullHeight: document.getElementById( "temp-main" ).offsetHeight,
+                fullWidth: document.getElementById( "temp-main" ).offsetWidth
+            });
+        }
+    }
     render() {
         let mainStyle = {
-            height: "85vh",
+            height: this.props.full ? "95vh" : "85vh",
             backgroundColor: this.props.theme.background,
         };
         let headerStyle = {
