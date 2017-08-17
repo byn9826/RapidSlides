@@ -828,7 +828,7 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 const loc = path.join( __dirname, '../workspace/slide.html' );
 const storage = path.join( __dirname, '../workspace/storage/' );
-const {dialog} = require('electron').remote;
+const { dialog } = require('electron').remote;
 
 let file;
 try {

@@ -20,7 +20,7 @@ $font-large: 16px;
 }
 
 
-body{
+html, body{
     @extend .no-spacing;
     overflow: hidden;
 }

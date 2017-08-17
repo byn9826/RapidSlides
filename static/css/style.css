@@ -1,4 +1,4 @@
-.no-spacing, body, ul {
+.no-spacing, html, body, ul {
   margin: 0;
   padding: 0; }
 
@@ -6,7 +6,7 @@
   display: inline-block;
   vertical-align: middle; }
 
-body {
+html, body {
   overflow: hidden; }
 
 ul {
