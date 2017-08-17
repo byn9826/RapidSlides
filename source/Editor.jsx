@@ -10,6 +10,7 @@ class Editor extends Component {
 		this.state = {
             full: false,
             mode: 0,
+            export: false,
             //file content
             file: this.props.file,
             //default data for script and theme
@@ -262,6 +263,20 @@ class Editor extends Component {
     //full screen or not
     themeFull() {
         this.setState({ full: !this.state.full, trans: null });
+    }
+    //show export board
+    themeExport() {
+        dialog.showSaveDialog({
+            title:"Save as single HTML file",
+            defaultPath: document.getElementsByTagName("title")[0].innerHTML + ".html",
+            properties: ["openDirectory"],
+            filters: [
+                {name: 'HTML', extensions: ['html']},
+            ]
+        }, ( newFile ) => {
+            let content = new XMLSerializer().serializeToString( this.state.file );
+            fs.writeFileSync( newFile, content, 'utf-8' ); 
+        });
     }
     render() {
         //style for editor layout
@@ -732,9 +747,21 @@ class Editor extends Component {
                                     </section>
                                 ) : null
                             }
+                            {
+                                this.state.mode === 0 ? (
+                                    <section id="header-export" onClick={ this.themeExport.bind( this ) }>
+                                        Export
+                                    </section>
+                                ) : null
+                            }
                             <section id="header-full" onClick={ this.themeFull.bind( this ) }>
                                 Full
                                 Screen
+                            </section>
+                            <section id="header-arrow">
+                                <header className="layout-fonts">Move</header>
+                                <div onClick={ this.pageLeft.bind( this ) }>&#9198;</div>
+                                <div onClick={ this.pageRight.bind( this ) }>&#9197;</div>
                             </section>
                             <label id="header-mode" className="switch-light switch-candy switch-candy-blue">
                                 <input 
@@ -752,11 +779,6 @@ class Editor extends Component {
                                     <a></a>
                                 </span>
                             </label>
-                            <section id="header-arrow">
-                                <header className="layout-fonts">Move</header>
-                                <div onClick={ this.pageLeft.bind( this ) }>&#9198;</div>
-                                <div onClick={ this.pageRight.bind( this ) }>&#9197;</div>
-                            </section>
                         </header>
                     ) : null
                 }
@@ -793,7 +815,6 @@ class Editor extends Component {
                         </span>
                     ) : null
                 }
-                
             </div>
         );
     }
@@ -807,6 +828,7 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 const loc = path.join( __dirname, '../workspace/slide.html' );
 const storage = path.join( __dirname, '../workspace/storage/' );
+const {dialog} = require('electron').remote;
 
 let file;
 try {

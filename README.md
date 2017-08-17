@@ -11,7 +11,7 @@ Build a slideshow
 5. Export as one single HTML file, bring or send it to anywhere.  
 ![Legend](https://raw.githubusercontent.com/byn9826/RapidSlides/master/~legend/1.jpg)
 
-For Project Env
+For Dev Env
 --
 1. git clone https://github.com/byn9826/RapidSlides.git  
 2. npm install  

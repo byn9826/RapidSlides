@@ -10,8 +10,9 @@ app.on('ready', () => {
         height: 600,
         width: 800
     });
-    //mainWindow.setMenu(null);
-    mainWindow.loadURL(url.format({
+    mainWindow.setMenu( null );
+    mainWindow.maximize();
+    mainWindow.loadURL( url.format({
         pathname: path.join( __dirname, './workspace/slide.html' ),
         protocol: 'file:',
         slashes: true

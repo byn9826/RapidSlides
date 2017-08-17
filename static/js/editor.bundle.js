@@ -9717,6 +9717,7 @@ var Editor = function (_Component) {
         _this.state = {
             full: false,
             mode: 0,
+            export: false,
             //file content
             file: _this.props.file,
             //default data for script and theme
@@ -10050,10 +10051,27 @@ var Editor = function (_Component) {
         value: function themeFull() {
             this.setState({ full: !this.state.full, trans: null });
         }
+        //show export board
+
+    }, {
+        key: "themeExport",
+        value: function themeExport() {
+            var _this3 = this;
+
+            dialog.showSaveDialog({
+                title: "Save as single HTML file",
+                defaultPath: document.getElementsByTagName("title")[0].innerHTML + ".html",
+                properties: ["openDirectory"],
+                filters: [{ name: 'HTML', extensions: ['html'] }]
+            }, function (newFile) {
+                var content = new XMLSerializer().serializeToString(_this3.state.file);
+                fs.writeFileSync(newFile, content, 'utf-8');
+            });
+        }
     }, {
         key: "render",
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             //style for editor layout
             var mainStyle = {
@@ -10104,12 +10122,12 @@ var Editor = function (_Component) {
             }
             //generate editor for slides
             var slides = this.state.script.map(function (slide, index) {
-                return index !== _this3.state.editPage ? _react2.default.createElement(
+                return index !== _this4.state.editPage ? _react2.default.createElement(
                     "div",
                     {
                         key: "editSlide" + index,
-                        className: _this3.state.page === index ? "aside-slide aside-focus" : "aside-slide aside-display",
-                        onClick: _this3.clickSlide.bind(_this3, index)
+                        className: _this4.state.page === index ? "aside-slide aside-focus" : "aside-slide aside-display",
+                        onClick: _this4.clickSlide.bind(_this4, index)
                     },
                     _react2.default.createElement(
                         "div",
@@ -10223,16 +10241,16 @@ var Editor = function (_Component) {
                             "Slide ",
                             index + 1
                         ),
-                        _this3.state.mode === 0 ? _react2.default.createElement("input", {
+                        _this4.state.mode === 0 ? _react2.default.createElement("input", {
                             type: "button", className: "aside-slide-button layout-fonts",
-                            value: "Edit", onClick: _this3.clickEdit.bind(_this3, index)
+                            value: "Edit", onClick: _this4.clickEdit.bind(_this4, index)
                         }) : null,
-                        _this3.state.mode === 0 ? _react2.default.createElement("input", {
+                        _this4.state.mode === 0 ? _react2.default.createElement("input", {
                             type: "button", className: "aside-slide-button layout-fonts",
-                            value: "Delete", onClick: _this3.slideDelete.bind(_this3, index)
+                            value: "Delete", onClick: _this4.slideDelete.bind(_this4, index)
                         }) : null
                     ),
-                    _this3.state.confirmDelete === index ? _react2.default.createElement(
+                    _this4.state.confirmDelete === index ? _react2.default.createElement(
                         "div",
                         { id: "aside-slide-delete" },
                         _react2.default.createElement(
@@ -10242,11 +10260,11 @@ var Editor = function (_Component) {
                         ),
                         _react2.default.createElement("input", {
                             type: "button", className: "layout-fonts", value: "Cancel",
-                            onClick: _this3.stopDelete.bind(_this3)
+                            onClick: _this4.stopDelete.bind(_this4)
                         }),
                         _react2.default.createElement("input", {
                             type: "button", className: "layout-fonts", value: "Confirm",
-                            onClick: _this3.confirmDelete.bind(_this3)
+                            onClick: _this4.confirmDelete.bind(_this4)
                         })
                     ) : null
                 ) : _react2.default.createElement(
@@ -10261,8 +10279,8 @@ var Editor = function (_Component) {
                             "Slide Num:"
                         ),
                         _react2.default.createElement("input", {
-                            className: "layout-fonts", type: "number", value: _this3.state.changePage,
-                            onChange: _this3.changePage.bind(_this3)
+                            className: "layout-fonts", type: "number", value: _this4.state.changePage,
+                            onChange: _this4.changePage.bind(_this4)
                         })
                     ),
                     _react2.default.createElement(
@@ -10276,8 +10294,8 @@ var Editor = function (_Component) {
                         _react2.default.createElement(
                             "select",
                             {
-                                className: "layout-fonts", value: _this3.state.addType,
-                                onChange: _this3.addType.bind(_this3)
+                                className: "layout-fonts", value: _this4.state.addType,
+                                onChange: _this4.addType.bind(_this4)
                             },
                             _react2.default.createElement(
                                 "option",
@@ -10317,15 +10335,15 @@ var Editor = function (_Component) {
                         _react2.default.createElement(
                             "select",
                             {
-                                className: "layout-fonts", value: _this3.state.addTemplate,
-                                onChange: _this3.addTemplate.bind(_this3)
+                                className: "layout-fonts", value: _this4.state.addTemplate,
+                                onChange: _this4.addTemplate.bind(_this4)
                             },
                             _react2.default.createElement(
                                 "option",
                                 { disabled: true, value: 0 },
                                 "- Choose -"
                             ),
-                            Object.entries(_components2.default[_this3.state.addType]).map(function (template, index) {
+                            Object.entries(_components2.default[_this4.state.addType]).map(function (template, index) {
                                 return _react2.default.createElement(
                                     "option",
                                     { key: "temOption" + index, value: template[0] },
@@ -10334,21 +10352,21 @@ var Editor = function (_Component) {
                             })
                         )
                     ),
-                    _this3.state.addType === "Index" ? _react2.default.createElement(
+                    _this4.state.addType === "Index" ? _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
                         _react2.default.createElement(
                             "span",
                             { id: "aside-new-box-check", className: "layout-fonts" },
-                            _this3.state.addCheck.length !== 0 ? "Link with Single pages:" : "Please create single pages first"
+                            _this4.state.addCheck.length !== 0 ? "Link with Single pages:" : "Please create single pages first"
                         ),
-                        _this3.state.script.map(function (s) {
+                        _this4.state.script.map(function (s) {
                             return s.type === "Single" ? _react2.default.createElement(
                                 "label",
                                 { key: "addcheck" + s.title },
                                 _react2.default.createElement("input", {
                                     type: "checkbox", value: s.title,
-                                    onChange: _this3.addCheck.bind(_this3)
+                                    onChange: _this4.addCheck.bind(_this4)
                                 }),
                                 s.title
                             ) : null;
@@ -10363,11 +10381,11 @@ var Editor = function (_Component) {
                             "Title:"
                         ),
                         _react2.default.createElement("input", {
-                            className: "layout-fonts", type: "text", value: _this3.state.addTitle,
-                            onChange: _this3.addTitle.bind(_this3)
+                            className: "layout-fonts", type: "text", value: _this4.state.addTitle,
+                            onChange: _this4.addTitle.bind(_this4)
                         })
                     ),
-                    !_components2.default.Ban[_this3.state.addType + _this3.state.addTemplate] || _components2.default.Ban[_this3.state.addType + _this3.state.addTemplate].indexOf("Desc") === -1 ? _react2.default.createElement(
+                    !_components2.default.Ban[_this4.state.addType + _this4.state.addTemplate] || _components2.default.Ban[_this4.state.addType + _this4.state.addTemplate].indexOf("Desc") === -1 ? _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
                         _react2.default.createElement(
@@ -10376,11 +10394,11 @@ var Editor = function (_Component) {
                             "Desc:"
                         ),
                         _react2.default.createElement("textarea", {
-                            className: "layout-fonts", value: _this3.state.addDesc,
-                            onChange: _this3.addDesc.bind(_this3)
+                            className: "layout-fonts", value: _this4.state.addDesc,
+                            onChange: _this4.addDesc.bind(_this4)
                         })
                     ) : null,
-                    !_components2.default.Ban[_this3.state.addType + _this3.state.addTemplate] || _components2.default.Ban[_this3.state.addType + _this3.state.addTemplate].indexOf("Image") === -1 ? _react2.default.createElement(
+                    !_components2.default.Ban[_this4.state.addType + _this4.state.addTemplate] || _components2.default.Ban[_this4.state.addType + _this4.state.addTemplate].indexOf("Image") === -1 ? _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
                         _react2.default.createElement(
@@ -10390,11 +10408,11 @@ var Editor = function (_Component) {
                         ),
                         _react2.default.createElement("input", {
                             id: "file-picker", className: "layout-fonts", type: "file",
-                            onChange: _this3.addFile.bind(_this3)
+                            onChange: _this4.addFile.bind(_this4)
                         })
                     ) : null,
-                    _this3.state.addFile ? _react2.default.createElement("img", { src: "../workspace/storage/" + _this3.state.addFile }) : null,
-                    _this3.state.addType !== "Index" && (!_components2.default.Ban[_this3.state.addType + _this3.state.addTemplate] || _components2.default.Ban[_this3.state.addType + _this3.state.addTemplate].indexOf("Detail") === -1) ? _react2.default.createElement(
+                    _this4.state.addFile ? _react2.default.createElement("img", { src: "../workspace/storage/" + _this4.state.addFile }) : null,
+                    _this4.state.addType !== "Index" && (!_components2.default.Ban[_this4.state.addType + _this4.state.addTemplate] || _components2.default.Ban[_this4.state.addType + _this4.state.addTemplate].indexOf("Detail") === -1) ? _react2.default.createElement(
                         "div",
                         { className: "aside-new-box" },
                         _react2.default.createElement(
@@ -10403,22 +10421,22 @@ var Editor = function (_Component) {
                             "Details: Separate by \";\""
                         ),
                         _react2.default.createElement("textarea", {
-                            className: "layout-fonts", value: _this3.state.addDetail,
-                            onChange: _this3.addDetail.bind(_this3)
+                            className: "layout-fonts", value: _this4.state.addDetail,
+                            onChange: _this4.addDetail.bind(_this4)
                         })
                     ) : null,
                     _react2.default.createElement(
                         "div",
                         { id: "aside-warn", className: "layout-fonts" },
-                        _this3.state.addWarn
+                        _this4.state.addWarn
                     ),
                     _react2.default.createElement("input", {
                         type: "button", className: "aside-new-button layout-fonts", value: "Save",
-                        onClick: _this3.saveEdit.bind(_this3)
+                        onClick: _this4.saveEdit.bind(_this4)
                     }),
                     _react2.default.createElement("input", {
                         type: "button", className: "aside-new-button layout-fonts", value: "Cancel",
-                        onClick: _this3.cancelEdit.bind(_this3)
+                        onClick: _this4.cancelEdit.bind(_this4)
                     })
                 );
             });
@@ -10535,7 +10553,7 @@ var Editor = function (_Component) {
                                 { key: "addcheck" + s.title },
                                 _react2.default.createElement("input", {
                                     type: "checkbox", value: s.title,
-                                    onChange: _this3.addCheck.bind(_this3)
+                                    onChange: _this4.addCheck.bind(_this4)
                                 }),
                                 s.title
                             ) : null;
@@ -10677,10 +10695,34 @@ var Editor = function (_Component) {
                             placeholder: "Content for Footer"
                         }) : null
                     ) : null,
+                    this.state.mode === 0 ? _react2.default.createElement(
+                        "section",
+                        { id: "header-export", onClick: this.themeExport.bind(this) },
+                        "Export"
+                    ) : null,
                     _react2.default.createElement(
                         "section",
                         { id: "header-full", onClick: this.themeFull.bind(this) },
                         "Full Screen"
+                    ),
+                    _react2.default.createElement(
+                        "section",
+                        { id: "header-arrow" },
+                        _react2.default.createElement(
+                            "header",
+                            { className: "layout-fonts" },
+                            "Move"
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { onClick: this.pageLeft.bind(this) },
+                            "\u23EE"
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { onClick: this.pageRight.bind(this) },
+                            "\u23ED"
+                        )
                     ),
                     _react2.default.createElement(
                         "label",
@@ -10708,25 +10750,6 @@ var Editor = function (_Component) {
                                 "Display"
                             ),
                             _react2.default.createElement("a", null)
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "section",
-                        { id: "header-arrow" },
-                        _react2.default.createElement(
-                            "header",
-                            { className: "layout-fonts" },
-                            "Move"
-                        ),
-                        _react2.default.createElement(
-                            "div",
-                            { onClick: this.pageLeft.bind(this) },
-                            "\u23EE"
-                        ),
-                        _react2.default.createElement(
-                            "div",
-                            { onClick: this.pageRight.bind(this) },
-                            "\u23ED"
                         )
                     )
                 ) : null,
@@ -10775,6 +10798,8 @@ var fs = __webpack_require__(85);
 var path = __webpack_require__(86);
 var loc = path.join(__dirname, '../workspace/slide.html');
 var storage = path.join(__dirname, '../workspace/storage/');
+
+var dialog = __webpack_require__(397).remote.dialog;
 
 var file = void 0;
 try {
@@ -23974,6 +23999,217 @@ function traverseAllChildren(children, callback, traverseContext) {
 }
 
 module.exports = traverseAllChildren;
+
+/***/ }),
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */,
+/* 389 */,
+/* 390 */,
+/* 391 */,
+/* 392 */,
+/* 393 */,
+/* 394 */,
+/* 395 */,
+/* 396 */,
+/* 397 */
+/***/ (function(module, exports) {
+
+module.exports = require("electron");
 
 /***/ })
 /******/ ]);

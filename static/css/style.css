@@ -95,6 +95,9 @@ ul {
   font-size: 14px;
   width: 120px;
   margin-top: 5px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
   border-radius: 3px;
   padding: 3px 0; }
 
@@ -111,10 +114,13 @@ ul {
 #header-mode {
   width: 120px; }
 
-#header-full {
+#header-export {
+  line-height: 4vh; }
+
+#header-full, #header-export {
   float: right;
   margin: 2vh 0;
-  margin-right: 40px; }
+  margin-right: 20px; }
 
 #header-exit {
   z-index: 999;
@@ -127,14 +133,17 @@ ul {
 #header-exit:hover {
   opacity: 1; }
 
-#header-full, #header-exit {
+#header-full, #header-exit, #header-export {
   background-color: lightslategray;
   text-align: center;
   font-size: 14px;
-  color: lightcyan;
+  color: white;
   height: 4vh;
   padding: 1vh 0;
   cursor: pointer;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
   border-radius: 5px;
   width: 60px; }
 
