@@ -10068,6 +10068,13 @@ var Editor = function (_Component) {
                 fs.writeFileSync(newFile, content, 'utf-8');
             });
         }
+        //go back to homepage
+
+    }, {
+        key: "backHome",
+        value: function backHome() {
+            goBack();
+        }
     }, {
         key: "render",
         value: function render() {
@@ -10653,6 +10660,11 @@ var Editor = function (_Component) {
                     { id: "header" },
                     this.state.mode === 0 ? _react2.default.createElement(
                         "section",
+                        { id: "header-back", onClick: this.backHome.bind(this) },
+                        "\u262A"
+                    ) : null,
+                    this.state.mode === 0 ? _react2.default.createElement(
+                        "section",
                         { id: "header-theme" },
                         _react2.default.createElement(
                             "header",
@@ -10796,8 +10808,11 @@ var script = JSON.parse(document.getElementById("script").innerHTML);
 //load html
 var fs = __webpack_require__(85);
 var path = __webpack_require__(86);
+var url = __webpack_require__(199);
 var loc = path.join(__dirname, '../workspace/slide.html');
 var storage = path.join(__dirname, '../workspace/storage/');
+var electron = __webpack_require__(397);
+var remote = electron.remote;
 
 var dialog = __webpack_require__(397).remote.dialog;
 
@@ -10830,6 +10845,14 @@ function copyFile(loc, file) {
 
 function forceAdd() {
     alert("Please finish add or edit slide first");
+}
+
+function goBack() {
+    remote.getCurrentWindow().loadURL(url.format({
+        pathname: '../index.html',
+        protocol: 'file:',
+        slashes: true
+    }));
 }
 /* WEBPACK VAR INJECTION */}.call(exports, "source"))
 
@@ -24008,7 +24031,12 @@ module.exports = traverseAllChildren;
 /* 196 */,
 /* 197 */,
 /* 198 */,
-/* 199 */,
+/* 199 */
+/***/ (function(module, exports) {
+
+module.exports = require("url");
+
+/***/ }),
 /* 200 */,
 /* 201 */,
 /* 202 */,

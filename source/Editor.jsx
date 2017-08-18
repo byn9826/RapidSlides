@@ -278,6 +278,10 @@ class Editor extends Component {
             fs.writeFileSync( newFile, content, 'utf-8' ); 
         });
     }
+    //go back to homepage
+    backHome() {
+        goBack();
+    }
     render() {
         //style for editor layout
         const mainStyle = {
@@ -713,6 +717,13 @@ class Editor extends Component {
                         <header id="header">
                             {
                                 this.state.mode === 0 ? (
+                                    <section id="header-back" onClick={ this.backHome.bind( this ) } >
+                                       &#9770;
+                                    </section>
+                                ) : null
+                            }
+                            {
+                                this.state.mode === 0 ? (
                                     <section id="header-theme">
                                         <header className="layout-fonts">Font</header>
                                         <select 
@@ -826,8 +837,11 @@ const script = JSON.parse( document.getElementById( "script" ).innerHTML );
 //load html
 const fs = require( 'fs' );
 const path = require( 'path' );
+const url = require( 'url' );
 const loc = path.join( __dirname, '../workspace/slide.html' );
 const storage = path.join( __dirname, '../workspace/storage/' );
+const electron = require('electron');
+const { remote } = electron;
 const { dialog } = require('electron').remote;
 
 let file;
@@ -842,7 +856,6 @@ ReactDOM.render(
     <Editor script={ script } theme={ theme } file={ file } loc={ loc } storage={ storage } />,
     document.getElementById( "root" ) 
 );
-
 
 
 function saveFile( loc, content ) {
@@ -864,4 +877,12 @@ function copyFile( loc, file ) {
 
 function forceAdd() {
     alert( "Please finish add or edit slide first" );
+}
+
+function goBack() {
+    remote.getCurrentWindow().loadURL(url.format({
+        pathname: '../index.html',
+        protocol: 'file:',
+        slashes: true
+    }));
 }

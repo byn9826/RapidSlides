@@ -1,7 +1,8 @@
 const fs = require( 'fs' );
 const path = require( 'path' );
 const util = require( 'util' );
-const { remote } = require('electron')
+const url = require( 'url' );
+const { remote } = require('electron');
 
 window.onload = function() {
 
@@ -31,5 +32,10 @@ window.onload = function() {
 }
 
 function loadFile( file ) {
-    remote.getCurrentWindow().loadURL( path.join( __dirname, './workspace/', file ) );
+    remote.getCurrentWindow().loadURL(url.format({
+        pathname: '../workspace/' + file,
+        protocol: 'file:',
+        slashes: true
+    }));
+
 }

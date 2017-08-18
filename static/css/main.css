@@ -21,10 +21,21 @@ html, body{
     border-left: 5px solid black;
 }
 
+#main input{
+    margin-top: 4vh;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    border: 2px solid darkcyan;
+    outline: none;
+    width: 16%;
+    cursor: pointer;
+}
+
 #main-container{
     padding: 3%;
     width: 96%;
-    height: 53vh;
+    height: 58vh;
     margin-top: 4vh;
     background-color: lightgoldenrodyellow;
     overflow-y: scroll;

@@ -79,6 +79,20 @@ ul {
     top: 10%; } }
 
 /*editor option layout*/
+#header-back {
+  font-size: 55px;
+  color: white;
+  border-right: 1px solid white;
+  float: left;
+  height: 6vh;
+  line-height: 6vh;
+  margin: 2vh 0;
+  margin-left: 25px;
+  padding-right: 15px;
+  margin-right: 30px;
+  vertical-align: middle;
+  cursor: pointer; }
+
 #header-theme, #header-footer {
   float: left;
   height: 8vh;
