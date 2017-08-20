@@ -838,11 +838,11 @@ const script = JSON.parse( document.getElementById( "script" ).innerHTML );
 const fs = require( 'fs' );
 const path = require( 'path' );
 const url = require( 'url' );
-const loc = path.join( __dirname, '../workspace/slide.html' );
-const storage = path.join( __dirname, '../workspace/storage/' );
 const electron = require('electron');
 const { remote } = electron;
 const { dialog } = require('electron').remote;
+const loc = path.join( __dirname, '../workspace/' + remote.getCurrentWindow().getURL().split( "/" ).pop() );
+const storage = path.join( __dirname, '../workspace/storage/' );
 
 let file;
 try {

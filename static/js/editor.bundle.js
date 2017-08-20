@@ -10809,12 +10809,13 @@ var script = JSON.parse(document.getElementById("script").innerHTML);
 var fs = __webpack_require__(85);
 var path = __webpack_require__(86);
 var url = __webpack_require__(199);
-var loc = path.join(__dirname, '../workspace/slide.html');
-var storage = path.join(__dirname, '../workspace/storage/');
 var electron = __webpack_require__(397);
 var remote = electron.remote;
 
 var dialog = __webpack_require__(397).remote.dialog;
+
+var loc = path.join(__dirname, '../workspace/' + remote.getCurrentWindow().getURL().split("/").pop());
+var storage = path.join(__dirname, '../workspace/storage/');
 
 var file = void 0;
 try {

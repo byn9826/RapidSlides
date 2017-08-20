@@ -21,21 +21,65 @@ html, body{
     border-left: 5px solid black;
 }
 
-#main input{
+#header-create{
+    border: 2px solid darkcyan;
     margin-top: 4vh;
     padding: 10px;
     background-color: white;
     border-radius: 5px;
-    border: 2px solid darkcyan;
     outline: none;
     width: 16%;
     cursor: pointer;
 }
 
+#header-action{
+    border-top: 1px dashed black;
+    margin-top: 2vh;
+    padding-top: 2vh;
+    width: 50%;
+    display: none;
+}
+
+#header-title{
+    border: 2px solid darkslategray;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    outline: none;
+    width: 48%;
+    cursor: pointer;
+}
+
+#header-confirm{
+    width: 15%;
+    padding: 5px;
+    background-color: darkred;
+    border: 0;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    margin-left: 3%;
+}
+
+#header-cancel{
+    width: 15%;
+    padding: 5px;
+    background-color: darkslategrey;
+    border: 0;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    margin-left: 3%;
+}
+
 #main-container{
     padding: 3%;
     width: 96%;
-    height: 58vh;
+    height: 55vh;
     margin-top: 4vh;
     background-color: lightgoldenrodyellow;
     overflow-y: scroll;

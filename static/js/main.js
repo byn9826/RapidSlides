@@ -37,5 +37,33 @@ function loadFile( file ) {
         protocol: 'file:',
         slashes: true
     }));
+}
 
+function showCreate() {
+    document.getElementById( "header-action" ).style.display = "block";
+    document.getElementById( "header-title" ).value = null;
+}
+
+function confirmCreate() {
+    var name = document.getElementById( "header-title" ).value.trim();
+    if ( name && name !== "" ) {
+        var file = fs.readFileSync( __dirname + "/raw/edit.original", { encoding:'utf-8' } );
+        file = new DOMParser().parseFromString( file, "text/html" );
+        file.getElementById( "title" ).innerText = document.getElementById( "header-title" ).value;
+        file = new XMLSerializer().serializeToString( file );
+        try { 
+            fs.writeFileSync( 
+                __dirname + "/workspace/" + name + ".html", 
+                file, 
+                'utf-8'
+            ); 
+        } catch( e ) { 
+            alert('Failed to save the file !'); 
+        }
+        remote.getCurrentWindow().reload();
+    } 
+}
+
+function closeCreate() {
+    document.getElementById( "header-action" ).style.display = "none";
 }

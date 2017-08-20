@@ -14,7 +14,12 @@
 	<body>
 		<main id="main">
 			<header>Your Work Space</header>
-			<input type="button" value="Create New Slide" />
+			<input id="header-create" type="button" value="Create New Slide" onclick="showCreate()" />
+			<div id="header-action">
+				<input id="header-title" type="input" placeholder="Slide Title" />
+				<input id="header-confirm" type="button" value="Confirm" onclick="confirmCreate()"/>
+				<input id="header-cancel" type="button" value="Cancel" onclick="closeCreate()" />
+			</div>
 			<div id="main-container">
 			</div>
 		</main>
