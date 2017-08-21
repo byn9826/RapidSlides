@@ -32,6 +32,18 @@ html, body{
     cursor: pointer;
 }
 
+#header-delete{
+    border: 2px solid red;
+    margin-top: 4vh;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    outline: none;
+    width: 12%;
+    cursor: pointer;
+    margin-left: 50px;
+}
+
 #header-action{
     border-top: 1px dashed black;
     margin-top: 2vh;
@@ -108,4 +120,11 @@ html, body{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     color: lightslategrey;
+}
+
+.slide-delete{
+    display: none;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 3vh;
 }

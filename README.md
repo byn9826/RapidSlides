@@ -1,6 +1,6 @@
 # Rapid Slides
 HTML slideshow generator by Electron & React  
-Generate slideshow directly from transcription to make slideshow easier
+Generate html slideshow directly from your transcription
 
 Build a slideshow
 --
@@ -9,6 +9,7 @@ Build a slideshow
 3. Fill in forms with transcription   
 4. HTML slideshow will be generated directly  
 5. Export as one single HTML file, bring or send it to anywhere.  
+![Legend](https://raw.githubusercontent.com/byn9826/RapidSlides/master/~legend/0.jpg)  
 ![Legend](https://raw.githubusercontent.com/byn9826/RapidSlides/master/~legend/1.jpg)
 
 For Dev Env

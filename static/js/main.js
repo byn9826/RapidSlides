@@ -17,15 +17,22 @@ window.onload = function() {
             let title = document.createElement( "div" );
             let titleText = document.createTextNode( file.split( "." )[ 0 ] );
             title.appendChild( titleText );
+            title.onclick = function() { loadFile( file ); }
 
             let created = document.createElement( "span" );
             let createdText = document.createTextNode( lTime.toString().substring( 4, 24 ) );
             created.appendChild( createdText );
+            created.onclick = function() { loadFile( file ); }
+
+            let button = document.createElement( "button" );
+            button.className = "slide-delete";
+            button.innerText = "Delete";
+            button.onclick = function() { deleteFile( file ); }
 
             let section = document.createElement( "section" );
             section.appendChild( title );
             section.appendChild( created );
-            section.onclick = function() { loadFile( file ); }
+            section.appendChild( button );
             main.appendChild( section ); 
         }
     });
@@ -66,4 +73,21 @@ function confirmCreate() {
 
 function closeCreate() {
     document.getElementById( "header-action" ).style.display = "none";
+}
+
+var toggle = 0;
+
+function showManage() {
+    toggle++;
+    if ( toggle % 2 === 1 ) {
+        document.querySelectorAll( ".slide-delete" ).forEach( a => a.style.display = "block" );
+    } else {
+        document.querySelectorAll( ".slide-delete" ).forEach( a => a.style.display = "none" );
+    }
+}
+
+function deleteFile( name ) {
+    fs.unlink( __dirname + "/workspace/" + name, () => {
+        remote.getCurrentWindow().reload();
+    });
 }
