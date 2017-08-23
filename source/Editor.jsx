@@ -77,7 +77,7 @@ class Editor extends Component {
     }
     //click add slide button
     clickAdd() {
-        if ( !this.state.editPage ) {
+        if ( !this.state.editPage && this.state.editPage !== 0 ) {
             this.setState({ add: true, page: this.state.script.length + 1, confirmDelete: null });
         } else {
             forceAdd();
@@ -483,20 +483,26 @@ class Editor extends Component {
                         this.state.addType === "Index" ? (
                             <div className="aside-new-box">
                                 <span id="aside-new-box-check" className="layout-fonts">
-                                    {
-                                        this.state.addCheck.length !== 0 ? 
-                                            "Link with Single pages:" : 
-                                            "Please create single pages first"
-                                    }
+                                    Link with Single pages:
                                 </span>
                                 {
                                     this.state.script.map( ( s ) => 
                                         s.type === "Single" ? (
                                             <label key={ "addcheck" + s.title }>
-                                                <input 
-                                                    type="checkbox" value={ s.title }
-                                                    onChange={ this.addCheck.bind( this ) } 
-                                                />
+                                                {
+                                                    this.state.addCheck.indexOf( s.title ) === -1 ? (
+                                                        <input 
+                                                            type="checkbox" value={ s.title }
+                                                            onChange={ this.addCheck.bind( this ) } 
+                                                        />
+                                                    ) : (
+                                                        <input 
+                                                            type="checkbox" value={ s.title } checked
+                                                            onChange={ this.addCheck.bind( this ) } 
+                                                        />
+                                                    )
+                                                }
+                                                
                                                 { s.title }
                                             </label>
                                         ): null
@@ -619,11 +625,7 @@ class Editor extends Component {
                         this.state.addType === "Index" ? (
                             <div className="aside-new-box">
                                 <span id="aside-new-box-check" className="layout-fonts">
-                                    {
-                                        this.state.addCheck.length !== 0 ? 
-                                            "Link with Single pages:" : 
-                                            "Please create single pages first"
-                                    }
+                                    Link with Single pages:
                                 </span>
                                 {
                                     this.state.script.map( ( s ) => 
