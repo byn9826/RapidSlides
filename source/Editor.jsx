@@ -29,7 +29,7 @@ class Editor extends Component {
             addCheck: [],
             addDesc: "",
             addFile: null,
-            addDetail: [],
+            addDetail: null,
             addWarn: null,
             //confirm delete slide
             confirmDelete: null,
@@ -41,13 +41,13 @@ class Editor extends Component {
         document.addEventListener( "keydown",  e => {
             let code = e.keyCode;
             if ( code === 37 ) {
-                if ( this.state.page !== 0 ) {
+                if ( this.state.page !== 0 && this.state.editPage === null ) {
                     !this.state.full ? 
                         this.setState({ trans: "left", page: this.state.page - 1 }) :
                         this.setState({ trans: "fullLeft", page: this.state.page - 1 });
                 }
             } else if ( code === 39 ) {
-                if ( this.state.page !== ( this.state.script.length - 1 ) ) {
+                if ( this.state.page !== ( this.state.script.length - 1 ) && this.state.editPage === null ) {
                     !this.state.full ?
                         this.setState({ trans: "right", page: this.state.page + 1 }) :
                         this.setState({ trans: "fullRight", page: this.state.page + 1 });
@@ -87,7 +87,7 @@ class Editor extends Component {
     cancelAdd() {
         this.setState({ 
             add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [],
-            addDesc: "", addDetail: "", page: 0, addWarn: null, addFile: null
+            addDesc: "", addDetail: null, page: 0, addWarn: null, addFile: null
         });
     }
     //confirm create new slide
@@ -106,13 +106,13 @@ class Editor extends Component {
                 "check": this.state.addCheck,
                 "desc": this.state.addDesc,
                 "image": this.state.addFile,
-                "detail": this.state.addDetail.length > 0? this.state.addDetail.split( ";" ): [],
+                "detail": this.state.addDetail
             });
             this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
             saveFile( this.props.loc, this.state.file );
             this.setState({
                 add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [], addDesc: "", 
-                addDetail: [], addFile: null, page: this.state.addNum - 1, addNum: script.length + 1, 
+                addDetail: null, addFile: null, page: this.state.addNum - 1, addNum: script.length + 1, 
                 addWarn: null
             });
         }
@@ -200,7 +200,7 @@ class Editor extends Component {
     cancelEdit() {
         this.setState({
             editPage: null, changePage: null, addType: 0, addTemplate: 0, addCheck: [], addTitle: "",
-            addDesc: "", addDetail: "", addFile: null
+            addDesc: "", addDetail: null, addFile: null
         });
     }
     //change page number
@@ -224,13 +224,13 @@ class Editor extends Component {
                 "check": this.state.addCheck,
                 "desc": this.state.addDesc,
                 "image": this.state.addFile,
-                "detail": this.state.addDetail.length > 0? this.state.addDetail.split( ";" ): [],
+                "detail": this.state.addDetail
             });
             this.state.file.getElementById( "script" ).innerHTML = JSON.stringify( this.state.script );
             saveFile( this.props.loc, this.state.file );
             this.setState({
                 add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [], addDesc: "", 
-                addDetail: [], addFile: null, page: this.state.changePage - 1, 
+                addDetail: null, addFile: null, page: this.state.changePage - 1, 
                 addWarn: null, editPage: null, changePage: null
             });
         }
@@ -318,19 +318,8 @@ class Editor extends Component {
                 "image": this.state.addFile,
                 "detail": this.state.addDetail
             };
-            if ( this.state.add ) {
-                //add new preview
-                temporary = [ temporary ].concat( this.state.script );
-                content = Build.buildContent( this.state.theme, temporary, 0, this.state.full );
-                footer = Build.buildFooter( this.state.theme, temporary, 0 );
-            } else if ( this.state.editPage >= 0 ) {
-                let orig = this.state.script.slice();
-                orig.splice( this.state.editPage, 1, temporary);
-                content = Build.buildContent( 
-                    this.state.theme, orig, this.state.editPage, this.state.full
-                );
-                footer = Build.buildFooter( this.state.theme, orig, this.state.editPage );
-            }
+            content = Build.buildContent( this.state.theme, [temporary], 0, this.state.full );
+            footer = Build.buildFooter( this.state.theme, [temporary], 0 );
         }
         //generate editor for slides
         let slides = this.state.script.map( ( slide, index ) =>
@@ -390,14 +379,16 @@ class Editor extends Component {
                                 <span className="layout-fonts">Detail:</span>
                                 <ul className="layout-fonts">
                                     {
-                                        slide.detail.map(( a, i ) =>
-                                            <li 
-                                                key={ "sl" + index + "de" + i } 
-                                                className="layout-fonts"
-                                            >
-                                                { a }
-                                            </li>
-                                        )
+                                        slide.detail ? (
+                                            slide.detail.split( ";" ).map(( a, i ) =>
+                                                <li 
+                                                    key={ "sl" + index + "de" + i } 
+                                                    className="layout-fonts"
+                                                >
+                                                    { a }
+                                                </li>
+                                            )
+                                        ) : null
                                     }
                                 </ul>
                             </div>

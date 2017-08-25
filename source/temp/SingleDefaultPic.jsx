@@ -53,7 +53,7 @@ class SingleDefaultPic extends Component {
         };
         let imgStyle = {
             display: "inline-block",
-            width: "35%",
+            width: "45%",
             height: 0.5 * this.state.fullHeight + "px",
             backgroundImage: "url(../workspace/storage/" + this.props.script[ this.props.page ].image + ")",
             backgroundSize: "cover",
@@ -62,16 +62,16 @@ class SingleDefaultPic extends Component {
         let detailStyle = {
             display: "inline-block",
             verticalAlign: "middle",
-            marginLeft: "7%",
-            width: "45%"
+            marginLeft: "10%",
+            width: "35%"
         };
         let liStyle = {
             margin: "20px 0",
             fontSize: this.props.theme.fontSize[ 2 ],
             fontFamily: this.props.theme.fontFamily
         };
-        let details
-        if ( this.props.script[ this.props.page ].detail.length > 0 ) {
+        let details;
+        if ( this.props.script[ this.props.page ].detail ) {
             details = this.props.script[ this.props.page ].detail.map((detail, index) =>
                 <li key={ "details" + index } style={ liStyle }>{ detail }</li>
             );

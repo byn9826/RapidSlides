@@ -9599,26 +9599,28 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //all template file should be build here, import them in components.js
 
 function buildContent(theme, script, page, full) {
+    var copyScript = JSON.parse(JSON.stringify(script));
+    copyScript[page] && copyScript[page].detail ? copyScript[page].detail = copyScript[page].detail.split(";") : null;
     if (script[page]) {
         if (script[page].type === "Cover") {
             switch (script[page].template) {
                 case "DefaultFull":
                     return _react2.default.createElement(_components2.default.Cover.DefaultFull, {
-                        theme: theme, script: script, page: page, full: full
+                        theme: theme, script: copyScript, page: page, full: full
                     });
             }
         } else if (script[page].type === "Index") {
             switch (script[page].template) {
                 case "DefaultHouse":
                     return _react2.default.createElement(_components2.default.Index.DefaultHouse, {
-                        theme: theme, script: script, page: page, full: full
+                        theme: theme, script: copyScript, page: page, full: full
                     });
             }
         } else if (script[page].type === "Single") {
             switch (script[page].template) {
                 case "DefaultPic":
                     return _react2.default.createElement(_components2.default.Single.DefaultPic, {
-                        theme: theme, script: script, page: page, full: full
+                        theme: theme, script: copyScript, page: page, full: full
                     });
             }
         }
@@ -9748,7 +9750,7 @@ var Editor = function (_Component) {
             addCheck: [],
             addDesc: "",
             addFile: null,
-            addDetail: [],
+            addDetail: null,
             addWarn: null,
             //confirm delete slide
             confirmDelete: null,
@@ -9766,11 +9768,11 @@ var Editor = function (_Component) {
             document.addEventListener("keydown", function (e) {
                 var code = e.keyCode;
                 if (code === 37) {
-                    if (_this2.state.page !== 0) {
+                    if (_this2.state.page !== 0 && _this2.state.editPage === null) {
                         !_this2.state.full ? _this2.setState({ trans: "left", page: _this2.state.page - 1 }) : _this2.setState({ trans: "fullLeft", page: _this2.state.page - 1 });
                     }
                 } else if (code === 39) {
-                    if (_this2.state.page !== _this2.state.script.length - 1) {
+                    if (_this2.state.page !== _this2.state.script.length - 1 && _this2.state.editPage === null) {
                         !_this2.state.full ? _this2.setState({ trans: "right", page: _this2.state.page + 1 }) : _this2.setState({ trans: "fullRight", page: _this2.state.page + 1 });
                     }
                 }
@@ -9823,7 +9825,7 @@ var Editor = function (_Component) {
         value: function cancelAdd() {
             this.setState({
                 add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [],
-                addDesc: "", addDetail: "", page: 0, addWarn: null, addFile: null
+                addDesc: "", addDetail: null, page: 0, addWarn: null, addFile: null
             });
         }
         //confirm create new slide
@@ -9845,13 +9847,13 @@ var Editor = function (_Component) {
                     "check": this.state.addCheck,
                     "desc": this.state.addDesc,
                     "image": this.state.addFile,
-                    "detail": this.state.addDetail.length > 0 ? this.state.addDetail.split(";") : []
+                    "detail": this.state.addDetail
                 });
                 this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
                 saveFile(this.props.loc, this.state.file);
                 this.setState({
                     add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [], addDesc: "",
-                    addDetail: [], addFile: null, page: this.state.addNum - 1, addNum: script.length + 1,
+                    addDetail: null, addFile: null, page: this.state.addNum - 1, addNum: script.length + 1,
                     addWarn: null
                 });
             }
@@ -9978,7 +9980,7 @@ var Editor = function (_Component) {
         value: function cancelEdit() {
             this.setState({
                 editPage: null, changePage: null, addType: 0, addTemplate: 0, addCheck: [], addTitle: "",
-                addDesc: "", addDetail: "", addFile: null
+                addDesc: "", addDetail: null, addFile: null
             });
         }
         //change page number
@@ -10008,13 +10010,13 @@ var Editor = function (_Component) {
                     "check": this.state.addCheck,
                     "desc": this.state.addDesc,
                     "image": this.state.addFile,
-                    "detail": this.state.addDetail.length > 0 ? this.state.addDetail.split(";") : []
+                    "detail": this.state.addDetail
                 });
                 this.state.file.getElementById("script").innerHTML = JSON.stringify(this.state.script);
                 saveFile(this.props.loc, this.state.file);
                 this.setState({
                     add: false, addType: 0, addTemplate: 0, addTitle: "", addCheck: [], addDesc: "",
-                    addDetail: [], addFile: null, page: this.state.changePage - 1,
+                    addDetail: null, addFile: null, page: this.state.changePage - 1,
                     addWarn: null, editPage: null, changePage: null
                 });
             }
@@ -10127,17 +10129,8 @@ var Editor = function (_Component) {
                     "image": this.state.addFile,
                     "detail": this.state.addDetail
                 };
-                if (this.state.add) {
-                    //add new preview
-                    temporary = [temporary].concat(this.state.script);
-                    content = _build2.default.buildContent(this.state.theme, temporary, 0, this.state.full);
-                    footer = _build2.default.buildFooter(this.state.theme, temporary, 0);
-                } else if (this.state.editPage >= 0) {
-                    var orig = this.state.script.slice();
-                    orig.splice(this.state.editPage, 1, temporary);
-                    content = _build2.default.buildContent(this.state.theme, orig, this.state.editPage, this.state.full);
-                    footer = _build2.default.buildFooter(this.state.theme, orig, this.state.editPage);
-                }
+                content = _build2.default.buildContent(this.state.theme, [temporary], 0, this.state.full);
+                footer = _build2.default.buildFooter(this.state.theme, [temporary], 0);
             }
             //generate editor for slides
             var slides = this.state.script.map(function (slide, index) {
@@ -10239,7 +10232,7 @@ var Editor = function (_Component) {
                         _react2.default.createElement(
                             "ul",
                             { className: "layout-fonts" },
-                            slide.detail.map(function (a, i) {
+                            slide.detail ? slide.detail.split(";").map(function (a, i) {
                                 return _react2.default.createElement(
                                     "li",
                                     {
@@ -10248,7 +10241,7 @@ var Editor = function (_Component) {
                                     },
                                     a
                                 );
-                            })
+                            }) : null
                         )
                     ) : null,
                     _react2.default.createElement(
@@ -11381,7 +11374,7 @@ var SingleDefaultPic = function (_Component) {
             };
             var imgStyle = {
                 display: "inline-block",
-                width: "35%",
+                width: "45%",
                 height: 0.5 * this.state.fullHeight + "px",
                 backgroundImage: "url(../workspace/storage/" + this.props.script[this.props.page].image + ")",
                 backgroundSize: "cover",
@@ -11390,8 +11383,8 @@ var SingleDefaultPic = function (_Component) {
             var detailStyle = {
                 display: "inline-block",
                 verticalAlign: "middle",
-                marginLeft: "7%",
-                width: "45%"
+                marginLeft: "10%",
+                width: "35%"
             };
             var liStyle = {
                 margin: "20px 0",
@@ -11399,7 +11392,7 @@ var SingleDefaultPic = function (_Component) {
                 fontFamily: this.props.theme.fontFamily
             };
             var details = void 0;
-            if (this.props.script[this.props.page].detail.length > 0) {
+            if (this.props.script[this.props.page].detail) {
                 details = this.props.script[this.props.page].detail.map(function (detail, index) {
                     return _react2.default.createElement(
                         "li",
