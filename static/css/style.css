@@ -125,9 +125,6 @@ ul {
   margin-left: 1px;
   padding: 3px 0; }
 
-#header-mode {
-  width: 120px; }
-
 #header-export {
   line-height: 4vh; }
 
@@ -150,9 +147,11 @@ ul {
 #header-full, #header-exit, #header-export {
   background-color: lightslategray;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   color: white;
   height: 4vh;
+  line-height: 4vh;
+  vertical-align: middle;
   padding: 1vh 0;
   cursor: pointer;
   -webkit-border-radius: 5px;
@@ -161,30 +160,35 @@ ul {
   border-radius: 5px;
   width: 60px; }
 
-#header-arrow {
-  width: 60px; }
+#header-mode {
+  width: 120px;
+  float: right;
+  margin-right: 30px;
+  padding: 3vh 0; }
 
-#header-mode, #header-arrow {
+#header-mode span {
+  height: 2vh !important;
+  height: 30px; }
+
+#header-mode span span {
+  font-size: 12px;
+  cursor: pointer; }
+
+#header-arrow {
+  width: 60px;
   float: right;
   margin-right: 30px;
   height: 8vh;
   padding: 1vh 0;
   vertical-align: middle; }
 
-#header-mode strong, #header-mode header, #header-arrow strong, #header-arrow header {
-  color: white;
-  font-size: 14px;
-  font-weight: bold; }
-
-#header-mode span span, #header-arrow span span {
-  font-size: 12px;
-  cursor: pointer; }
-
 #header-arrow div {
   font-size: 16px;
-  margin-top: 8px;
   margin-right: 5px;
-  cursor: pointer; }
+  cursor: pointer;
+  height: 8vh;
+  line-height: 8vh;
+  vertical-align: middle; }
 
 /* aside editor layout */
 #aside-add {

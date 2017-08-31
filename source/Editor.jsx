@@ -763,7 +763,6 @@ class Editor extends Component {
                                 Screen
                             </section>
                             <section id="header-arrow">
-                                <header className="layout-fonts">Move</header>
                                 <div onClick={ this.pageLeft.bind( this ) }>&#9198;</div>
                                 <div onClick={ this.pageRight.bind( this ) }>&#9197;</div>
                             </section>
@@ -772,7 +771,6 @@ class Editor extends Component {
                                     type="checkbox" value={ this.state.mode } 
                                     onClick={ this.changeMode.bind( this ) } 
                                 />
-                                <strong className="layout-fonts">Mode</strong>
                                 <span>
                                     <span className="layout-fonts">
                                         Edit

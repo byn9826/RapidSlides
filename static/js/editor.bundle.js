@@ -10729,11 +10729,6 @@ var Editor = function (_Component) {
                         "section",
                         { id: "header-arrow" },
                         _react2.default.createElement(
-                            "header",
-                            { className: "layout-fonts" },
-                            "Move"
-                        ),
-                        _react2.default.createElement(
                             "div",
                             { onClick: this.pageLeft.bind(this) },
                             "\u23EE"
@@ -10751,11 +10746,6 @@ var Editor = function (_Component) {
                             type: "checkbox", value: this.state.mode,
                             onClick: this.changeMode.bind(this)
                         }),
-                        _react2.default.createElement(
-                            "strong",
-                            { className: "layout-fonts" },
-                            "Mode"
-                        ),
                         _react2.default.createElement(
                             "span",
                             null,

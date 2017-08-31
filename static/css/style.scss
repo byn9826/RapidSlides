@@ -143,10 +143,6 @@ ul{
     }
 }
 
-#header-mode{
-    width: 120px;
-}
-
 #header-export{
     line-height: 4vh;
 }
@@ -171,44 +167,51 @@ ul{
 #header-full, #header-exit, #header-export{
     background-color: lightslategray;
     text-align: center;
-    font-size: $font-normal;
+    font-size: $font-small;
     color: white;
     height: 4vh;
+    line-height: 4vh;
+    vertical-align: middle;
     padding: 1vh 0;
     cursor: pointer;
     @include border-radius(5px);
     width: 60px;
 }
 
-
-#header-arrow{
-    width: 60px;
-}
-#header-mode, #header-arrow{
+#header-mode{
+    width: 120px;
     float: right;
     margin-right: 30px;
-    height: 8vh;
-    padding: 1vh 0;
-    vertical-align: middle;
+    padding: 3vh 0;
 }
-#header-mode, #header-arrow{
-    strong, header{
-        color: white;
-        font-size: $font-normal;
-        font-weight: bold;
+#header-mode{
+    span{
+        height: 2vh !important;
+        height: 30px;
     }
     span span{
         font-size: $font-small;
         cursor: pointer;
     }
 }
+
+#header-arrow{
+    width: 60px;
+    float: right;
+    margin-right: 30px;
+    height: 8vh;
+    padding: 1vh 0;
+    vertical-align: middle;
+}
 #header-arrow{
     div{
         @extend .inline-middle;
         font-size: $font-large;
-        margin-top: 8px;
         margin-right: 5px;
         cursor: pointer;
+        height: 8vh;
+        line-height: 8vh;
+        vertical-align: middle;
     }
 }
 
